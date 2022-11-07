@@ -21,6 +21,9 @@ body {
   display: flex;
   flex-direction: column;
 }
+li {
+  list-style: none;
+}
 a {
   color: black;
   text-decoration: none;
@@ -31,12 +34,14 @@ a {
   height: 100px;
   display: flex;
 }
-.home_header * {
+.home_header > * {
   height: 100%;
-  font-size: 25px;
 }
 .home_header > div {
   flex: 1;
+}
+.logo {
+  height: 100%;
 }
 .title_section {
   display: flex;
@@ -47,36 +52,65 @@ a {
   height: fit-content;
   font-size: 40px;
 }
-.nav_links ul {
+.nav_links {
+  height: 100%;
+  font-size: 25px;
+}
+.nav_links > ul {
+  height: 100%;
   display: flex;
   justify-content: flex-end;
   align-items: center;
 }
-.nav_links li {
-  height: fit-content;
-  margin: 0 10px;
-  list-style: none;
+.nav_links > ul > li {
+  height: 75px;
+  margin: 32px 10px 0 10px;
   transition: 0.5s;
 }
-.nav_links li:hover {
-  margin-top: 10px;
-  color: whitesmoke;
+.nav_links > ul > li:hover {
+  margin-bottom: 10px;
 }
 .nav_links li:has(svg) {
   height: 25px;
 }
-.nav_links li a {
-  height: inherit;
-}
-.media_logos {
+.logos {
+  height: fit-content !important;
   display: flex;
-  margin: 5px;
-  width: 20px;
+  flex-direction: column;
+  align-items: center;
 }
-.media_logos a {
-  width: fit-content;
-  margin: 0 5px;
+.logos > p {
+  height: 25px;
 }
+.logo_list {
+  width: 25px;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.5s;
+}
+.logo_list li {
+  transition: 0.5s;
+}
+.logo_list a {
+  height: 25px;
+}
+.logos:hover .logo_list {
+  opacity: 1;
+  pointer-events: all;
+}
+.logos:hover .logo_list li {
+  margin-top: 3px;
+}
+/* In case I need to KEEP logo_list's opacity WHILE no longer hovering li.logos. */
+/* .logo_list:hover {
+  opacity: 1;
+  pointer-events: all;
+}
+.logo_list:hover li {
+  margin-top: 3px;
+} */
 
 .home_main {
   flex: 1;
