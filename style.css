@@ -1,3 +1,11 @@
+@font-face {
+  font-family: 'RosmatikaRegular';
+  src: url(./RosmatikaRegular.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'P22 Marcel Caps';
+  src: url(./P22\ Marcel\ W00\ Caps.ttf);
+}
 * {
   box-sizing: border-box;
   margin: 0;
@@ -9,24 +17,28 @@ body {
   min-height: 100vh;
 }
 body {
-  background: linear-gradient(
-      180deg,
-      hsl(0, 0%, 100%, 0.3),
-      hsla(0, 0%, 100%, 0)
-    ),
+  background: linear-gradient(180deg, hsl(0, 0%, 0%, 0.4), hsla(0, 0%, 0%, 0.1)),
     url('./background.jpg') bottom no-repeat;
   background-size: cover;
   user-select: none;
-  font-family: 'Caveat', cursive;
+  /* font-family: sans-serif; */
+  /* font-family: 'Caveat', cursive; */
   display: flex;
   flex-direction: column;
+  color: wheat;
+  /* font-family: 'RosmatikaRegular', sans-serif; */
+  font-family: 'P22 Marcel Caps', sans-serif;
+  font-size: 20px !important;
 }
 li {
   list-style: none;
 }
 a {
-  color: black;
+  color: wheat;
   text-decoration: none;
+}
+svg {
+  fill: wheat;
 }
 
 .home_header {
@@ -44,17 +56,23 @@ a {
   height: 100%;
 }
 .title_section {
+  font-family: 'RosmatikaRegular', sans-serif;
   display: flex;
   justify-content: center;
   align-items: center;
 }
+.title_section p {
+  font-size: 15px;
+  font-weight: lighter;
+}
 .title {
+  font-weight: 50;
   height: fit-content;
-  font-size: 40px;
+  font-size: 30px;
 }
 .nav_links {
   height: 100%;
-  font-size: 25px;
+  font-size: 20px;
 }
 .nav_links > ul {
   height: 100%;
@@ -63,6 +81,7 @@ a {
   align-items: center;
 }
 .nav_links > ul > li {
+  font-family: sans-serif;
   height: 75px;
   margin: 32px 10px 0 10px;
   transition: 0.5s;
@@ -118,24 +137,24 @@ a {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: 50px;
+  font-size: 25px;
 }
 .welcome_message {
   margin-top: 60px;
-  color: whitesmoke;
+  color: wheat;
 }
 .menu {
   margin-top: 30px;
   padding: 3px 21px;
-  color: whitesmoke;
-  border: 3px solid whitesmoke;
+  color: wheat;
+  border: 3px solid wheat;
   border-radius: 5px;
-  font-size: 30px;
+  font-size: 20px;
   background: transparent;
   transition: 0.5s;
   text-align: center;
 }
 .menu:hover {
-  color: black;
-  border: 3px solid black;
+  color: wheat;
+  border: 3px solid wheat;
 }
