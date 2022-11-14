@@ -1,11 +1,14 @@
+/* Typography */
 @font-face {
   font-family: 'RosmatikaRegular';
-  src: url(./RosmatikaRegular.ttf) format('truetype');
+  src: url(../typography/rosmatika-regular.ttf) format('truetype');
 }
 @font-face {
   font-family: 'P22 Marcel Caps';
-  src: url(./P22\ Marcel\ W00\ Caps.ttf);
+  src: url(../typography/marcel-caps.ttf);
 }
+
+/* Global */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -17,58 +20,83 @@ body {
   min-height: 100vh;
 }
 body {
-  background: linear-gradient(180deg, hsl(0, 0%, 0%, 0.4), hsla(0, 0%, 0%, 0.1)),
-    url('./background.jpg') bottom no-repeat;
-  background-size: cover;
+  background-size: contain;
   user-select: none;
-  /* font-family: sans-serif; */
-  /* font-family: 'Caveat', cursive; */
+  color: white;
+  font-family: sans-serif;
   display: flex;
   flex-direction: column;
-  color: wheat;
-  /* font-family: 'RosmatikaRegular', sans-serif; */
-  font-family: 'P22 Marcel Caps', sans-serif;
-  font-size: 20px !important;
+}
+.coffee {
+  background: linear-gradient(180deg, hsl(0, 0%, 0%, 0.5), hsla(0, 0%, 0%, 0.4)),
+    url(./images/coffee.jpg) center no-repeat;
+  background-size: cover;
+}
+.hot_chocolate {
+  background: linear-gradient(180deg, hsl(0, 0%, 0%, 0.5), hsla(0, 0%, 0%, 0.4)),
+    url(./images/hot-chocolate.jpg) center no-repeat;
+  background-size: cover;
+}
+.spring_rolls {
+  background: linear-gradient(180deg, hsl(0, 0%, 0%, 0.5), hsla(0, 0%, 0%, 0.4)),
+    url(./images/spring-rolls.jpg) center no-repeat;
+  background-size: cover;
 }
 li {
   list-style: none;
 }
 a {
-  color: wheat;
+  color: white;
   text-decoration: none;
 }
-svg {
-  fill: wheat;
+path {
+  fill: white;
 }
 
-.home_header {
+/* Sections */
+.header {
   width: 100%;
   height: 100px;
   display: flex;
 }
-.home_header > * {
+.header > * {
   height: 100%;
-}
-.home_header > div {
   flex: 1;
 }
-.logo {
-  height: 100%;
+.logo_section {
+  display: flex;
+  /* align-items: flex-start; */
+  justify-content: flex-start;
 }
 .title_section {
-  font-family: 'RosmatikaRegular', sans-serif;
   display: flex;
   justify-content: center;
   align-items: center;
+  font-size: 50px;
+  font-family: 'P22 Marcel Caps', sans-serif;
 }
-.title_section p {
-  font-size: 15px;
-  font-weight: lighter;
+.home_main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 25px;
+}
+
+/* Components */
+.logo {
+  height: 100%;
+  width: 100px;
 }
 .title {
-  font-weight: 50;
   height: fit-content;
-  font-size: 30px;
+  font-weight: 50;
+  font-size: 50px;
+}
+.title_coffee {
+  font-size: 20px;
+  font-weight: lighter;
 }
 .nav_links {
   height: 100%;
@@ -83,7 +111,7 @@ svg {
 .nav_links > ul > li {
   font-family: sans-serif;
   height: 75px;
-  margin: 32px 10px 0 10px;
+  margin: 50px 10px 0 10px;
   transition: 0.5s;
 }
 .nav_links > ul > li:hover {
@@ -122,39 +150,18 @@ svg {
 .logos:hover .logo_list li {
   margin-top: 3px;
 }
-/* In case I need to KEEP logo_list's opacity WHILE no longer hovering li.logos. */
-/* .logo_list:hover {
-  opacity: 1;
-  pointer-events: all;
-}
-.logo_list:hover li {
-  margin-top: 3px;
-} */
-
-.home_main {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: 25px;
-}
-.welcome_message {
-  margin-top: 60px;
-  color: wheat;
+.message {
+  margin-top: 30px;
 }
 .menu {
-  margin-top: 30px;
+  margin-bottom: 30px;
   padding: 3px 21px;
-  color: wheat;
-  border: 3px solid wheat;
+  border: 3px solid white;
   border-radius: 5px;
   font-size: 20px;
   background: transparent;
   transition: 0.5s;
-  text-align: center;
 }
 .menu:hover {
-  color: wheat;
-  border: 3px solid wheat;
+  margin-bottom: 40px;
 }
