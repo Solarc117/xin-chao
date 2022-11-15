@@ -1,3 +1,5 @@
+/***Mobile***/
+
 /* Typography */
 @font-face {
   font-family: 'RosmatikaRegular';
@@ -20,27 +22,11 @@ body {
   min-height: 100vh;
 }
 body {
-  background-size: contain;
   user-select: none;
   color: white;
   font-family: sans-serif;
   display: flex;
   flex-direction: column;
-}
-.coffee {
-  background: linear-gradient(180deg, hsl(0, 0%, 0%, 0.5), hsla(0, 0%, 0%, 0.4)),
-    url(./images/coffee.jpg) center no-repeat;
-  background-size: cover;
-}
-.hot_chocolate {
-  background: linear-gradient(180deg, hsl(0, 0%, 0%, 0.5), hsla(0, 0%, 0%, 0.4)),
-    url(./images/hot-chocolate.jpg) center no-repeat;
-  background-size: cover;
-}
-.spring_rolls {
-  background: linear-gradient(180deg, hsl(0, 0%, 0%, 0.5), hsla(0, 0%, 0%, 0.4)),
-    url(./images/spring-rolls.jpg) center no-repeat;
-  background-size: cover;
 }
 li {
   list-style: none;
@@ -114,9 +100,6 @@ path {
   margin: 50px 10px 0 10px;
   transition: 0.5s;
 }
-.nav_links > ul > li:hover {
-  margin-bottom: 10px;
-}
 .nav_links li:has(svg) {
   height: 25px;
 }
@@ -143,13 +126,6 @@ path {
 .logo_list a {
   height: 25px;
 }
-.logos:hover .logo_list {
-  opacity: 1;
-  pointer-events: all;
-}
-.logos:hover .logo_list li {
-  margin-top: 3px;
-}
 .message {
   margin-top: 30px;
 }
@@ -162,6 +138,52 @@ path {
   background: transparent;
   transition: 0.5s;
 }
-.menu:hover {
-  margin-bottom: 40px;
+
+/***Desktop***/
+@media only screen and (min-width: 800px) {
+  .nav_links > ul > li:hover {
+    margin-bottom: 10px;
+  }
+
+  .logos:hover .logo_list {
+    opacity: 1;
+    pointer-events: all;
+  }
+  .logos:hover .logo_list li {
+    margin-top: 3px;
+  }
+
+  .menu:hover {
+    margin-bottom: 40px;
+  }
+}
+
+@media only screen and (min-width: 500px) {
+  .coffee {
+    background: linear-gradient(
+        180deg,
+        hsl(0, 0%, 0%, 0.5),
+        hsla(0, 0%, 0%, 0.4)
+      ),
+      url(./images/coffee.jpg) center no-repeat;
+    background-size: cover;
+  }
+  .hot_chocolate {
+    background: linear-gradient(
+        180deg,
+        hsl(0, 0%, 0%, 0.5),
+        hsla(0, 0%, 0%, 0.4)
+      ),
+      url(./images/hot-chocolate.jpg) center no-repeat;
+    background-size: cover;
+  }
+  .spring_rolls {
+    background: linear-gradient(
+        180deg,
+        hsl(0, 0%, 0%, 0.5),
+        hsla(0, 0%, 0%, 0.4)
+      ),
+      url(./images/spring-rolls.jpg) center no-repeat;
+    background-size: cover;
+  }
 }
