@@ -1,0 +1,39 @@
+/* Typography */
+@font-face {
+  font-family: 'RosmatikaRegular';
+  src: url(../typography/rosmatika-regular.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'P22 Marcel Caps';
+  src: url(../typography/marcel-caps.ttf);
+}
+
+/* Global styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+html,
+body {
+  width: 100%;
+  min-height: 100vh;
+}
+body {
+  user-select: none;
+  color: white;
+  font-family: sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+li {
+  list-style: none;
+}
+a {
+  color: white;
+  text-decoration: none;
+}
+path {
+  fill: white;
+}
+
