@@ -1,6 +1,9 @@
-- collapse navbar for smaller screen sizes
+✅ click the phone #, auto call 
+✅ click the email, pop up the gmail window 
+✅ add contact page
+✅ add google maps snippet to contact page (note: created an API KEY using my personal account, need to transition to Xin Chao's business account prior to deploying)
 
-😗 add contact page
+📌 collapse navbar for smaller screen sizes
 
 - add about page
 
@@ -9,9 +12,4 @@
 - move menu button to center (from bottom)
 
 - edit css design to be mobile-first (NOT desktop-first)
-
-- click the phone #, auto call 📌
-
-😗 click the email, pop up the gmail window 
-
 

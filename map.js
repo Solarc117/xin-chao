@@ -1,18 +1,16 @@
 // Code copied from: https://developers.google.com/maps/documentation/javascript/adding-a-google-map#maps_add_map-javascript
-// Initialize and add the map
-function initializeMap() {
-  // The location of Xin Chao Coffee
-  const xinChaoCoordinates = { lat: 51.07246, long: -113.98987 },
-    // The map, centered at Xin Chao Coffee
+function initMap() {
+  const xinChaoCoordinates = { lat: 51.07246, lng: -113.98987 },
+    // @ts-ignore
     map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 4,
+      zoom: 14,
       center: xinChaoCoordinates,
     }),
-    // The marker, positioned at Uluru
+    // @ts-ignore
     marker = new google.maps.Marker({
       position: xinChaoCoordinates,
-      map: map,
+      map,
     })
 }
 
-window.initializeMap = initializeMap
+window.initMap = initMap

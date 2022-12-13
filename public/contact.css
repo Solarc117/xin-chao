@@ -1,18 +1,21 @@
-* {
-  font-family: sans-serif;
-}
-
 body {
-  background-color: black;
+  background: black;
+  font-family: sans-serif;
 }
 .contact {
   font-size: 0.3cm;
   text-align: left;
+  min-height: 100vh;
 }
 
 /* Components */
-.email_wrapper, .phone_number_wrapper {
+.email_wrapper,
+.phone_number_wrapper {
   display: flex;
   flex-direction: row;
   align-items: center;
+}
+.map {
+  height: 400px;
+  width: 100%;
 }
