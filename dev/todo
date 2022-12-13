@@ -2,8 +2,22 @@
 ✅ click the email, pop up the gmail window 
 ✅ add contact page
 ✅ add google maps snippet to contact page (note: created an API KEY using my personal account, need to transition to Xin Chao's business account prior to deploying)
+✅ edit css design to be mobile-first (NOT desktop-first)
 
-📌 collapse navbar for smaller screen sizes
+✅ expand navbar for screen widths gte 900px (do not repeat html)
+  ✅ add the menu svg after the title, in the header tag
+  ✅ make menu svg display: none (or width: 0) for screen sizes wider than 900px
+  ✅ move nav outside header (so html layout would then be body -> header, nav, main <- body) (need to be able to "push" the nav tag off the screen in mobile devices, using the header tag)
+  ✅ size svg appropriately
+  ✅ use flex in the svg parent div to center .bars, and push it right 
+  ✅ add a cursor: pointer property to .bars
+  ✅ add a gray background to the nav
+  ✅ push navbar off-screen (right) when screen < 900px wide
+  ✅ add 'show' class to nav_links when .bars clicked  
+  ✅ remove 'show' class from nav_links when anything OTHER than nav_links is tapped/clicked
+  ✅ add an animation to push nav_links left if the class 'show' is present
+  ✅ add an animation to push nav_links right if the class 'show' is missing
+  ✅ fix mobile nav animation delay bug
 
 - add about page
 
@@ -11,5 +25,4 @@
 
 - move menu button to center (from bottom)
 
-- edit css design to be mobile-first (NOT desktop-first)
 

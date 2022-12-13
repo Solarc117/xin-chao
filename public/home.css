@@ -1,3 +1,28 @@
+/* Page global */
+.coffee {
+  background: linear-gradient(180deg, hsl(0, 0%, 0%, 0.5), hsla(0, 0%, 0%, 0.4)),
+    url(./images/coffee.jpg) center repeat;
+  background-size: contain;
+}
+.hot_chocolate {
+  background: linear-gradient(180deg, hsl(0, 0%, 0%, 0.5), hsla(0, 0%, 0%, 0.4)),
+    url(./images/hot-chocolate.jpg) center repeat;
+  background-size: contain;
+}
+.spring_rolls {
+  background: linear-gradient(180deg, hsl(0, 0%, 0%, 0.5), hsla(0, 0%, 0%, 0.4)),
+    url(./images/spring-rolls.jpg) center repeat;
+  background-size: contain;
+}
+
+/* Layout */
+body {
+  display: grid;
+  grid-template-columns: 100% 120px;
+  grid-template-rows: 100px calc(100% - 100px);
+  overflow-x: hidden;
+}
+
 /* Sections */
 .header {
   width: 100%;
@@ -19,6 +44,7 @@
   font-size: 50px;
   font-family: 'P22 Marcel Caps', sans-serif;
 }
+
 .home_main {
   flex: 1;
   display: flex;
@@ -31,7 +57,6 @@
 /* Components */
 .logo {
   height: 100%;
-  width: 100px;
 }
 .title {
   height: fit-content;
@@ -42,21 +67,48 @@
   font-size: 20px;
   font-weight: lighter;
 }
-.nav_links {
-  height: 100%;
-  font-size: 20px;
-}
-.nav_links > ul {
-  height: 100%;
+.nav_section {
   display: flex;
+  flex-direction: row;
   justify-content: flex-end;
   align-items: center;
 }
+.bars {
+  padding: 10px;
+  height: 55%;
+  margin-right: 30px;
+  cursor: pointer;
+}
+
+.nav_links {
+  grid-area: 1 / 2 / span 2 / span 1;
+  height: 100%;
+  width: 120px;
+  background: hsla(0, 0%, 60%, 0.95);
+  font-size: 20px;
+}
+.nav_links.show {
+  animation: nav_in 0.5s forwards;
+}
+.nav_links:not(.show) {
+  animation: nav_out 0.5s forwards;
+}
+
+.nav_links > ul {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
 .nav_links > ul > li {
-  font-family: sans-serif;
+  color: black;
   height: 75px;
   margin: 50px 10px 0 10px;
   transition: 0.5s;
+}
+.nav_links > ul > li a {
+  color: black;
 }
 .nav_links li:has(svg) {
   height: 25px;
@@ -97,40 +149,8 @@
   transition: 0.5s;
 }
 
-/*  */
-@media only screen and (min-width: 500px) {
-  .coffee {
-    background: linear-gradient(
-        180deg,
-        hsl(0, 0%, 0%, 0.5),
-        hsla(0, 0%, 0%, 0.4)
-      ),
-      url(./images/coffee.jpg) center repeat;
-    background-size: contain;
-  }
-  .hot_chocolate {
-    background: linear-gradient(
-        180deg,
-        hsl(0, 0%, 0%, 0.5),
-        hsla(0, 0%, 0%, 0.4)
-      ),
-      url(./images/hot-chocolate.jpg) center repeat;
-    background-size: contain;
-  }
-  .spring_rolls {
-    background: linear-gradient(
-        180deg,
-        hsl(0, 0%, 0%, 0.5),
-        hsla(0, 0%, 0%, 0.4)
-      ),
-      url(./images/spring-rolls.jpg) center repeat;
-    background-size: contain;
-  }
-}
-
-
 /***Desktop***/
-@media only screen and (min-width: 800px) {
+@media only screen and (min-width: 900px) {
   .nav_links > ul > li:hover {
     margin-bottom: 10px;
   }
@@ -143,7 +163,31 @@
     margin-top: 3px;
   }
 
+  .bars {
+    display: none;
+  }
+
   .menu:hover {
     margin-bottom: 40px;
+  }
+}
+
+/* Animations */
+@keyframes nav_in {
+  from {
+    /* right: 0; */
+    transform: translateX(0);
+  }
+  to {
+    /* right: 100px; */
+    transform: translateX(-120px);
+  }
+}
+@keyframes nav_out {
+  from {
+    transform: translateX(-120px);
+  }
+  to {
+    transform: translateX(0);
   }
 }
