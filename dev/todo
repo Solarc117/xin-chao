@@ -21,7 +21,9 @@
 
 ✅ change nav_links background to transparent black w/white color
 
-- add dark gradient animation when showing/hiding navbar
+✅ cover background on mobile, & contain on desktop
+
+📌 add dark gradient animation when showing/hiding navbar
 
 - fix nav_links hiding when clicking/tapping nav bug
 

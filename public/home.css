@@ -2,17 +2,14 @@
 .coffee {
   background: linear-gradient(180deg, hsl(0, 0%, 0%, 0.5), hsla(0, 0%, 0%, 0.4)),
     url(./images/coffee.jpg) center repeat;
-  background-size: contain;
 }
 .hot_chocolate {
   background: linear-gradient(180deg, hsl(0, 0%, 0%, 0.5), hsla(0, 0%, 0%, 0.4)),
     url(./images/hot-chocolate.jpg) center repeat;
-  background-size: contain;
 }
 .spring_rolls {
   background: linear-gradient(180deg, hsl(0, 0%, 0%, 0.5), hsla(0, 0%, 0%, 0.4)),
     url(./images/spring-rolls.jpg) center repeat;
-  background-size: contain;
 }
 
 /* Layout */
@@ -21,6 +18,7 @@ body {
   grid-template-columns: 100% 120px;
   grid-template-rows: 100px calc(100% - 100px);
   overflow-x: hidden;
+  background-size: cover;
 }
 
 /* Sections */
@@ -147,6 +145,10 @@ body {
 
 /***Desktop***/
 @media only screen and (min-width: 900px) {
+  body {
+    background-size: contain;
+  }
+
   .nav_links > ul > li:hover {
     margin-bottom: 10px;
   }
@@ -185,5 +187,9 @@ body {
   }
   to {
     transform: translateX(0);
+  }
+}
+@keyframes dark_gradient_fade_in {
+  from {
   }
 }
