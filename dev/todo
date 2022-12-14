@@ -24,6 +24,7 @@
 ✅ cover background on mobile, & contain on desktop
 
 📌 add dark gradient animation when showing/hiding navbar
+  - create a different animation for each background picture
 
 - fix nav_links hiding when clicking/tapping nav bug
 
