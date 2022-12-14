@@ -19,6 +19,12 @@
   ✅ add an animation to push nav_links right if the class 'show' is missing
   ✅ fix mobile nav animation delay bug
 
+✅ change nav_links background to transparent black w/white color
+
+- add dark gradient animation when showing/hiding navbar
+
+- fix nav_links hiding when clicking/tapping nav bug
+
 - add about page
 
 - add menu items & photos

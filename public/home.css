@@ -84,7 +84,7 @@ body {
   grid-area: 1 / 2 / span 2 / span 1;
   height: 100%;
   width: 120px;
-  background: hsla(0, 0%, 60%, 0.95);
+  background: hsla(0, 0%, 0%, 0.8);
   font-size: 20px;
 }
 .nav_links.show {
@@ -102,13 +102,9 @@ body {
   align-items: center;
 }
 .nav_links > ul > li {
-  color: black;
   height: 75px;
   margin: 50px 10px 0 10px;
   transition: 0.5s;
-}
-.nav_links > ul > li a {
-  color: black;
 }
 .nav_links li:has(svg) {
   height: 25px;
