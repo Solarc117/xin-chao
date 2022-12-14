@@ -147,10 +147,6 @@ body {
 
 /***Desktop***/
 @media only screen and (min-width: 900px) {
-  body {
-    background-size: contain;
-  }
-
   .nav_links > ul > li:hover {
     margin-bottom: 10px;
   }
