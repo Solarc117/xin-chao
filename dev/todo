@@ -32,7 +32,8 @@
 ✅ fix nav_links hiding when clicking/tapping nav bug
   ✅ check that the user is not tapping/clicking bars OR nav_links before hideNav()
 
-
+✅ change gradient animation to hsla animation
+  ✅ change css
 
 - add about page
 

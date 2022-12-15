@@ -27,14 +27,7 @@
   background-size: cover;
 }
 .gradient_container {
-  background: linear-gradient(
-    to left,
-    hsla(0, 0%, 0%, 0.8),
-    hsla(0, 0%, 0%, 0.8) 45%,
-    hsla(0, 0%, 0%, 0) 55%,
-    hsla(0, 0%, 0%, 0)
-  );
-  background-size: 200%;
+  background: hsla(0, 0%, 0%, 0);
   animation: lighten 0.5s forwards;
 }
 .gradient_container.dark {
@@ -214,20 +207,19 @@ body {
     transform: translateX(0);
   }
 }
-/* Gradient animation idea by: https://codepen.io/P1N2O/pen/pyBNzX */
 @keyframes darken {
   from {
-    background-position: 0%;
+    background: hsla(0, 0%, 0%, 0);
   }
   to {
-    background-position: 100%;
+    background: hsla(0, 0%, 0%, 0.2);
   }
 }
 @keyframes lighten {
   from {
-    background-position: 100%;
+    background: hsla(0, 0%, 0%, 0.2);
   }
   to {
-    background-position: 0%;
+    background: hsla(0, 0%, 0%, 0);
   }
 }
