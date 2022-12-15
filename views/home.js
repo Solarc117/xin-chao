@@ -1,17 +1,25 @@
 const query = document.querySelector.bind(document),
   queryAll = document.querySelectorAll.bind(document)
 
+/**
+ * @param {Document} document
+ */
 function setDynamicBackground(document) {
-  const classNames = ['coffee', 'hot_chocolate', 'spring_rolls']
+  const backgroundImages = [
+    "url('./public/images/coffee.jpg')",
+    "url('./public/images/hot-chocolate.jpg')",
+    "url('./public/images/spring-rolls.jpg')",
+  ]
   let count = 0
 
   setInterval(() => {
-    document.body.classList.add(classNames[count + 1 > 2 ? 0 : count + 1])
-    document.body.classList.remove(classNames[count])
     count++
     if (count > 2) count = 0
+
+    document.body.style.backgroundImage = backgroundImages[count]
   }, 2000)
 }
+
 function showNav() {
   query('.nav_links')?.classList.add('show')
 
@@ -20,6 +28,7 @@ function showNav() {
 
   for (const tag of queryAll('.gradient_container')) tag.classList.add('dark')
 }
+
 function hideNav() {
   query('.nav_links')?.classList.remove('show')
 
@@ -30,19 +39,24 @@ function hideNav() {
     tag.classList.remove('dark')
 }
 
+/**
+ * @param {Event} event
+ */
 function toggleNav(event) {
   const { target } = event,
     showNavClasses = ['bars', 'nav_links', 'logos', 'page', 'nav_links_ul']
 
   if (
     showNavClasses.some(showNavClass =>
-      target.classList.contains(showNavClass)
+      // @ts-ignore
+      target?.classList.contains(showNavClass)
     ) ||
-    target.id === 'bars_path'
+    // @ts-ignore
+    target?.id === 'bars_path'
   )
     showNav()
   else hideNav()
 }
-
+   
 setDynamicBackground(document)
 document.body.addEventListener('pointerdown', toggleNav)

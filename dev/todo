@@ -37,11 +37,13 @@
 
 ✅ add views folder, for all js & html besides index (or, if it works, put index in too)
 
+📌 prevent animation(s) on initial page load (only run on user inputs)
+  - precache the images
+
 - add about page
 
 - re-adjust menu button to middle
 
-- prevent animation(s) on initial page load (only run on user inputs)
 
 - fix brief gray background bug (when first transitioning between background images)
 
