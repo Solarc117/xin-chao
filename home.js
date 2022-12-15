@@ -31,11 +31,13 @@ function hideNav() {
 }
 
 function toggleNav(event) {
-  const { target } = event
+  const { target } = event,
+    showNavClasses = ['bars', 'nav_links', 'logos', 'page', 'nav_links_ul']
 
   if (
-    target.classList.contains('bars') ||
-    target.classList.contains('nav_links') ||
+    showNavClasses.some(showNavClass =>
+      target.classList.contains(showNavClass)
+    ) ||
     target.id === 'bars_path'
   )
     showNav()

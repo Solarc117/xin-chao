@@ -29,13 +29,22 @@
   ✅ animate gradient navbar is shown & hidden
   ✅ remove dark class when clicking anything that is not .nav_links or .bars
 
-- readjust menu button to middle
+✅ fix nav_links hiding when clicking/tapping nav bug
+  ✅ check that the user is not tapping/clicking bars OR nav_links before hideNav()
+
+
+
+- add about page
+
+- re-adjust menu button to middle
+
+- prevent animation(s) on initial page load (only run on user inputs)
+
+- fix brief gray background bug (when first transitioning between background images)
 
 - fix nav_links tab-able in desktop bug
 
-- fix nav_links hiding when clicking/tapping nav bug
 
-- add about page
 
 - add menu items & photos
 
