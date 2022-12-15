@@ -1,4 +1,5 @@
-const query = document.querySelector.bind(document)
+const query = document.querySelector.bind(document),
+  queryAll = document.querySelectorAll.bind(document)
 
 function setDynamicBackground(document) {
   const classNames = ['coffee', 'hot_chocolate', 'spring_rolls']
@@ -12,25 +13,32 @@ function setDynamicBackground(document) {
   }, 2000)
 }
 function showNav() {
-  console.log('showNavRunning')
-
   query('.nav_links')?.classList.add('show')
 
   for (const tag of [query('header'), query('main')])
     tag.classList.add('dark_gradient')
+
+  for (const tag of queryAll('.gradient_container')) tag.classList.add('dark')
 }
 function hideNav() {
-  console.log('hideNavRunning')
-
   query('.nav_links')?.classList.remove('show')
 
   for (const tag of [query('header'), query('main')])
     tag.classList.remove('dark_gradient')
+
+  for (const tag of queryAll('.gradient_container'))
+    tag.classList.remove('dark')
 }
+
 function toggleNav(event) {
   const { target } = event
 
-  if (target.classList.contains('bars') || target.id === 'bars_path') showNav()
+  if (
+    target.classList.contains('bars') ||
+    target.classList.contains('nav_links') ||
+    target.id === 'bars_path'
+  )
+    showNav()
   else hideNav()
 }
 

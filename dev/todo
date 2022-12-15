@@ -23,8 +23,15 @@
 
 ✅ cover background on mobile, & contain on desktop
 
-📌 add dark gradient animation when showing/hiding navbar
-  - create a different animation for each background picture
+✅ add dark gradient animation when showing/hiding navbar
+  ✅ create css keyframes 
+  ✅ add a linear-gradient to both header & main, of width 200% (half the gradient, the dark part, starts off-screen), from left-to right, dark-to-light
+  ✅ animate gradient navbar is shown & hidden
+  ✅ remove dark class when clicking anything that is not .nav_links or .bars
+
+- readjust menu button to middle
+
+- fix nav_links tab-able in desktop bug
 
 - fix nav_links hiding when clicking/tapping nav bug
 

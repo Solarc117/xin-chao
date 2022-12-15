@@ -1,18 +1,44 @@
 /* Page global */
 .coffee {
-  background: linear-gradient(180deg, hsl(0, 0%, 0%, 0.5), hsla(0, 0%, 0%, 0.4)),
-    url(./images/coffee.jpg) center repeat;
+  background: linear-gradient(
+      180deg,
+      hsla(0, 0%, 0%, 0.5),
+      hsla(0, 0%, 0%, 0.4)
+    ),
+    url('./images/coffee.jpg') center repeat;
   background-size: cover;
 }
 .hot_chocolate {
-  background: linear-gradient(180deg, hsl(0, 0%, 0%, 0.5), hsla(0, 0%, 0%, 0.4)),
-    url(./images/hot-chocolate.jpg) center repeat;
+  background: linear-gradient(
+      180deg,
+      hsla(0, 0%, 0%, 0.5),
+      hsla(0, 0%, 0%, 0.4)
+    ),
+    url('./images/hot-chocolate.jpg') center repeat;
   background-size: cover;
 }
 .spring_rolls {
-  background: linear-gradient(180deg, hsl(0, 0%, 0%, 0.5), hsla(0, 0%, 0%, 0.4)),
-    url(./images/spring-rolls.jpg) center repeat;
+  background: linear-gradient(
+      180deg,
+      hsla(0, 0%, 0%, 0.5),
+      hsla(0, 0%, 0%, 0.4)
+    ),
+    url('./images/spring-rolls.jpg') center repeat;
   background-size: cover;
+}
+.gradient_container {
+  background: linear-gradient(
+    to left,
+    hsla(0, 0%, 0%, 0.8),
+    hsla(0, 0%, 0%, 0.8) 45%,
+    hsla(0, 0%, 0%, 0) 55%,
+    hsla(0, 0%, 0%, 0)
+  );
+  background-size: 200%;
+  animation: lighten 0.5s forwards;
+}
+.gradient_container.dark {
+  animation: darken 0.5s forwards;
 }
 
 /* Layout */
@@ -29,6 +55,7 @@ body {
   height: 100px;
   display: flex;
 }
+
 .header > * {
   height: 100%;
   flex: 1;
@@ -187,7 +214,20 @@ body {
     transform: translateX(0);
   }
 }
-@keyframes dark_gradient_fade_in {
+/* Gradient animation idea by: https://codepen.io/P1N2O/pen/pyBNzX */
+@keyframes darken {
+  from {
+    background-position: 0%;
+  }
   to {
+    background-position: 100%;
+  }
+}
+@keyframes lighten {
+  from {
+    background-position: 100%;
+  }
+  to {
+    background-position: 0%;
   }
 }
