@@ -37,15 +37,20 @@
 
 ✅ add views folder, for all js & html besides index (or, if it works, put index in too)
 
-📌 prevent animation(s) on initial page load (only run on user inputs)
-  - precache the images
+✅ fix brief gray background bug (when first transitioning between background images)
+
+✅ re-adjust menu button to middle
+
+📌 add store background 
+
+- add same nav to contact page
 
 - add about page
 
-- re-adjust menu button to middle
+- prevent animation(s) on initial page load (only run on user inputs) 
 
 
-- fix brief gray background bug (when first transitioning between background images)
+
 
 - fix nav_links tab-able in desktop bug
 
