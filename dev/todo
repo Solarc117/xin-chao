@@ -41,7 +41,22 @@
 
 ✅ re-adjust menu button to middle
 
-📌 add store background 
+✅ add store background to contact page
+✅ add navbar horizontally in media query
+  ✅ set display: flex row for nav_links ul
+  ✅ draw the current grid layout
+  ✅ draw the grid layout in desktop
+  ✅ change in css
+  ✅ edit gradient container to encompass the entire page, and increase navbar z-index on mobile
+  ✅ set nav_section to display: none on desktop
+  ✅ justify title end;
+  ✅ set navbar to justify end
+  ✅ set main to span 2 horizontally
+✅ fix indexOf property undefined bug (in preload-images script)
+
+✅ remove nav click animation on desktop
+
+- make facebook & instagram logos tab-able
 
 - add same nav to contact page
 
@@ -49,15 +64,9 @@
 
 - prevent animation(s) on initial page load (only run on user inputs) 
 
-
-
-
 - fix nav_links tab-able in desktop bug
-
-
 
 - add menu items & photos
 
-- move menu button to center (from bottom)
 
 

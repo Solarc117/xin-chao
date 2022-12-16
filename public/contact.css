@@ -1,6 +1,7 @@
 body {
-  background: black;
+  background-image: url('./images/store.jpg');
   font-family: sans-serif;
+  color: black;
 }
 .contact {
   font-size: 0.3cm;

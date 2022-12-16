@@ -4,12 +4,12 @@
  */
 function preloadImages(imageSources) {
   // @ts-ignore
-  if (!this.images) this.images = []
+  if (!Array.isArray(this.images)) this.images = []
   // @ts-ignore
 
   for (const imageSource of imageSources) {
     const image = new Image()
-    image.onload = function () {
+    image.onload = () => {
       // @ts-ignore
       const index = this.images.indexOf(this)
       // Remove image from the array once it's loaded, for memory consumption reasons.
@@ -26,4 +26,5 @@ preloadImages([
   './public/images/coffee.jpg',
   './public/images/hot-chocolate.jpg',
   './public/images/spring-rolls.jpg',
+  './public/images/store.jpg',
 ])
