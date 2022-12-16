@@ -184,7 +184,7 @@ path {
     width: 100%;
     background: hsla(0, 0%, 0%, 0);
   }
-  
+
   .nav_links_ul {
     height: 100%;
     width: 100%;
@@ -192,15 +192,18 @@ path {
     justify-content: flex-end;
   }
 
-  .nav_links_ul > li:hover:focus {
+  .nav_links_ul > li:hover,
+  .nav_links_ul > li:focus-within {
     margin-bottom: 10px;
   }
 
-  .logos:hover .logo_list {
+  .logos:hover .logo_list,
+  .logos:focus-within .logo_list {
     opacity: 1;
     pointer-events: all;
   }
-  .logos:hover .logo_list li {
+  .logos:hover .logo_list li,
+  .logos:focus-within .logo_list li {
     margin-top: 3px;
   }
 

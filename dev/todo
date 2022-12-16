@@ -56,7 +56,9 @@
 
 ✅ remove nav click animation on desktop
 
-- make facebook & instagram logos tab-able
+✅ make facebook & instagram logos tab-able
+  ✅ add an onfocus logger to li.contact, to see if tabbing activates that pseudo-class
+  ✅ add an onfocus logger to determine which element should have the :focus pseudo-class (ended up using :focus-within)
 
 - add same nav to contact page
 

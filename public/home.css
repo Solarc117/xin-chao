@@ -16,7 +16,7 @@ body {
 
 /***Desktop***/
 @media only screen and (min-width: 900px) {
-  .menu:hover {
+  .menu:hover, .menu:focus {
     margin-bottom: 10px;
   }
 }
