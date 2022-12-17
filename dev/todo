@@ -53,14 +53,19 @@
   ✅ set navbar to justify end
   ✅ set main to span 2 horizontally
 ✅ fix indexOf property undefined bug (in preload-images script)
-
 ✅ remove nav click animation on desktop
-
 ✅ make facebook & instagram logos tab-able
   ✅ add an onfocus logger to li.contact, to see if tabbing activates that pseudo-class
   ✅ add an onfocus logger to determine which element should have the :focus pseudo-class (ended up using :focus-within)
 
-- add same nav to contact page
+✅ show media_links on mobile
+✅ add same nav to contact page
+
+✅ fix media links & contact link unclickable/tabable bug
+  
+✅ prevent nav hide when clicking nav
+
+✅ fix media link not working in mobile bug
 
 - add about page
 

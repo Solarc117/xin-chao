@@ -110,7 +110,7 @@ path {
 }
 
 .nav_links {
-  z-index: 1;
+  z-index: 2;
   grid-area: 1 / 2 / span 2 / span 1;
   height: 100%;
   width: 120px;
@@ -152,12 +152,11 @@ path {
   width: 25px;
   display: flex;
   flex-direction: column;
-  opacity: 0;
-  pointer-events: none;
   transition: 0.5s;
 }
 .logo_list li {
   transition: 0.5s;
+  margin: 5px 0;
 }
 .logo_list a {
   height: 25px;
@@ -168,10 +167,6 @@ path {
   body {
     grid-template-rows: 100px calc(100% - 100px);
     grid-template-columns: 2fr 1fr;
-  }
-
-  .title_section {
-    justify-content: flex-end;
   }
 
   .nav_section {
@@ -195,6 +190,14 @@ path {
   .nav_links_ul > li:hover,
   .nav_links_ul > li:focus-within {
     margin-bottom: 10px;
+  }
+
+  .logo_list {
+    opacity: 0;
+  }
+
+  .logo_list li {
+    margin: 0;
   }
 
   .logos:hover .logo_list,

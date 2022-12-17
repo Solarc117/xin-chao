@@ -44,20 +44,17 @@ function hideNav() {
  */
 function toggleNav(event) {
   const { target } = event,
-    showNavClasses = ['bars', 'nav_links', 'logos', 'page', 'nav_links_ul'],
-    viewPortWidth = query('.gradient_container')?.clientWidth
+    bars = document.querySelector('.bars'),
+    nav = document.querySelector('.nav_links')
 
   if (
-    (showNavClasses.some(showNavClass =>
-      // @ts-ignore
-      target?.classList.contains(showNavClass)
-    ) ||
-      // @ts-ignore
-      target?.id === 'bars_path') &&
-    viewPortWidth <= 900
+    // @ts-ignore
+    bars?.contains(target)
   )
-    showNav()
-  else hideNav()
+    return showNav()
+
+  // @ts-ignore
+  if (!nav?.contains(target) && nav.classList.contains('show')) hideNav()
 }
 
 setDynamicBackground(document)
