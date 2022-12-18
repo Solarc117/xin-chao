@@ -5,6 +5,7 @@ function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
       zoom: 14,
       center: xinChaoCoordinates,
+      mapId: 'a473e8d8171c75ba',
     }),
     // @ts-ignore
     marker = new google.maps.Marker({

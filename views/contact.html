@@ -7,11 +7,12 @@
     <link rel="stylesheet" type="text/css" href="../public/global.css" />
     <link rel="stylesheet" type="text/css" href="../public/contact.css" />
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script type="module" src="./contact.js"></script>
     <script
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD2MiJkZRJUnDPz826z-aGMlIkUOYDQClc&callback=initMap&v=weekly"
-      async
+      defer
     ></script>
-    <script type="module" src="./contact.js"></script>
+    <script defer src="./global.js"></script>
     <title>Xin Chao Contact</title>
   </head>
 
@@ -87,8 +88,8 @@
       </ul>
     </nav>
 
-    <main class="home_main">
-      <h1>Contact</h1>
+    <main class="main">
+      <h2 class="contact_title">Contact</h2>
       <section class="email_wrapper">
         <p>Email:&nbsp;</p>
         <a class="email" href="mailto:xinchaocoffee2021@gmail.com"

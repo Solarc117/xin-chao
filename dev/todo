@@ -38,9 +38,7 @@
 ✅ add views folder, for all js & html besides index (or, if it works, put index in too)
 
 ✅ fix brief gray background bug (when first transitioning between background images)
-
 ✅ re-adjust menu button to middle
-
 ✅ add store background to contact page
 ✅ add navbar horizontally in media query
   ✅ set display: flex row for nav_links ul
@@ -57,15 +55,22 @@
 ✅ make facebook & instagram logos tab-able
   ✅ add an onfocus logger to li.contact, to see if tabbing activates that pseudo-class
   ✅ add an onfocus logger to determine which element should have the :focus pseudo-class (ended up using :focus-within)
-
 ✅ show media_links on mobile
 ✅ add same nav to contact page
-
 ✅ fix media links & contact link unclickable/tabable bug
-  
 ✅ prevent nav hide when clicking nav
-
 ✅ fix media link not working in mobile bug
+
+✅ create a global script
+✅ add nav events to global script
+✅ test if defining a variable in the global script, which is run BEFORE the local script, establishes that variable for use in the local script
+✅ run global script in contact.html
+✅ edit main grid-area
+✅ add margin on both sides of contact main
+✅ add user select & change color to white in contact main
+✅ fade everything in contact when showing nav (including maps & main)
+  ✅ increase z-index? add a class
+✅ fix contact map bug (initMap is not a function error, only happens SOMETIMES)
 
 - add about page
 

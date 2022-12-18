@@ -3,7 +3,8 @@ body {
   background-image: url('./images/coffee.jpg');
   background-size: cover;
   background-position: center;
-  background-repeat: no-repeat;}
+  background-repeat: no-repeat;
+}
 
 .menu {
   padding: 3px 21px;
@@ -16,8 +17,8 @@ body {
 
 /***Desktop***/
 @media only screen and (min-width: 900px) {
-  .menu:hover, .menu:focus {
+  .menu:hover,
+  .menu:focus {
     margin-bottom: 10px;
   }
 }
-
