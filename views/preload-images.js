@@ -20,11 +20,21 @@ function preloadImages(imageSources) {
     image.src = imageSource
   }
 }
+// @ts-ignore
+const IMAGE_PATH = document.querySelector('.preload-images')?.dataset.imagePath
 
-// Path relative to the html file loading the images; NOT the js file.
-preloadImages([
-  './public/images/coffee.jpg',
-  './public/images/hot-chocolate.jpg',
-  './public/images/spring-rolls.jpg',
-  './public/images/store.jpg',
-])
+// Paths relative to the html file loading the images.
+preloadImages(
+  [
+    'coffee.jpg',
+    'coffee2.jpg',
+    'coffee3.jpg',
+    'condensed-milk-coffee.jpg',
+    'croissant.jpg',
+    'hot-chocolate.jpg',
+    'lemonade.jpg',
+    'lemonade2.jpg',
+    'spring-rolls.jpg',
+    'store.jpg',
+  ].map(fileName => `${IMAGE_PATH}/${fileName}`)
+)

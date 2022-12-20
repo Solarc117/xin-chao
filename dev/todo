@@ -72,7 +72,13 @@
   ✅ increase z-index? add a class
 ✅ fix contact map bug (initMap is not a function error, only happens SOMETIMES)
 
-- add about page
+✅ add about page
+
+✅ add favicon
+  ✅ add a web manifest
+  favicon svg dimensions: width="35" height="35" viewBox="150, 0, 150, 350"
+
+✅ add store background to about
 
 - prevent animation(s) on initial page load (only run on user inputs) 
 
