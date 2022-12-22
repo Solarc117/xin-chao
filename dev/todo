@@ -1,0 +1,90 @@
+✅ click the phone #, auto call 
+✅ click the email, pop up the gmail window 
+✅ add contact page
+✅ add google maps snippet to contact page (note: created an API KEY using my personal account, need to transition to Xin Chao's business account prior to deploying)
+✅ edit css design to be mobile-first (NOT desktop-first)
+
+✅ expand navbar for screen widths gte 900px (do not repeat html)
+  ✅ add the menu svg after the title, in the header tag
+  ✅ make menu svg display: none (or width: 0) for screen sizes wider than 900px
+  ✅ move nav outside header (so html layout would then be body -> header, nav, main <- body) (need to be able to "push" the nav tag off the screen in mobile devices, using the header tag)
+  ✅ size svg appropriately
+  ✅ use flex in the svg parent div to center .bars, and push it right 
+  ✅ add a cursor: pointer property to .bars
+  ✅ add a gray background to the nav
+  ✅ push navbar off-screen (right) when screen < 900px wide
+  ✅ add 'show' class to nav_links when .bars clicked  
+  ✅ remove 'show' class from nav_links when anything OTHER than nav_links is tapped/clicked
+  ✅ add an animation to push nav_links left if the class 'show' is present
+  ✅ add an animation to push nav_links right if the class 'show' is missing
+  ✅ fix mobile nav animation delay bug
+
+✅ change nav_links background to transparent black w/white color
+
+✅ cover background on mobile, & contain on desktop
+
+✅ add dark gradient animation when showing/hiding navbar
+  ✅ create css keyframes 
+  ✅ add a linear-gradient to both header & main, of width 200% (half the gradient, the dark part, starts off-screen), from left-to right, dark-to-light
+  ✅ animate gradient navbar is shown & hidden
+  ✅ remove dark class when clicking anything that is not .nav_links or .bars
+
+✅ fix nav_links hiding when clicking/tapping nav bug
+  ✅ check that the user is not tapping/clicking bars OR nav_links before hideNav()
+
+✅ change gradient animation to hsla animation
+  ✅ change css
+
+✅ add views folder, for all js & html besides index (or, if it works, put index in too)
+
+✅ fix brief gray background bug (when first transitioning between background images)
+✅ re-adjust menu button to middle
+✅ add store background to contact page
+✅ add navbar horizontally in media query
+  ✅ set display: flex row for nav_links ul
+  ✅ draw the current grid layout
+  ✅ draw the grid layout in desktop
+  ✅ change in css
+  ✅ edit gradient container to encompass the entire page, and increase navbar z-index on mobile
+  ✅ set nav_section to display: none on desktop
+  ✅ justify title end;
+  ✅ set navbar to justify end
+  ✅ set main to span 2 horizontally
+✅ fix indexOf property undefined bug (in preload-images script)
+✅ remove nav click animation on desktop
+✅ make facebook & instagram logos tab-able
+  ✅ add an onfocus logger to li.contact, to see if tabbing activates that pseudo-class
+  ✅ add an onfocus logger to determine which element should have the :focus pseudo-class (ended up using :focus-within)
+✅ show media_links on mobile
+✅ add same nav to contact page
+✅ fix media links & contact link unclickable/tabable bug
+✅ prevent nav hide when clicking nav
+✅ fix media link not working in mobile bug
+
+✅ create a global script
+✅ add nav events to global script
+✅ test if defining a variable in the global script, which is run BEFORE the local script, establishes that variable for use in the local script
+✅ run global script in contact.html
+✅ edit main grid-area
+✅ add margin on both sides of contact main
+✅ add user select & change color to white in contact main
+✅ fade everything in contact when showing nav (including maps & main)
+  ✅ increase z-index? add a class
+✅ fix contact map bug (initMap is not a function error, only happens SOMETIMES)
+
+✅ add about page
+
+✅ add favicon
+  ✅ add a web manifest
+  favicon svg dimensions: width="35" height="35" viewBox="150, 0, 150, 350"
+
+✅ add store background to about
+
+- prevent animation(s) on initial page load (only run on user inputs) 
+
+- fix nav_links tab-able in desktop bug
+
+- add menu items & photos
+
+
+

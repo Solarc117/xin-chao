@@ -1,0 +1,47 @@
+/* Page globals */
+body {
+  background: linear-gradient(to right, hsla(0, 0%, 0%, 0.6), hsla(38, 89%, 49%, 0.2)),url('./images/store.jpg');
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+/* Sections */
+
+.main {
+  margin-top: 30px;
+  display: block;
+  font-size: 22px;
+  padding: 0 50px;
+}
+
+/* Components */
+.main > section {
+  margin: 10px 0;
+  padding: 0.25cm;
+  font-size: 25px;
+  font-family: 'Univers Next', 'Times New Roman', Times, serif;
+}
+.main a {
+  color: hsl(200, 100%, 50%);
+  text-decoration: underline;
+}
+.email_wrapper,
+.phone_number_wrapper,
+.addres_wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.map {
+  margin: 50px 0;
+  height: 400px;
+  width: 100%;
+  border-radius: 10px;
+}
+
+/* Desktop */
+@media only screen and (min-width: 900px) {
+  .main {
+    padding: 0 100px;
+  }
+}
