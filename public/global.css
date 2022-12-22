@@ -7,6 +7,10 @@
   font-family: 'P22 Marcel Caps';
   src: url(../typography/marcel-caps.ttf);
 }
+@font-face {
+  font-family: 'Univers Next';
+  src: url(../typography/univers-next-pro-light.ttf);
+}
 
 /* Global styles */
 * {
@@ -29,7 +33,12 @@ body {
   grid-template-rows: 100px calc(100% - 100px);
   overflow-x: hidden;
 }
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   text-align: center;
   font-weight: 50;
 }
@@ -64,6 +73,15 @@ path {
   height: 100px;
   display: flex;
   user-select: none;
+}
+.header,
+.nav_links {
+  background: linear-gradient(
+    to bottom,
+    hsla(0, 0%, 0%, 0.8),
+    hsla(0, 0%, 0%, 0.7),
+    hsla(0, 0%, 0%, 0.2)
+  );
 }
 
 .header > * {
