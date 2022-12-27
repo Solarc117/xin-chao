@@ -47,5 +47,6 @@ preloadImages(
     'about-9.jpg',
     'about-10.jpg',
     'about-11.jpg',
+    'about-12.jpg',
   ].map(fileName => `${IMAGE_PATH}/${fileName}`)
 )

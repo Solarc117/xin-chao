@@ -4,6 +4,8 @@ const query = document.querySelector.bind(document),
 function showNav() {
   query('.nav_links')?.classList.add('show')
   query('.gradient_container')?.classList.add('over')
+  for (const node of Array.from(queryAll('.nav_links_a')))
+    node.removeAttribute('tabindex')
 
   for (const tag of [query('header'), query('main')])
     tag.classList.add('dark_gradient')
@@ -14,6 +16,8 @@ function showNav() {
 function hideNav() {
   query('.nav_links')?.classList.remove('show')
   query('.gradient_container')?.classList.remove('over')
+  for (const node of Array.from(queryAll('.nav_links_a')))
+    node.setAttribute('tabindex', -1)
 
   for (const tag of [query('header'), query('main')])
     tag.classList.remove('dark_gradient')
@@ -41,3 +45,4 @@ function toggleNav(event) {
 }
 
 document.body.addEventListener('pointerdown', toggleNav)
+  
