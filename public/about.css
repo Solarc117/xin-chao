@@ -1,26 +1,56 @@
 /* Page globals */
 body {
-  background: linear-gradient(
-      to right,
-      hsla(0, 0%, 0%, 0.6),
-      hsla(38, 89%, 49%, 0.2)
-    ),
-    url('./images/store.jpg');
+  background: 
+    url('./images/about-1.jpg');
   background-size: cover;
   background-attachment: fixed;
+  background-position: center;
+}
+.animation_gradient {
+  display: none;
+  /* display: block;
+  position: absolute;
+  width: 200vw;
+  height: 100vh;
+  animation: rotate 5s infinite; */
 }
 
 /* Sections */
 .main {
-  margin-top: 30px;
-  display: block;
   font-size: 22px;
   padding: 0 50px;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+/* Components */
+.intro_text {
+  border-radius: 50px;
+  background: hsla(0, 0%, 0%, 0.5);
+  padding: 30px;
+  width: 60%;
+  min-height: 50%;
 }
 
 /* Desktop */
 @media only screen and (min-width: 900px) {
   .main {
-    padding: 0 100px;
+    padding: 0 30px;
+  }
+
+  /* Components */
+  .intro_text {
+    width: 50%;
+  }
+}
+@keyframes rotate {
+  0% {
+    margin-right: 0;
+  }
+  50% {
+    margin-right: 100%;
+  }
+  100% {
+    margin-right: 0;
   }
 }
