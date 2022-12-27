@@ -80,11 +80,12 @@
 
 ✅ add store background to about
 
+- add menu  
+
 - prevent animation(s) on initial page load (only run on user inputs) 
 
 - fix nav_links tab-able in desktop bug
 
-- add menu items & photos
 
 
 

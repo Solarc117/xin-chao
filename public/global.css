@@ -68,22 +68,18 @@ path {
 
 /* Sections */
 .header {
-  z-index: 1;
-  width: 100%;
-  height: 100px;
-  display: flex;
-  user-select: none;
-}
-.header,
-.nav_links {
   background: linear-gradient(
     to bottom,
     hsla(0, 0%, 0%, 0.8),
     hsla(0, 0%, 0%, 0.7),
     hsla(0, 0%, 0%, 0.2)
   );
+  z-index: 1;
+  width: 100%;
+  height: 100px;
+  display: flex;
+  user-select: none;
 }
-
 .header > * {
   height: 100%;
   flex: 1;
@@ -120,6 +116,7 @@ path {
   font-size: 50px;
 }
 .title_coffee {
+  margin-top: 12px;
   font-size: 20px;
   font-weight: lighter;
 }
@@ -137,6 +134,12 @@ path {
 }
 
 .nav_links {
+  background: linear-gradient(
+    to bottom,
+    hsla(0, 0%, 0%, 0.8),
+    hsla(0, 0%, 0%, 0.7),
+    hsla(0, 0%, 0%, 0.2)
+  );
   z-index: 3;
   grid-area: 1 / 2 / span 2 / span 1;
   height: 100%;
@@ -202,10 +205,15 @@ path {
   }
 
   .nav_links {
+    background: linear-gradient(
+      to bottom,
+      hsla(0, 0%, 0%, 0.8),
+      hsla(0, 0%, 0%, 0.7),
+      hsla(0, 0%, 0%, 0.2)
+    );
     grid-area: 1 / 2;
     height: 100px;
     width: 100%;
-    background: hsla(0, 0%, 0%, 0);
   }
 
   .nav_links_ul {
