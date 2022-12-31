@@ -1,6 +1,11 @@
 /* Page globals */
 body {
-  background: linear-gradient(to right, hsla(0, 0%, 0%, 0.6), hsla(38, 89%, 49%, 0.2)),url('./images/store.jpg');
+  background: linear-gradient(
+      to right,
+      hsla(0, 0%, 0%, 0.6),
+      hsla(38, 89%, 49%, 0.2)
+    ),
+    url('./images/store.jpg');
   background-size: cover;
   background-attachment: fixed;
 }

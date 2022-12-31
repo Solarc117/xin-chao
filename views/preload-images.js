@@ -4,22 +4,21 @@
  */
 function preloadImages(imageSources) {
   // @ts-ignore
-  if (!Array.isArray(this.images)) this.images = []
-  // @ts-ignore
+  if (!Array.isArray(preloadImages.images)) preloadImages.images = []
 
   for (const imageSource of imageSources) {
     const image = new Image()
-    image.onload = () => {
-      // @ts-ignore
-      const index = this.images.indexOf(this)
+    image.onload = function () {
+      const index = preloadImages.images.indexOf(this)
+
       // Remove image from the array once it's loaded, for memory consumption reasons.
-      // @ts-ignore
-      if (index !== -1) this.images.splice(index, 1)
+      if (index !== -1) preloadImages.images.splice(index, 1)
     }
-    this.images.push(image)
     image.src = imageSource
+    preloadImages.images.push(image)
   }
 }
+
 // @ts-ignore
 const IMAGE_PATH = document.querySelector('.preload-images')?.dataset.imagePath
 

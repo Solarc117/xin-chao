@@ -22,6 +22,11 @@ html,
 body {
   width: 100%;
   min-height: 100vh;
+}
+body,
+.background_image {
+  background-size: cover;
+  background-position: center;
   background-attachment: fixed;
   background-repeat: no-repeat;
 }
@@ -30,7 +35,7 @@ body {
   font-family: sans-serif;
   display: grid;
   grid-template-columns: 100% 120px;
-  grid-template-rows: 100px calc(100% - 100px);
+  grid-template-rows: 100px calc(100vh - 100px);
   overflow-x: hidden;
 }
 h1,
@@ -65,6 +70,18 @@ path {
 .gradient_container.dark {
   animation: darken 0.5s forwards;
 }
+.background_image {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+.opaque {
+  animation: fade_in 0.3s forwards;
+}
+.background_image:not(.opaque) {
+  animation: fade_out 0.3s forwards;
+}
 
 /* Sections */
 .header {
@@ -78,6 +95,8 @@ path {
   width: 100%;
   height: 100px;
   display: flex;
+  -webkit-user-select: none;
+  -moz-user-select: none;
   user-select: none;
 }
 .header > * {
@@ -98,7 +117,7 @@ path {
 
 .main {
   z-index: 1;
-  height: 100%;
+  height: calc(100vh - 100px);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -111,6 +130,7 @@ path {
   height: 100%;
 }
 .title {
+  height: -moz-fit-content;
   height: fit-content;
   font-weight: 50;
   font-size: 50px;
@@ -146,6 +166,8 @@ path {
   width: 120px;
   background: hsla(0, 0%, 0%, 0.8);
   font-size: 20px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
   user-select: none;
 }
 .nav_links.show {
@@ -159,25 +181,20 @@ path {
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: space-evenly;
   align-items: center;
 }
 .nav_links_ul > li {
-  height: 75px;
-  margin: 50px 10px 0 10px;
+  margin: 0 10px;
   transition: 0.5s;
 }
 .nav_links li:has(svg) {
   height: 25px;
 }
 .logos {
-  height: fit-content !important;
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-.logos > p {
-  height: 25px;
 }
 .logo_list {
   width: 25px;
@@ -223,12 +240,18 @@ path {
     justify-content: flex-end;
   }
 
+  .nav_links_ul > li {
+    margin: 50px 10px;
+  }
+
   .nav_links_ul > li:hover,
   .nav_links_ul > li:focus-within {
-    margin-bottom: 10px;
+    margin-top: 45px;
   }
 
   .logo_list {
+    position: absolute;
+    top: 55%;
     opacity: 0;
   }
 
@@ -282,5 +305,21 @@ path {
   }
   to {
     background: hsla(0, 0%, 0%, 0.3);
+  }
+}
+@keyframes fade_in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes fade_out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
   }
 }

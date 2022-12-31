@@ -1,9 +1,12 @@
+<!DOCTYPE html>
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <link rel="icon" href="./public/images/dark-logo.png" />
+    <link rel="stylesheet" href="./public/normalize.css" />
     <link rel="stylesheet" href="./public/global.css" />
     <link rel="stylesheet" href="./public/home.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -18,13 +21,17 @@
       data-image-path="./public/images"
       src="./views/preload-images.js"
     ></script>
+    <script src="./views/dynamic-background.js"></script>
     <script defer src="./views/global.js"></script>
     <script defer src="./views/home.js"></script>
+
     <title>Xin Chao Coffee</title>
   </head>
 
-  <body>
+  <body style="background-image: url(./public/images/coffee.jpg);">
     <div class="gradient_container"></div>
+    <div class="background_image"></div>
+
     <header class="header">
       <div class="logo_section">
         <a class="logo_link" href="/">
@@ -60,10 +67,20 @@
     <nav class="nav_links">
       <ul class="nav_links_ul">
         <li class="page">
-          <a class="page_link nav_links_a" href="/views/about.html" tabindex="-1">About</a>
+          <a
+            class="page_link nav_links_a"
+            href="/views/about.html"
+            tabindex="-1"
+            >About</a
+          >
         </li>
         <li class="page">
-          <a class="page_link nav_links_a" href="/views/contact.html" tabindex="-1">Contact</a>
+          <a
+            class="page_link nav_links_a"
+            href="/views/contact.html"
+            tabindex="-1"
+            >Contact</a
+          >
         </li>
         <li class="logos">
           <p>Follow</p>
@@ -88,7 +105,10 @@
               </a>
             </li>
             <li class="instagram_logo">
-              <a class="media_link nav_links_a" href="https://www.instagram.com/xinchaoyyc/" tabindex="-1"
+              <a
+                class="media_link nav_links_a"
+                href="https://www.instagram.com/xinchaoyyc/"
+                tabindex="-1"
                 ><svg
                   class="media_svg"
                   xmlns="http://www.w3.org/2000/svg"
@@ -107,7 +127,9 @@
     </nav>
 
     <main class="main">
-      <a class="menu" href="./public/menu.pdf" rel="noreferrer" target="_blank">Menu</a>
+      <a class="menu" href="./public/menu.pdf" rel="noreferrer" target="_blank"
+        >Menu</a
+      >
     </main>
   </body>
 </html>
