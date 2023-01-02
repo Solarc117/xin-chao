@@ -44,5 +44,18 @@ function toggleNav(event) {
   if (!nav?.contains(target) && nav.classList.contains('show')) hideNav()
 }
 
+function storeHours() {
+  const circle = query('circle'),
+    text = query('.open_text')
+
+  setInterval(() => {
+    // Will adjust for local times later.
+    const minutes = `${new Date().getMinutes()}`, 
+      time = `${new Date().getHours()}:${minutes.length === 1 ? '0' + minutes : minutes}`
+      
+    
+  }, 30_000)
+}
+
 document.body.addEventListener('pointerdown', toggleNav)
   

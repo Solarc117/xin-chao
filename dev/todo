@@ -104,6 +104,8 @@ test & fix js browser compatibility:
     
   ❌ safari (see note above)
 
+- write html & css (no js yet)
+
 - make nav_links height 100% when in mobile
 
 
