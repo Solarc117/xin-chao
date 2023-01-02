@@ -1,13 +1,7 @@
 const images = [
-  'coffee.jpg',
-  'coffee2.jpg',
-  'coffee3.jpg',
-  'condensed-milk-coffee.jpg',
-  'croissant.jpg',
-  'hot-chocolate.jpg',
-  'lemonade.jpg',
-  'lemonade2.jpg',
-  'spring-rolls.jpg',
+  'home-1.png',
+  'home-2.png',
+  'home-3.png',
 ].map(fileName => `../public/images/${fileName}`)
 
 setDynamicBackground(document, images)

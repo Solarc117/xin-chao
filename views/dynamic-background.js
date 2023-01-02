@@ -18,7 +18,7 @@ function setDynamicBackground(document, imageURLs) {
           document
             .querySelector('.background_image')
             ?.classList.remove('opaque'),
-        1000
+        500
       )
     }
 
@@ -28,7 +28,7 @@ function setDynamicBackground(document, imageURLs) {
     setTimeout(
       () =>
         document.querySelector('.background_image')?.classList.add('opaque'),
-      1000
+      500
     )
-  }, 2000)
+  }, 1000)
 }
