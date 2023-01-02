@@ -14,6 +14,10 @@ body {
 }
 
 /* Components */
+.brand-name {
+  font-family: 'Times New Roman', Times, serif;
+  font-size: larger;
+}
 .intro_text {
   border-radius: 50px;
   font-family: sans-serif;
@@ -23,6 +27,7 @@ body {
   height: 50%;
   overflow-y: scroll;
   scrollbar-width: 10px;
+  text-align: justify;
 }
 .intro_text::-webkit-scrollbar {
   display: initial;
