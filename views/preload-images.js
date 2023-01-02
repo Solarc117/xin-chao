@@ -25,15 +25,9 @@ const IMAGE_PATH = document.querySelector('.preload-images')?.dataset.imagePath
 // Paths are relative to the html file loading the images.
 preloadImages(
   [
-    'coffee.jpg',
-    'coffee2.jpg',
-    'coffee3.jpg',
-    'condensed-milk-coffee.jpg',
-    'croissant.jpg',
-    'hot-chocolate.jpg',
-    'lemonade.jpg',
-    'lemonade2.jpg',
-    'spring-rolls.jpg',
+    'home-1.png',
+    'home-2.png',
+    'home-3.png',
     'store.jpg',
     'about-1.jpg',
     'about-2.jpg',
@@ -43,9 +37,7 @@ preloadImages(
     'about-6.jpg',
     'about-7.jpg',
     'about-8.jpg',
-    'about-9.jpg',
-    'about-10.jpg',
-    'about-11.jpg',
-    'about-12.jpg',
+    'dark-logo.png',
+    'light-logo.png',
   ].map(fileName => `${IMAGE_PATH}/${fileName}`)
 )
