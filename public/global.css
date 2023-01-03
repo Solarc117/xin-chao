@@ -95,11 +95,8 @@ path {
   width: 100%;
   height: 100px;
   display: flex;
-<<<<<<< Updated upstream
   -webkit-user-select: none;
   -moz-user-select: none;
-=======
->>>>>>> Stashed changes
   user-select: none;
 }
 .header > * {
@@ -322,7 +319,6 @@ path {
   to {
     background: hsla(0, 0%, 0%, 0.3);
   }
-<<<<<<< Updated upstream
 }
 @keyframes fade_in {
   from {
@@ -340,6 +336,3 @@ path {
     opacity: 0;
   }
 }
-=======
-}
->>>>>>> Stashed changes
