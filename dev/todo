@@ -108,7 +108,7 @@ test & fix js browser compatibility:
 
 - horizontal XIN CHAO in mobile, smaller font size  ✅
 
-- reduce logo size in mobile (same as menu bars) ✅
+- reduce logo size in mobile (same as menu bars) 
 
 - make nav_links height 100% when in mobile
 

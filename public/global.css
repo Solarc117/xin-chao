@@ -228,10 +228,15 @@ path {
 
 /***Phone***/
 
-@media only screen and (min-width: 320px) {
-  .title_section {
-    font-size: 25px;
+@media only screen and (max-width: 460px) {
+  .title {
+    font-size: 30px;
+    margin-top: 15px;
     font-display: flex;
+  }
+  .title_coffee {
+    margin-top: 5px;
+    font-size: 11px
   }
   .store_hours {
     position: sticky;
