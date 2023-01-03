@@ -213,14 +213,42 @@ path {
   bottom: 5px;
   left: 5px;
   z-index: 5;
-  padding: 10px;
-  width: 100px;
+  padding: 15px;
+  width: 240px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   background: hsla(0, 0%, 0%, 0.6);
   border-radius: 10px;
+}
+.open-text {
+  font-display: flex;
+}
+
+/***Phone***/
+
+@media only screen and (min-width: 320px) {
+  .title_section {
+    font-size: 25px;
+    font-display: flex;
+  }
+  .store_hours {
+    position: sticky;
+    font-size: 25px;
+    bottom: 5px;
+    left: 5px;
+    z-index: 5;
+    padding: 15px;
+    height: 60px;
+    width: 330px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background: hsla(0, 0%, 0%, 0.6);
+    border-radius: 10px;
+  }
 }
 
 /***Desktop***/
