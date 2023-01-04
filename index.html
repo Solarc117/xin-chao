@@ -17,6 +17,10 @@
     />
 
     <script
+      async
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCRO1-bK04F4KQPCbJ7h1tnS7FpRpkJCNY&libraries=places"
+    ></script>
+    <script
       class="preload-images"
       data-image-path="./public/images"
       src="./views/preload-images.js"
@@ -28,7 +32,7 @@
     <title>Xin Chao Coffee</title>
   </head>
 
-  <body style="background-image: url(./public/images/coffee.jpg)">
+  <body style="background-image: url(./public/images/home-1.png)">
     <div class="gradient_container"></div>
     <div class="background_image"></div>
 
@@ -132,11 +136,11 @@
       >
     </main>
 
-    <div class="store_hours">
-      <svg width="20" height="20">
-        <circle class="open_circle" cx="10" cy="10" r="10" fill="red"></circle>
+    <div class="store_hours" title="Store hours">
+      <svg class="store_hours_svg">
+        <circle class="open_circle"></circle>
       </svg>
-      <p class="open_text">Closed</p>
+      <p class="open_text">Contact</p>
     </div>
   </body>
 </html>

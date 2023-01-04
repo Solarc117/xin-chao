@@ -26,7 +26,7 @@ const IMAGE_PATH = document.querySelector('.preload-images')?.dataset.imagePath
 preloadImages(
   [
     'home-1.png',
-    'home-2.png',
+    'home-2.jpg',
     'home-3.png',
     'store.jpg',
     'about-1.jpg',

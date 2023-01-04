@@ -208,18 +208,35 @@ path {
   height: 25px;
 }
 .store_hours {
+  cursor: pointer;
   position: sticky;
-  bottom: 5px;
-  left: 5px;
+  bottom: 10px;
+  left: 10px;
   z-index: 5;
   padding: 10px;
-  width: 100px;
+  width: 110px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   background: hsla(0, 0%, 0%, 0.6);
   border-radius: 10px;
+}
+.store_hours_svg {
+  width: 24px;
+  height: 24px;
+}
+.open_circle {
+  cx: 12;
+  cy: 12;
+  fill: white;
+  animation: pulse 4s ease-in-out infinite;
+}
+.open_circle.open {
+  fill: springgreen;
+}
+.open_circle.closed {
+  fill: crimson;
 }
 
 /***Desktop***/
@@ -333,5 +350,16 @@ path {
   }
   to {
     opacity: 0;
+  }
+}
+@keyframes pulse {
+  0% {
+    r: 10;
+  }
+  50% {
+    r: 12;
+  }
+  100% {
+    r: 10;
   }
 }
