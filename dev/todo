@@ -132,12 +132,14 @@ write code to render/mutate circle color & text depending on the time:
 
 - fix about page scrollable bug
 
-- horizontal XIN CHAO in mobile, smaller font size
+✅ horizontal XIN CHAO in mobile, smaller font size
 
-- fix background zoomout when showing nav bug in mobile
-
-- reduce logo size in mobile (same as menu bars)
+- reduce logo size in mobile (same as menu bars) 
 
 - make nav_links height 100% when in mobile
+
+- Hey Carlos, I think we should need a footer for the page
+
+- zoom out the photos for main/home page
 
 

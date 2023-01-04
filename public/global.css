@@ -140,6 +140,7 @@ path {
   font-size: 20px;
   font-weight: lighter;
 }
+
 .nav_section {
   display: flex;
   flex-direction: row;
@@ -213,8 +214,8 @@ path {
   bottom: 10px;
   left: 10px;
   z-index: 5;
-  padding: 10px;
-  width: 110px;
+  padding: 15px;
+  width: 240px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -222,28 +223,45 @@ path {
   background: hsla(0, 0%, 0%, 0.6);
   border-radius: 10px;
 }
-.store_hours_svg {
-  width: 24px;
-  height: 24px;
+.open-text {
+  font-display: flex;
 }
-.open_circle {
-  cx: 12;
-  cy: 12;
-  fill: white;
-  animation: pulse 4s ease-in-out infinite;
-}
-.open_circle.open {
-  fill: springgreen;
-}
-.open_circle.closed {
-  fill: crimson;
+
+/***Phone***/
+
+@media only screen and (max-width: 460px) {
+  .title {
+    font-size: 30px;
+    margin-top: 15px;
+    font-display: flex;
+  }
+  .title_coffee {
+    margin-top: 5px;
+    font-size: 11px
+  }
+  .store_hours {
+    position: sticky;
+    font-size: 25px;
+    bottom: 5px;
+    left: 5px;
+    z-index: 5;
+    padding: 15px;
+    height: 60px;
+    width: 330px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background: hsla(0, 0%, 0%, 0.6);
+    border-radius: 10px;
+  }
 }
 
 /***Desktop***/
 @media only screen and (min-width: 900px) {
   body {
     grid-template-rows: 100px calc(100% - 100px);
-    grid-template-columns: 2fr 1fr;
+    grid-template-columns: 2fr 1fr; 
   }
 
   .nav_section {
