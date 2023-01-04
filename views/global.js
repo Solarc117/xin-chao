@@ -74,6 +74,7 @@ function setupStoreHoursIndicatorInterval() {
         26: 'Boxing Day',
       },
     },
+
     mapQuery = query('.map')
   let map
   if (mapQuery instanceof Element) map = mapQuery

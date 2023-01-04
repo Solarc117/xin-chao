@@ -25,9 +25,9 @@ const IMAGE_PATH = document.querySelector('.preload-images')?.dataset.imagePath
 // Paths are relative to the html file loading the images.
 preloadImages(
   [
-    'home-1.png',
-    'home-2.jpg',
-    'home-3.png',
+    'Home-1.jpg',
+    'Home-2.jpg',
+    'Home-3.jpg',
     'store.jpg',
     'about-1.jpg',
     'about-2.jpg',

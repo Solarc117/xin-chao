@@ -6,7 +6,7 @@ function setDynamicBackground(document, imageURLs) {
   let imageIndex = 0,
     showBody = true
 
-  setInterval(() => {
+  const backgroundInterval = setInterval(() => {
     imageIndex++
     if (imageIndex > imageURLs.length - 1) imageIndex = 0
     showBody = !showBody
@@ -28,7 +28,7 @@ function setDynamicBackground(document, imageURLs) {
     setTimeout(
       () =>
         document.querySelector('.background_image')?.classList.add('opaque'),
-      100
+      1000
     )
   }, 2000)
 }
