@@ -3,7 +3,6 @@
 ✅ add contact page
 ✅ add google maps snippet to contact page (note: created an API KEY using my personal account, need to transition to Xin Chao's business account prior to deploying)
 ✅ edit css design to be mobile-first (NOT desktop-first)
-
 ✅ expand navbar for screen widths gte 900px (do not repeat html)
   ✅ add the menu svg after the title, in the header tag
   ✅ make menu svg display: none (or width: 0) for screen sizes wider than 900px
@@ -18,25 +17,18 @@
   ✅ add an animation to push nav_links left if the class 'show' is present
   ✅ add an animation to push nav_links right if the class 'show' is missing
   ✅ fix mobile nav animation delay bug
-
 ✅ change nav_links background to transparent black w/white color
-
 ✅ cover background on mobile, & contain on desktop
-
 ✅ add dark gradient animation when showing/hiding navbar
   ✅ create css keyframes 
   ✅ add a linear-gradient to both header & main, of width 200% (half the gradient, the dark part, starts off-screen), from left-to right, dark-to-light
   ✅ animate gradient navbar is shown & hidden
   ✅ remove dark class when clicking anything that is not .nav_links or .bars
-
 ✅ fix nav_links hiding when clicking/tapping nav bug
   ✅ check that the user is not tapping/clicking bars OR nav_links before hideNav()
-
 ✅ change gradient animation to hsla animation
   ✅ change css
-
 ✅ add views folder, for all js & html besides index (or, if it works, put index in too)
-
 ✅ fix brief gray background bug (when first transitioning between background images)
 ✅ re-adjust menu button to middle
 ✅ add store background to contact page
@@ -60,7 +52,6 @@
 ✅ fix media links & contact link unclickable/tabable bug
 ✅ prevent nav hide when clicking nav
 ✅ fix media link not working in mobile bug
-
 ✅ create a global script
 ✅ add nav events to global script
 ✅ test if defining a variable in the global script, which is run BEFORE the local script, establishes that variable for use in the local script
@@ -78,7 +69,6 @@
 ✅ add store background to about
 ✅ add menu  
 ✅ fix nav_links tab-able in desktop bug
-
 ✅ add normalize to html files
 test & fix css browser compatibility:
   ✅ edge
@@ -101,15 +91,11 @@ test & fix js browser compatibility:
         ✅ if count is odd, set div's background to next image, & set timeout of 50ms to add class opaque to div
         ✅ write fade_in & fade_out keyframes (opacity 0 to 1 & 1 to 0, respectively)
         - link .background_image.opaque to fade_in, & .background_image to fade_in in global.css
-    
   ❌ safari (see note above)
-
 ✅ write html & css for store hours snippet (no js yet):
   ✅ write circle pulsing animation:
   ✅ fill the circle ambiguously by default
-
 NOTE: I could use setTimeout to schedule the store hours cache clearer at 00:00 MDT (07:00 UTC).
-
 write code to render/mutate circle color & text depending on the time:
   in global.js, see if an iframe with the google embed api can be created w/o displaying it to the user - purely for the sake of api calls; check for successful api calls in:
     ✅ home page 
@@ -148,20 +134,22 @@ write code to render/mutate circle color & text depending on the time:
 ✅ set snippet width to auto, or fix gap another way
 ✅ expand store hours div smoothly to show store hours on click/tap
 ✅ horizontal XIN CHAO in mobile, smaller font size
-
-- make snippet smaller, & appy larger styles only after ~400-450px
-
-- check whether localStorage is really necessary, or if just the global placeDetailsResult variable is enough; avoid unnecessary data storage
+✅ Hey Carlos, I think we should need a footer for the page
+✅ fix desktop media query
 
 - fix mobile home scrollable (when it shouldn't be) bug
 
 - fix about page scrollable bug
 
+- make snippet smaller, & appy larger styles only after ~400-450px
+
+- check whether localStorage is really necessary, or if just the global placeDetailsResult variable is enough; avoid unnecessary data storage
+
 - reduce logo size in mobile (same as menu bars) 
 
 - make nav_links height 100% when in mobile
 
-- Hey Carlos, I think we should need a footer for the page
+- try to set menu background to white, & text transparent
 
 - zoom out the photos for main/home page
 
