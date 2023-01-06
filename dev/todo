@@ -112,27 +112,50 @@ NOTE: I could use setTimeout to schedule the store hours cache clearer at 00:00 
 
 write code to render/mutate circle color & text depending on the time:
   in global.js, see if an iframe with the google embed api can be created w/o displaying it to the user - purely for the sake of api calls; check for successful api calls in:
-    - home page
-    - about page
-    - contact page
-  - in the daily cache cleaner, check if it is a Sunday, OR if there are no store hours in localStorage's storeHours key.
-  - if either condition above is true, set the localStorage storeHours property to the response of a new API call.
-  if the current day (date & month) falls under a (possible) holiday, return (leave default values):
-    - do I use getDay, or getUTCDay?
-  - if the current UTC time falls under open hours, add an "open" class to store_hours_circle & change open_text's textContent to "Open"
-  - otherwise, add a "closed" class to store_hours_circle & change open_text's textContent to "Closed" 
+    ✅ home page 
+    ✅ about page
+    ✅ contact page 
+  ✅ in the daily cache cleaner, check if it is an MDT Sunday and at least 24hrs have passed since the last local fetch, OR if there are no store hours in the local storeHours key.
+    I am aware that the user could delete their local data, thus forcing another api call. Won't fix right now, but will keep in mind.
+  ✅ if either condition above is true, set the localStorage storeHours property to the response of a new API call.
+  verify/debug functionality so far:
+    ✅ log condition that causes api to fetch   
+    ✅ find a way to use the built-in isOpen function, or write one
+  ✅ check if isOpen works under localStorage or a global variable
+  write html & css for .hours_snippet:
+    ✅ revert grid template back to what it was & use position: absolute on .store_hours
+    ✅ change the last column's width to be 250px
+    ✅ align nav links to the left of the last grid column
+    ✅ set store_hours to occupy the entire last column
+    ✅ verify correct placement when displaying/hiding nav
+    ✅ add animation to show/hide store_hours
+    ✅ verify correct placement of store_hours & nav:
+  ✅ set the default fill of the store_circle to white, & set the default text content to recommending the customer call the store or check google for up-to-date hours
+  ✅ set store_hours tabindex to -1 when it does NOT have the class "show" 
+  ✅ use the placeDetailsResult.opening_hours.isOpen method to pass a boolean to updateStoreHours, & the store hours array if api fetch successful
+  - if open: 
+    ✅ add an "open" class to snippet_circle
+    ✅ remove no_display class from svg
+    ✅ create the following tag:
+      <p>Open -&nbsp;
+        <a class="open_text link">Business Hours</a>
+      </p>
+    ✅ change open_text's innerHTML to the created p tag
+      Add tbody w/store hours to .store_hours.
+  ✅ if closed, add a "closed" class to snippet_circle & change open_text's textContent to "Closed" 
+  ✅ if neither, add 'no_display' class to #snippet_svg, & append default values to snippet & store_hours (or use no_display)
+✅ verify that store hours are fetched IF lastFetchDate was a week ago, or longer
+✅ set snippet width to auto, or fix gap another way
+✅ expand store hours div smoothly to show store hours on click/tap
+✅ horizontal XIN CHAO in mobile, smaller font size
 
-- add an interface for the owner to be able to edit store hours without coding skills - or fetch from google?
+- make snippet smaller, & appy larger styles only after ~400-450px
+
+- check whether localStorage is really necessary, or if just the global placeDetailsResult variable is enough; avoid unnecessary data storage
 
 - fix mobile home scrollable (when it shouldn't be) bug
 
-- add hover animation & title to store_hours div
-
-- expand store hours div smoothly to show store hours on click/tap
-
 - fix about page scrollable bug
-
-✅ horizontal XIN CHAO in mobile, smaller font size
 
 - reduce logo size in mobile (same as menu bars) 
 

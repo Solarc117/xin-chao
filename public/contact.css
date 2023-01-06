@@ -26,10 +26,6 @@ body {
   font-size: 25px;
   font-family: 'Univers Next', 'Times New Roman', Times, serif;
 }
-.main a {
-  color: hsl(200, 100%, 50%);
-  text-decoration: underline;
-}
 .email_wrapper,
 .phone_number_wrapper,
 .addres_wrapper {

@@ -1,5 +1,5 @@
-const map = query('.map'),
-    service = new google.maps.places.PlacesService(map)
+// const map = query('.map'),
+    // service = new google.maps.places.PlacesService(map)
 
   //   service.getDetails(
   //   {

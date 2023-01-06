@@ -17,6 +17,7 @@
     />
 
     <script
+      id="placesApiScript"
       async
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCRO1-bK04F4KQPCbJ7h1tnS7FpRpkJCNY&libraries=places"
     ></script>
@@ -71,18 +72,12 @@
     <nav class="nav_links">
       <ul class="nav_links_ul">
         <li class="page">
-          <a
-            class="page_link nav_links_a"
-            href="/views/about.html"
-            tabindex="-1"
+          <a class="page_link nav_a" href="/views/about.html" tabindex="-1"
             >About</a
           >
         </li>
         <li class="page">
-          <a
-            class="page_link nav_links_a"
-            href="/views/contact.html"
-            tabindex="-1"
+          <a class="page_link nav_a" href="/views/contact.html" tabindex="-1"
             >Contact</a
           >
         </li>
@@ -92,7 +87,7 @@
             <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
             <li class="facebook_logo">
               <a
-                class="media_link nav_links_a"
+                class="media_link nav_a"
                 href="https://www.facebook.com/profile.php?id=100087433302511&mibextid=LQQJ4d"
                 tabindex="-1"
               >
@@ -110,7 +105,7 @@
             </li>
             <li class="instagram_logo">
               <a
-                class="media_link nav_links_a"
+                class="media_link nav_a"
                 href="https://www.instagram.com/xinchaoyyc/"
                 tabindex="-1"
                 ><svg
@@ -136,11 +131,27 @@
       >
     </main>
 
-    <div class="store_hours" title="Store hours">
-      <svg class="store_hours_svg">
-        <circle class="open_circle"></circle>
+    <section id="store_hours" class="store_hours">
+      <p id="hours_text">
+        For up to date hours, please search our
+        <a
+          id="google_hours_link"
+          class="link"
+          href="https://www.google.com/search?q=xin+chao+coffee+calgary+hours"
+          target="_blank"
+          rel="noreferrer"
+          tabindex="-1"
+          >Google hours</a
+        >, or call the store.
+      </p>
+    </section>
+    <div id="snippet" class="hours_snippet" title="Store hours">
+      <svg id="snippet_svg" class="snippet_svg no_display">
+        <circle id="snippet_circle" class="snippet_circle"></circle>
       </svg>
-      <p class="open_text">Closed - Business Hours</p>
+      <p id="snippet_text">
+        <a class="open_text link">Business Hours</a>
+      </p>
     </div>
   </body>
 </html>

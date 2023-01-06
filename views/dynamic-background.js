@@ -6,7 +6,7 @@ function setDynamicBackground(document, imageURLs) {
   let imageIndex = 0,
     showBody = true
 
-  const backgroundInterval = setInterval(() => {
+  setInterval(() => {
     imageIndex++
     if (imageIndex > imageURLs.length - 1) imageIndex = 0
     showBody = !showBody

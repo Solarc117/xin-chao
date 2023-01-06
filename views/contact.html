@@ -10,6 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../public/contact.css" />
 
     <script
+      id="placesApiScript"
       async
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCRO1-bK04F4KQPCbJ7h1tnS7FpRpkJCNY&libraries=places"
     ></script>
@@ -65,18 +66,12 @@
     <nav class="nav_links">
       <ul class="nav_links_ul">
         <li class="page">
-          <a
-            class="page_link nav_links_a"
-            href="/views/about.html"
-            tabindex="-1"
+          <a class="page_link nav_a" href="/views/about.html" tabindex="-1"
             >About</a
           >
         </li>
         <li class="page">
-          <a
-            class="page_link nav_links_a"
-            href="/views/contact.html"
-            tabindex="-1"
+          <a class="page_link nav_a" href="/views/contact.html" tabindex="-1"
             >Contact</a
           >
         </li>
@@ -86,7 +81,7 @@
             <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
             <li class="facebook_logo">
               <a
-                class="media_link nav_links_a"
+                class="media_link nav_a"
                 href="https://www.facebook.com/profile.php?id=100087433302511&mibextid=LQQJ4d"
                 tabindex="-1"
               >
@@ -104,7 +99,7 @@
             </li>
             <li class="instagram_logo">
               <a
-                class="media_link nav_links_a"
+                class="media_link nav_a"
                 href="https://www.instagram.com/xinchaoyyc/"
                 tabindex="-1"
                 ><svg
@@ -127,13 +122,15 @@
     <main class="main">
       <section class="email_wrapper">
         <p>Email:&nbsp;</p>
-        <a class="email" href="mailto:xinchaocoffee2021@gmail.com"
+        <a class="email link" href="mailto:xinchaocoffee2021@gmail.com"
           >xinchaocoffee2021@gmail.com</a
         >
       </section>
       <section class="phone_number_wrapper">
         <p>Phone:&nbsp;</p>
-        <a class="phone_number" href="tel:403-590-9999">+1 (403) 590-9999</a>
+        <a class="phone_number link" href="tel:403-590-9999"
+          >+1 (403) 590-9999</a
+        >
       </section>
       <section class="address_wrapper">
         <p>Find us at: 2255 32 St NE Unit 3110, Calgary, AB T1Y 6E8</p>
@@ -149,9 +146,9 @@
       </section>
     </main>
 
-    <div class="store_hours">
-      <svg class="store_hours_svg">
-        <circle class="open_circle"></circle>
+    <div class="hours_snippet">
+      <svg class="snippet_svg">
+        <circle class="snippet_circle"></circle>
       </svg>
       <p class="open_text">Closed - Business Hours</p>
     </div>
