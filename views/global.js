@@ -1,15 +1,22 @@
-// ;<svg class='snippet_svg'>
-//   <circle class='snippet_circle'></circle>
-// </svg>
 const query = document.querySelector.bind(document),
   queryAll = document.querySelectorAll.bind(document),
   navLinks = query('.nav_links'),
   storeHours = query('.store_hours'),
   gradientContainer = query('.gradient_container'),
   storeHoursKey = 'storeHours',
-  snippetDefaultChild = query('#snippet_text').cloneNode(true),
-  hoursDefaultHTML = query('#hours_text').cloneNode(true)
-let storeHoursInterval, placeDetailsResult
+  hoursDefaultHTML = `<p id="hours_text">
+        For up to date hours, please search our
+        <a
+          id="google_hours_link"
+          class="link"
+          href="https://www.google.com/search?q=xin+chao+coffee+calgary+hours"
+          target="_blank"
+          rel="noreferrer"
+          tabindex="-1"
+          >Google hours</a
+        >, or call the store.
+      </p>`
+let storeHoursInterval
 
 // Nav animation functions.
 function showNav() {
@@ -106,6 +113,56 @@ function weekHasPassed(date1, date2 = new Date()) {
 
   return Math.abs(date2.getTime() - date1.getTime()) >= msInAWeek
 }
+/**
+ * @description Utilizes the store hours array fetched from Google to check if the current MDT date falls under open hours.
+ * @param {string[]} weekdayHours
+ * @returns {'open' | 'closed' | null}
+ */
+function storeIsOpen(
+  weekdayHours = JSON.parse(localStorage.getItem(storeHoursKey) || '{}')
+    ?.weekdayText
+) {
+  if (!Array.isArray(weekdayHours) || weekdayHours.length !== 7) {
+    console.warn('unable to check store status; store hours not in storage')
+    return null
+  }
+
+  const weekdayAndTime = new Intl.DateTimeFormat('en-CA', {
+      hour12: false,
+      weekday: 'long',
+      hour: 'numeric',
+      minute: 'numeric',
+      timeZone: 'America/Edmonton',
+    }).format(new Date()),
+    // @ts-ignore
+    currentHours = +weekdayAndTime.match(/\d+(?=\:)/)[0],
+    // @ts-ignore
+    currentMinutes = +weekdayAndTime.match(/(?<=\:)\d+/)[0],
+    hoursToday = JSON.parse(localStorage.getItem(storeHoursKey) || '{}')
+      .periods[
+      [
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+        'Saturday',
+        'Sunday',
+        // @ts-ignore
+      ].indexOf(weekdayAndTime.match(/^[a-z]+/i)[0])
+    ],
+    [openHours, openMinutes] = [hoursToday.open.hours, hoursToday.open.minutes],
+    [closeHours, closeMinutes] = [
+      hoursToday.close.hours,
+      hoursToday.close.minutes,
+    ]
+
+  return (currentHours > openHours && currentHours < closeHours) ||
+    (currentHours === openHours && currentMinutes >= openMinutes) ||
+    (currentHours === closeHours && currentMinutes < closeMinutes)
+    ? 'open'
+    : 'closed'
+}
 function updateOpeningHours() {
   const mapQuery = query('.map')
   let map
@@ -120,32 +177,44 @@ function updateOpeningHours() {
     map.setAttribute('referrerpolicy', 'no-referrer-when-downgrade')
   }
 
+  // @ts-ignore
   const service = new google.maps.places.PlacesService(map)
 
   service.getDetails(
     {
       placeId: 'ChIJawKDKGBlcVMRqEUhscr_ATk',
-      fields: ['opening_hours', 'utc_offset_minutes'],
+      fields: ['opening_hours'],
     },
     (place, status) => {
       if (
+        // @ts-ignore
         status !== google.maps.places.PlacesServiceStatus.OK ||
-        place.opening_hours === undefined ||
-        place.utc_offset_minutes === undefined
+        place.opening_hours === void 0
       ) {
         console.error('cannot fetch store hours:', status)
         return updateStoreHoursHTML()
       }
+      const { periods, weekday_text: weekdayText } = place.opening_hours
 
-      placeDetailsResult = place
-      localStorage.setItem(storeHoursKey, JSON.stringify(place.opening_hours))
+      localStorage.setItem(
+        storeHoursKey,
+        JSON.stringify({
+          periods,
+          weekdayText,
+          lastFetchDate: new Date().toUTCString(),
+        })
+      )
       updateStoreHoursHTML(
-        place.opening_hours.isOpen() ? 'open' : 'closed',
-        place.opening_hours.weekday_text
+        // @ts-ignore
+        storeIsOpen(weekdayText),
+        weekdayText
       )
     }
   )
 }
+/**
+ * @description Fetches from Google api if it is unable to parse the localStorage "storeHours" value, OR if the data stored locally is a week old or older, or if there is no local data about the store.
+ */
 function checkForOldStoreHours() {
   const storeHoursDataString = localStorage.getItem(storeHoursKey)
   let storeHoursData, lastFetchDate
@@ -166,49 +235,56 @@ function checkForOldStoreHours() {
     weekHasPassed(lastFetchDate)
   )
     updateOpeningHours()
+
+  updateStoreHoursHTML(storeIsOpen() || 'default', storeHoursData.weekdayText)
 }
 /**
- * @description Updates store hours html (snippet at bottom left & store_hours section) to either open, closed, or default values.
- * @param {string} [value] A string, either 'open' or 'closed', indicating which value to set the store to. If undefined, values are set back to default.
- * @param {array} [storeHours] An array containing strings indicating the week's opening/closing hours.
+ * @description Returns the inner HTML of the store hours snippet, depending on whether the store status is known or not.
+ * @param {'default' | 'open' | 'closed'} [storeStatus] Defaults to "default".
+ * @returns {string} The snippet's innerHTML.
  */
-function updateStoreHoursHTML(value, storeHours) {
-  // use placeDetails to check if the store is open or closed. If a boolean is not returned, reset values back to default.
-  if (typeof placeDetailsResult !== 'object')
-    return console.error(
-      'could not update store hours snippet - store hours not in storage'
-    )
-  const svg = query('#snippet_svg'),
-    circle = query('#snippet_circle')
-
-  if (value === 'open') {
-    const pContent = `Open -&nbsp;<a class="open_text link">Business Hours</a>`,
-      storeHoursList = storeHours
-        ?.map(weekdayHours => `<li>${weekdayHours}</li><br><br>`)
-        .join('')
-
-    svg.classList.remove('no_display')
-    circle.classList.add('open')
-    query('#snippet_text').innerHTML = pContent
-    query('#store_hours').innerHTML = storeHoursList
-    return
-  }
-  if (value === 'closed') {
-    const pContent = `Closed -&nbsp;<a class="open_text link">Business Hours</a>`,
-      storeHoursList = storeHours
-        ?.map(weekdayHours => `<li>${weekdayHours}</li><br><br>`)
-        .join('')
-
-    svg.classList.remove('no_display')
-    circle.classList.add('closed')
-    query('#snippet_text').innerHTML = pContent
-    query('#store_hours').innerHTML = storeHoursList
-    return
-  }
-
-  query('#store_hours').innerHTML = hoursDefaultHTML
-  query('#snippet').innerHTML = snippetDefaultChild
+function snippetContent(storeStatus = 'default') {
+  return storeStatus === 'default'
+    ? `<p id="snippet_text">
+    <a class="open_text link">Business Hours</a>
+    </p>`
+    : `<svg id="snippet_svg" class="snippet_svg">
+        <circle id="snippet_circle" class="snippet_circle ${
+          storeStatus === 'open' ? 'open' : 'closed'
+        }" cx="12" cy="12" r="12"></circle>
+      </svg>
+      <p id="snippet_text">
+        ${
+          storeStatus === 'open' ? 'Open' : 'Closed'
+        } -&nbsp;<a class="open_text link">Business Hours</a>
+      </p>`
 }
+
+/**
+ * @description Updates store hours html (snippet at bottom left & store_hours section) to either open, closed, or default values.
+ * @param {'default' | 'open' | 'closed'} [storeStatus] Defaults to "default".
+ * @param {string[] | null} [storeHoursArray] An array containing strings indicating the week's opening/closing hours, if known.
+ */
+function updateStoreHoursHTML(storeStatus = 'default', storeHoursArray = null) {
+  // use placeDetails to check if the store is open or closed. If a boolean is not returned, reset values back to default.
+  if (localStorage.getItem(storeHoursKey) === null)
+    return console.warn(
+      'unable to update store hours snippet - store hours not in storage'
+    )
+
+  if (storeStatus === 'default' || storeHoursArray === null) {
+    query('#store_hours').innerHTML = hoursDefaultHTML
+    return (query('#snippet').innerHTML = snippetContent())
+  }
+  const hours = [
+    ...storeHoursArray.map(weekdayHours => `<li>${weekdayHours}</li><br><br>`),
+    '<p>Please double check store hours for holidays</p>',
+  ].join('')
+
+  query('#snippet').innerHTML = snippetContent(storeStatus)
+  query('#store_hours').innerHTML = hours
+}
+
 function setCheckStoreHoursInterval() {
   clearInterval(storeHoursInterval)
   checkForOldStoreHours()

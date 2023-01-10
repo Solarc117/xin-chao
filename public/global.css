@@ -247,16 +247,13 @@ path {
   height: 24px;
 }
 .snippet_circle {
-  cx: 12;
-  cy: 12;
   fill: white;
-  animation: pulse 4s ease-in-out infinite;
 }
 .snippet_circle.open {
-  fill: springgreen;
+  animation: open-pulse 4s ease-in-out infinite;
 }
 .snippet_circle.closed {
-  fill: crimson;
+  animation: closed-pulse 4s ease-in-out infinite;
 }
 .store_hours {
   z-index: 4;
@@ -335,8 +332,7 @@ path {
     margin: 50px 10px;
   }
 
-  .nav_links_ul > li:hover,
-  .nav_links_ul > li:focus-within {
+  .nav_links_ul > li:is(:hover, :focus-within) {
     margin-top: 45px;
   }
 
@@ -350,13 +346,11 @@ path {
     margin: 0;
   }
 
-  .logos:hover .logo_list,
-  .logos:focus-within .logo_list {
+  .logos:is(:hover, :focus-within) .logo_list {
     opacity: 1;
     pointer-events: all;
   }
-  .logos:hover .logo_list li,
-  .logos:focus-within .logo_list li {
+  .logos:is(:hover, :focus-within) .logo_list li {
     margin-top: 3px;
   }
 
@@ -434,14 +428,31 @@ path {
     opacity: 0;
   }
 }
-@keyframes pulse {
+@keyframes open-pulse {
   0% {
+    fill: hsl(150, 100%, 34%);
     r: 10;
   }
   50% {
+    fill: hsl(150, 99%, 42%);
     r: 12;
   }
   100% {
+    fill: hsl(150, 100%, 34%);
+    r: 10;
+  }
+}
+@keyframes closed-pulse {
+  0% {
+    fill: hsl(348, 83%, 47%);
+    r: 10;
+  }
+  50% {
+    fill: hsl(348, 100%, 65%);
+    r: 12;
+  }
+  100% {
+    fill: hsl(348, 83%, 47%);
     r: 10;
   }
 }
