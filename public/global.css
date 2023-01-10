@@ -128,8 +128,8 @@ path {
 }
 
 .main {
+  grid-area: 2 / 1 / span 1 / span 1;
   z-index: 1;
-  height: calc(100vh - 100px);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -223,7 +223,7 @@ path {
 }
 .hours_snippet {
   cursor: pointer;
-  position: sticky;
+  position: absolute;
   bottom: 10px;
   left: 10px;
   z-index: 2;
@@ -281,27 +281,20 @@ path {
     font-size: 11px;
   }
   .hours_snippet {
-    position: sticky;
-    font-size: 25px;
+    padding: 15px;
+    position: absolute;
     bottom: 5px;
     left: 5px;
-    z-index: 2;
-    padding: 15px;
+    font-size: 25px;
     height: 60px;
-    width: 330px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    background: hsla(0, 0%, 0%, 0.6);
-    border-radius: 10px;
+    width: fit-content;
   }
 }
 
 /***Desktop***/
 @media only screen and (min-width: 900px) {
   body {
-    grid-template-rows: 100px calc(100% - 100px);
+    grid-template-rows: 100px calc(100vh - 100px);
     grid-template-columns: 67% 33% 250px;
   }
 

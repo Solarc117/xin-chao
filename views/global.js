@@ -292,7 +292,7 @@ function setCheckStoreHoursInterval() {
 }
 
 const checkGoogleScript = setInterval(() => {
-  if (google === void 0)
+  if (window.google === void 0)
     return console.log(
       'waiting for google script before setting store hours interval...'
     )

@@ -11,27 +11,18 @@ body {
 }
 
 /* Sections */
-
 .main {
-  margin-top: 30px;
   display: block;
-  font-size: 22px;
+  font-size: 18px;
   padding: 0 50px;
+  overflow-y: scroll;
 }
 
 /* Components */
-.main > section {
+.main > p {
   margin: 10px 0;
   padding: 0.25cm;
-  font-size: 25px;
   font-family: 'Univers Next', 'Times New Roman', Times, serif;
-}
-.email_wrapper,
-.phone_number_wrapper,
-.addres_wrapper {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
 }
 .map {
   margin: 50px 0;
@@ -40,9 +31,17 @@ body {
   border-radius: 10px;
 }
 
+/* Tablets */
+@media only screen and (min-width: 450px) {
+  .main {
+    font-size: 20px;
+  }
+}
+
 /* Desktop */
 @media only screen and (min-width: 900px) {
   .main {
+    font-size: 24px;
     padding: 0 100px;
   }
 }

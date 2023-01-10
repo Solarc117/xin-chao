@@ -146,14 +146,15 @@ write code to render/mutate circle color & text depending on the time:
       ✅ iterate through localStorage's week_day hours array, until a string is found that matches the weekday word from the Date/Intl API
     ✅ compare hours to determine store state:
       ✅ convert opening & closing hours to numeric, 24-format hours & minutes
-
 ✅ remove preload images script (not necessary anymore due to the background_image div)
 ✅ check whether localStorage is really necessary, or if just the global placeDetailsResult variable is enough; avoid unnecessary data storage
 ✅ ***ERROR*** store_hours & circle are not displayed when moving from one page to another
 
-- fix mobile home scrollable (when it shouldn't be) bug
+✅ fix mobile home scrollable (when it shouldn't be) bug
+✅ fix about page scrollable bug
+✅ fix contact email overflow in mobile
 
-- fix about page scrollable bug
+- fix business hours not showing in desktop bug
  
 - make snippet smaller, & appy larger styles only after ~400-450px
 
@@ -161,11 +162,8 @@ write code to render/mutate circle color & text depending on the time:
 
 - make nav_links height 100% when in mobile
 
-- try to set menu background to white, & text transparent
-
 - zoom out the photos for main/home page
 
-- fix contact email overflow in mobile
 
 - ***ERROR*** Mobile Screen, there is a blank gap from the bottom of the business hours
 box to the bottom of the scree. I have attached the screenshot of it and placed it in the
