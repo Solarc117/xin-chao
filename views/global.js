@@ -291,6 +291,14 @@ function setCheckStoreHoursInterval() {
   storeHoursInterval = setInterval(checkForOldStoreHours, 60_000)
 }
 
-query('#placesApiScript').onload = setCheckStoreHoursInterval
+const checkGoogleScript = setInterval(() => {
+  if (google === void 0)
+    return console.log(
+      'waiting for google script before setting store hours interval...'
+    )
+
+  setCheckStoreHoursInterval()
+  clearInterval(checkGoogleScript)
+}, 300)
 document.body.addEventListener('pointerdown', toggleNav)
 document.body.addEventListener('pointerdown', toggleStoreHours)

@@ -136,10 +136,8 @@ write code to render/mutate circle color & text depending on the time:
 ✅ horizontal XIN CHAO in mobile, smaller font size
 ✅ Hey Carlos, I think we should need a footer for the page
 ✅ fix desktop media query
-
 ✅ ***ERROR*** circle svg is not visible in firefox
   add cx, cy & fill properties to the svg itself
-✅ ***ERROR*** store_hours & circle are not displayed when moving from one page to another
 ✅ placeDetailsResult is undefined when switching from one page to another 
   ✅ only fetch store hours from Google, store lastFetchDate, & write own function using Intl & google's store hours to check if the store is open
     ✅ get current MT weekday, hour & minutes (from anywhere):
@@ -149,15 +147,15 @@ write code to render/mutate circle color & text depending on the time:
     ✅ compare hours to determine store state:
       ✅ convert opening & closing hours to numeric, 24-format hours & minutes
 
+✅ remove preload images script (not necessary anymore due to the background_image div)
+✅ check whether localStorage is really necessary, or if just the global placeDetailsResult variable is enough; avoid unnecessary data storage
+✅ ***ERROR*** store_hours & circle are not displayed when moving from one page to another
+
 - fix mobile home scrollable (when it shouldn't be) bug
 
 - fix about page scrollable bug
  
 - make snippet smaller, & appy larger styles only after ~400-450px
-
-- remove preload images script (not necessary anymore due to the background_image div)
-
-- check whether localStorage is really necessary, or if just the global placeDetailsResult variable is enough; avoid unnecessary data storage
 
 - reduce logo size in mobile (same as menu bars) 
 
