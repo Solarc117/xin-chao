@@ -139,7 +139,7 @@ function storeIsOpen(
     // @ts-ignore
     currentHours = +weekdayAndTime.match(/\d+(?=\:)/)[0],
     // @ts-ignore
-    currentMinutes = +weekdayAndTime.match(/(?<=\:)\d+/)[0],
+    currentMinutes = +weekdayAndTime.match(/:\d+/)[0].substring(1),
     hoursToday = JSON.parse(localStorage.getItem(storeHoursKey) || '{}')
       .periods[
       [
