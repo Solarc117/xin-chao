@@ -1,6 +1,7 @@
 /* Global variables */
 :root {
   --store_hours_width: 250px;
+  --nav_width: 120px;
 }
 
 /* Typography */
@@ -27,21 +28,16 @@ html,
 body {
   width: 100%;
   min-height: 100vh;
+  color: white;
+  font-family: sans-serif;
 }
 body,
 .background_image {
+  z-index: -1;
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
   background-repeat: no-repeat;
-}
-body {
-  color: white;
-  font-family: sans-serif;
-  display: grid;
-  grid-template-columns: 100% 250px;
-  grid-template-rows: 100px calc(100vh - 100px);
-  overflow-x: hidden;
 }
 h1,
 h2,
@@ -66,10 +62,9 @@ a {
 path {
   fill: white;
 }
-.over {
-  z-index: 3;
-}
 .gradient_container {
+  z-index: 5;
+  pointer-events: none;
   position: fixed;
   width: 100%;
   height: 100%;
@@ -90,20 +85,17 @@ path {
 .background_image:not(.opaque) {
   animation: fade_out 0.3s forwards;
 }
-.no_display {
-  display: none;
-}
 
 /* Sections */
 .header {
+  z-index: 1;
   background: linear-gradient(
     to bottom,
     hsla(0, 0%, 0%, 0.8),
     hsla(0, 0%, 0%, 0.7),
     hsla(0, 0%, 0%, 0.2)
   );
-  z-index: 1;
-  width: 100%;
+
   height: 100px;
   display: flex;
   -webkit-user-select: none;
@@ -128,7 +120,7 @@ path {
 }
 
 .main {
-  grid-area: 2 / 1 / span 1 / span 1;
+  height: calc(100vh - 100px);
   z-index: 1;
   display: flex;
   flex-direction: column;
@@ -142,18 +134,18 @@ path {
   height: 100%;
 }
 .title {
+  margin-top: 20px;
   height: -moz-fit-content;
   height: fit-content;
   font-weight: 50;
-  font-size: 50px;
+  font-size: 40px;
   line-height: 40px;
 }
 .title_coffee {
-  margin-top: 12px;
-  font-size: 20px;
+  margin-top: 5px;
+  font-size: 11px;
   font-weight: lighter;
 }
-
 .nav_section {
   display: flex;
   flex-direction: row;
@@ -167,16 +159,13 @@ path {
   cursor: pointer;
 }
 .nav_links {
-  background: linear-gradient(
-    to bottom,
-    hsla(0, 0%, 0%, 0.8),
-    hsla(0, 0%, 0%, 0.7),
-    hsla(0, 0%, 0%, 0.2)
-  );
-  z-index: 4;
-  grid-area: 1 / 2 / span 2 / span 1;
+  z-index: 6;
+  position: fixed;
+  top: 0;
+  left: 0;
+  transform: translateX(100vw);
   height: 100%;
-  width: 120px;
+  width: var(--nav_width);
   background: hsla(0, 0%, 0%, 0.8);
   font-size: 20px;
   -webkit-user-select: none;
@@ -186,7 +175,7 @@ path {
 .nav_links.show {
   animation: nav_in 0.5s forwards;
 }
-.nav_links:not(.show) {
+.nav_links.hide {
   animation: nav_out 0.5s forwards;
 }
 .nav_links_ul {
@@ -223,18 +212,18 @@ path {
 }
 .hours_snippet {
   cursor: pointer;
-  position: absolute;
-  bottom: 10px;
-  left: 10px;
-  z-index: 2;
-  padding: 15px;
-  width: fit-content;
+  position: fixed;
+  bottom: 5px;
+  left: 5px;
+  z-index: 3;
+  padding: 10px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   background: hsla(0, 0%, 0%, 0.6);
   border-radius: 10px;
+  font-size: 17px;
 }
 .open_text {
   text-decoration: underline;
@@ -256,9 +245,14 @@ path {
   animation: closed-pulse 4s ease-in-out infinite;
 }
 .store_hours {
-  z-index: 4;
-  grid-area: 1 / 2 / span 2 / span 1;
-  background: hsla(0, 0%, 0%, 0.6);
+  z-index: 6;
+  position: fixed;
+  top: 0;
+  left: 0;
+  transform: translateX(100vw);
+  width: var(--store_hours_width);
+  height: 100%;
+  background: hsla(0, 0%, 0%, 0.8);
   padding: 30px;
 }
 .store_hours.show {
@@ -268,34 +262,28 @@ path {
   animation: store_hours_out 0.5s forwards;
 }
 
-/***Phone***/
-
-@media only screen and (max-width: 460px) {
+/***Larger phones, or tablets***/
+@media only screen and (min-width: 460px) {
   .title {
-    font-size: 30px;
-    margin-top: 15px;
-    font-display: flex;
+    margin-top: 33px;
+    font-size: 50px;
   }
   .title_coffee {
-    margin-top: 5px;
-    font-size: 11px;
+    margin-top: 12px;
+    font-size: 20px;
   }
   .hours_snippet {
-    padding: 15px;
-    position: absolute;
-    bottom: 5px;
-    left: 5px;
-    font-size: 25px;
-    height: 60px;
-    width: fit-content;
+    bottom: 10px;
+    left: 10px;
+    padding: 12px;
+    font-size: 20px;
   }
 }
 
 /***Desktop***/
 @media only screen and (min-width: 900px) {
-  body {
-    grid-template-rows: 100px calc(100vh - 100px);
-    grid-template-columns: 67% 33% 250px;
+  .header {
+    width: 67vw;
   }
 
   .nav_section {
@@ -303,15 +291,17 @@ path {
   }
 
   .nav_links {
+    left: auto;
+    right: 0;
+    transform: translateX(0) !important;
     background: linear-gradient(
       to bottom,
       hsla(0, 0%, 0%, 0.8),
       hsla(0, 0%, 0%, 0.7),
       hsla(0, 0%, 0%, 0.2)
     );
-    grid-area: 1 / 2;
     height: 100px;
-    width: 100%;
+    width: 33vw;
   }
 
   .nav_links_ul {
@@ -346,52 +336,44 @@ path {
   .logos:is(:hover, :focus-within) .logo_list li {
     margin-top: 3px;
   }
-
-  .main {
-    grid-area: 2 / 1 / span 1 / span 2;
-  }
-
-  .store_hours {
-    grid-area: 1 / 3 / span 2 / span 1;
-  }
 }
 
 /* Animations */
 @keyframes nav_in {
   from {
-    transform: translateX(0);
+    transform: translateX(100vw);
   }
   to {
-    transform: translateX(-120px);
+    transform: translateX(calc(100vw - var(--nav_width)));
   }
 }
 @keyframes nav_out {
   from {
-    transform: translateX(-120px);
+    transform: translateX(calc(100vw - var(--nav_width)));
   }
   to {
-    transform: translateX(0);
+    transform: translateX(100vw);
   }
 }
 @keyframes store_hours_in {
   from {
-    transform: translateX(0);
+    transform: translateX(100vw);
   }
   to {
-    transform: translateX(-250px);
+    transform: translateX(calc(100vw - var(--store_hours_width)));
   }
 }
 @keyframes store_hours_out {
   from {
-    transform: translateX(-250px);
+    transform: translateX(calc(100vw - var(--store_hours_width)));
   }
   to {
-    transform: translateX(0);
+    transform: translateX(100vw);
   }
 }
 @keyframes darken {
   from {
-    background: hsla(0, 0%, 0%, 0.3);
+    background: hsla(0, 0%, 0%, 0);
   }
   to {
     background: hsla(0, 0%, 0%, 0.5);
@@ -402,7 +384,7 @@ path {
     background: hsla(0, 0%, 0%, 0.5);
   }
   to {
-    background: hsla(0, 0%, 0%, 0.3);
+    background: hsla(0, 0%, 0%, 0);
   }
 }
 @keyframes fade_in {

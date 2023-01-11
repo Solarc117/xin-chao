@@ -149,23 +149,13 @@ write code to render/mutate circle color & text depending on the time:
 ✅ remove preload images script (not necessary anymore due to the background_image div)
 ✅ check whether localStorage is really necessary, or if just the global placeDetailsResult variable is enough; avoid unnecessary data storage
 ✅ ***ERROR*** store_hours & circle are not displayed when moving from one page to another
-
 ✅ fix mobile home scrollable (when it shouldn't be) bug
 ✅ fix about page scrollable bug
 ✅ fix contact email overflow in mobile
-
-- fix business hours not showing in desktop bug
- 
-- make snippet smaller, & appy larger styles only after ~400-450px
-
-- reduce logo size in mobile (same as menu bars) 
-
-- make nav_links height 100% when in mobile
-
-- zoom out the photos for main/home page
-
-
-- ***ERROR*** Mobile Screen, there is a blank gap from the bottom of the business hours
+✅ fix business hours not showing in desktop bug
+✅ make snippet smaller, & appy larger styles only after ~400-450px
+✅ make nav_links height 100% when in mobile
+✅ ***ERROR*** Mobile Screen, there is a blank gap from the bottom of the business hours
 box to the bottom of the scree. I have attached the screenshot of it and placed it in the
 PUBLIC folder
 

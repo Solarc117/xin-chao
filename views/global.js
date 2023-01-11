@@ -20,13 +20,15 @@ let storeHoursInterval
 
 // Nav animation functions.
 function showNav() {
+  navLinks.classList.remove('hide')
   navLinks.classList.add('show')
-  gradientContainer.classList.add('over', 'dark')
+  gradientContainer.classList.add('dark')
   for (const node of queryAll('.nav_a')) node.removeAttribute('tabindex')
 }
 function hideNav() {
   navLinks.classList.remove('show')
-  gradientContainer.classList.remove('over', 'dark')
+  navLinks.classList.add('hide')
+  gradientContainer.classList.remove('dark')
   for (const node of queryAll('.nav_a')) node.setAttribute('tabindex', -1)
 }
 /**
@@ -292,6 +294,7 @@ function setCheckStoreHoursInterval() {
 }
 
 const checkGoogleScript = setInterval(() => {
+  // @ts-ignore
   if (window.google === void 0)
     return console.log(
       'waiting for google script before setting store hours interval...'
@@ -302,3 +305,7 @@ const checkGoogleScript = setInterval(() => {
 }, 300)
 document.body.addEventListener('pointerdown', toggleNav)
 document.body.addEventListener('pointerdown', toggleStoreHours)
+document.addEventListener('DOMContentLoaded', () => {
+  if (document.body.clientWidth >= 900)
+    for (const node of queryAll('.nav_a')) node.removeAttribute('tabindex')
+})
