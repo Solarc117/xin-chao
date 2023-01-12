@@ -53,7 +53,7 @@ function toggleNav(event) {
 // Store hours animation functions.
 function showStoreHours() {
   // Add .show to storeHours, and .over to gradient_container
-  hideNav()
+  if (document.body.clientWidth < 900) hideNav()
   storeHours.classList.remove('hide')
   storeHours.classList.add('show')
   gradientContainer.classList.add('over', 'dark')
