@@ -16,6 +16,10 @@ body {
 .brand_name {
   font-family: 'Times New Roman', Times, serif;
   font-size: larger;
+  font-style: italic;
+}
+.align_right {
+  margin-left: 20px;
 }
 .intro_text {
   border-radius: 50px;
