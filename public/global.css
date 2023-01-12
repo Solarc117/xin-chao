@@ -112,7 +112,7 @@ path {
 }
 .title_section {
   display: flex;
-  flex-grow: 2; /* Twice the rate of other flex siblings. */
+  flex-grow: 3; /* Thrice the rate of other flex siblings. */
   justify-content: center;
   align-items: center;
   font-size: 50px;
@@ -130,8 +130,8 @@ path {
 }
 
 /* Components */
-.logo {
-  height: 100%;
+.logo_svg {
+  margin-top: 8px;
 }
 .title {
   margin-top: 20px;
@@ -155,7 +155,6 @@ path {
 .bars {
   padding: 10px;
   height: 55%;
-  margin-right: 30px;
   cursor: pointer;
 }
 .nav_links {
@@ -262,6 +261,12 @@ path {
   animation: store_hours_out 0.5s forwards;
 }
 
+@media only screen and (min-width: 350px) {
+  .bars {
+    margin-right: 30px;
+  }
+}
+
 /***Larger phones, or tablets***/
 @media only screen and (min-width: 460px) {
   .title {
@@ -285,6 +290,11 @@ path {
   .header {
     width: 67vw;
   }
+
+.title_section {
+  justify-content: flex-end;
+  margin-right: 35px;
+}
 
   .nav_section {
     display: none;
