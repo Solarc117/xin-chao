@@ -165,6 +165,8 @@ function storeIsOpen(
     ? 'open'
     : 'closed'
 }
+
+
 function updateOpeningHours() {
   const mapQuery = query('.map')
   let map
