@@ -292,8 +292,12 @@ path {
   }
 
 .title_section {
-  justify-content: flex-end;
-  margin-right: 35px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: fit-content;
+  text-align: center;
 }
 
   .nav_section {
