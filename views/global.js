@@ -129,17 +129,22 @@ function storeIsOpen(
     return null
   }
 
+  console.log('weekdayHours:', weekdayHours)
+
   const weekdayAndTime = new Intl.DateTimeFormat('en-CA', {
-      hour12: false,
-      weekday: 'long',
-      hour: 'numeric',
-      minute: 'numeric',
-      timeZone: 'America/Edmonton',
-    }).format(new Date()),
-    // @ts-ignore
-    currentHours = +weekdayAndTime.match(/\d+(?=\:)/)[0],
-    // @ts-ignore
-    currentMinutes = +weekdayAndTime.match(/(?<=\:)\d+/)[0],
+    hour12: false,
+    weekday: 'long',
+    hour: 'numeric',
+    minute: 'numeric',
+    timeZone: 'America/Edmonton',
+  }).format(new Date())
+
+  console.log('weekdayAndTime:', weekdayAndTime)
+  // @ts-ignore
+  const currentHours = +weekdayAndTime.match(/\d+(?=\:)/)[0]
+  // @ts-ignore
+  console.log('currentHours:', currentHours)
+  const currentMinutes = +weekdayAndTime.match(/(?<=\:)\d+/)[0],
     hoursToday = JSON.parse(localStorage.getItem(storeHoursKey) || '{}')
       .periods[
       [
@@ -165,6 +170,8 @@ function storeIsOpen(
     ? 'open'
     : 'closed'
 }
+
+
 function updateOpeningHours() {
   const mapQuery = query('.map')
   let map
