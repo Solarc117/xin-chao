@@ -298,6 +298,7 @@ path {
   width: 100vw;
   height: fit-content;
   text-align: center;
+  pointer-events: none;
 }
 
   .nav_section {
