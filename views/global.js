@@ -166,7 +166,6 @@ function storeIsOpen(
     : 'closed'
 }
 
-
 function updateOpeningHours() {
   const mapQuery = query('.map')
   let map
@@ -295,16 +294,6 @@ function setCheckStoreHoursInterval() {
   storeHoursInterval = setInterval(checkForOldStoreHours, 60_000)
 }
 
-const checkGoogleScript = setInterval(() => {
-  // @ts-ignore
-  if (window.google === void 0)
-    return console.log(
-      'waiting for google script before setting store hours interval...'
-    )
-
-  setCheckStoreHoursInterval()
-  clearInterval(checkGoogleScript)
-}, 300)
 document.body.addEventListener('pointerdown', toggleNav)
 document.body.addEventListener('pointerdown', toggleStoreHours)
 document.addEventListener('DOMContentLoaded', () => {
