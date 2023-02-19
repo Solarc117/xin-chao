@@ -26,6 +26,11 @@ function showNav() {
   for (const node of queryAll('.nav_a')) node.removeAttribute('tabindex')
 }
 function hideNav() {
+  if (
+    !navLinks.classList.contains('show') &&
+    !navLinks.classList.contains('hide')
+  )
+    return
   navLinks.classList.remove('show')
   navLinks.classList.add('hide')
   gradientContainer.classList.remove('dark')
