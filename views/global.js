@@ -121,7 +121,7 @@ function weekHasPassed(date1, date2 = new Date()) {
   return Math.abs(date2.getTime() - date1.getTime()) >= msInAWeek
 }
 /**
- * @description Utilizes the store hours array fetched from Google to check if the current MDT date falls under open hours.
+ * Utilizes the store hours array fetched from Google to check if the current MDT date falls under open hours.
  * @param {string[]} weekdayHours
  * @returns {'open' | 'closed' | null}
  */
@@ -228,7 +228,7 @@ function checkForOldStoreHours() {
   let storeHoursData, lastFetchDate
   try {
     // @ts-ignore
-    storeHoursData = JSON.parse(storeHoursDataString)
+    storeHoursData = JSON.parse(storeHoursDataString || undefined)
     lastFetchDate = new Date(storeHoursData?.lastFetchDate)
   } catch (error) {
     // Update hours, since stringified data in local storage is not parseable, and is therefore invalid.
