@@ -18,7 +18,6 @@ const query = document.querySelector.bind(document),
       </p>`
 let storeHoursInterval
 
-// Nav animation functions.
 function showNav() {
   navLinks.classList.remove('hide')
   navLinks.classList.add('show')
@@ -55,9 +54,7 @@ function toggleNav(event) {
     hideNav()
 }
 
-// Store hours animation functions.
 function showStoreHours() {
-  // Add .show to storeHours, and .over to gradient_container
   if (document.body.clientWidth < 900) hideNav()
   storeHours.classList.remove('hide')
   storeHours.classList.add('show')
@@ -74,8 +71,6 @@ function hideStoreHours() {
  * @param {Event} event
  */
 function toggleStoreHours(event) {
-  // Call showStoreHours if hours_snippet contains the target.
-  // Call hideStoreHours if storeHours does NOT contain the target, & it contains the class 'show'
   const { target } = event,
     snippet = query('.hours_snippet')
 
@@ -85,7 +80,6 @@ function toggleStoreHours(event) {
     hideStoreHours()
 }
 
-// Store hours data functions.
 /**
  * @description Returns whether the current weekday in MDT time is a Sunday.
  * @param {Date} date Defaults to the current date.
@@ -221,7 +215,7 @@ function updateOpeningHours() {
   )
 }
 /**
- * @description Fetches from Google api if it is unable to parse the localStorage "storeHours" value, OR if the data stored locally is a week old or older, or if there is no local data about the store.
+ * Fetches from Google api if it is unable to parse the localStorage "storeHours" value, OR if the data stored locally is a week old or older, or if there is no local data about the store.
  */
 function checkForOldStoreHours() {
   const storeHoursDataString = localStorage.getItem(storeHoursKey)
@@ -268,7 +262,7 @@ function snippetContent(storeStatus = 'default') {
 
 /**
  * @description Updates store hours html (snippet at bottom left & store_hours section) to either open, closed, or default values.
- * @param {'default' | 'open' | 'closed'} [storeStatus] Defaults to "default".
+ * @param {'default' | 'open' | 'closed'} storeStatus Defaults to "default".
  * @param {string[] | null} [storeHoursArray] An array containing strings indicating the week's opening/closing hours, if known.
  */
 function updateStoreHoursHTML(storeStatus = 'default', storeHoursArray = null) {
