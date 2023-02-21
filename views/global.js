@@ -248,7 +248,7 @@ function checkForOldStoreHours() {
 }
 /**
  * @description Returns the inner HTML of the store hours snippet, depending on whether the store status is known or not.
- * @param {'default' | 'open' | 'closed'} [storeStatus] Defaults to "default".
+ * @param {'default' | 'open' | 'closed'} storeStatus Defaults to "default".
  * @returns {string} The snippet's innerHTML.
  */
 function snippetContent(storeStatus = 'default') {
@@ -257,13 +257,11 @@ function snippetContent(storeStatus = 'default') {
     <a class="open_text link">Business Hours</a>
     </p>`
     : `<svg id="snippet_svg" class="snippet_svg">
-        <circle id="snippet_circle" class="snippet_circle ${
-          storeStatus === 'open' ? 'open' : 'closed'
-        }" cx="12" cy="12" r="12"></circle>
+        <circle id="snippet_circle" class="snippet_circle ${storeStatus}" cx="12" cy="12" r="12"></circle>
       </svg>
       <p id="snippet_text">
         ${
-          storeStatus === 'open' ? 'Open' : 'Closed'
+          storeStatus[0].toUpperCase() + storeStatus.slice(1)
         } -&nbsp;<a class="open_text link">Business Hours</a>
       </p>`
 }
