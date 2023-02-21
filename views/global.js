@@ -241,7 +241,7 @@ function checkForOldStoreHours() {
   updateStoreHoursHTML(storeIsOpen() || 'default', storeHoursData.weekdayText)
 }
 /**
- * @description Returns the inner HTML of the store hours snippet, depending on whether the store status is known or not.
+ * Returns the inner HTML of the store hours snippet, depending on whether the store status is known or not.
  * @param {'default' | 'open' | 'closed'} storeStatus Defaults to "default".
  * @returns {string} The snippet's innerHTML.
  */
@@ -261,21 +261,20 @@ function snippetContent(storeStatus = 'default') {
 }
 
 /**
- * @description Updates store hours html (snippet at bottom left & store_hours section) to either open, closed, or default values.
- * @param {'default' | 'open' | 'closed'} storeStatus Defaults to "default".
- * @param {string[] | null} [storeHoursArray] An array containing strings indicating the week's opening/closing hours, if known.
+ * Updates store hours snippet html to either its open, closed, or default value.
+ * @param {'default' | 'open' | 'closed'} storeStatus
+ * @param {string[] | null} storeHoursArray An array containing strings indicating the week's opening/closing hours, if known.
  */
 function updateStoreHoursHTML(storeStatus = 'default', storeHoursArray = null) {
-  // use placeDetails to check if the store is open or closed. If a boolean is not returned, reset values back to default.
-  if (localStorage.getItem(storeHoursKey) === null)
-    return console.warn(
-      'unable to update store hours snippet - store hours not in storage'
-    )
-
-  if (storeStatus === 'default' || storeHoursArray === null) {
+  if (
+    storeStatus === 'default' ||
+    storeHoursArray === null ||
+    localStorage.getItem(storeHoursKey) === null
+  ) {
     query('#store_hours').innerHTML = hoursDefaultHTML
-    return (query('#snippet').innerHTML = snippetContent())
+    return (query('#snippet').innerHTML = snippetContent('default'))
   }
+
   const hours = [
     ...storeHoursArray.map(weekdayHours => `<li>${weekdayHours}</li><br><br>`),
     '<p>Please double check store hours for holidays</p>',
@@ -288,12 +287,14 @@ function updateStoreHoursHTML(storeStatus = 'default', storeHoursArray = null) {
 function setCheckStoreHoursInterval() {
   clearInterval(storeHoursInterval)
   checkForOldStoreHours()
-  storeHoursInterval = setInterval(checkForOldStoreHours, 60_000)
+  storeHoursInterval = setInterval(checkForOldStoreHours, 120_000)
+}
+
+function tabableNavIfDesktop() {
+  if (document.body.clientWidth >= 900)
+    for (const node of queryAll('.nav_a')) node.removeAttribute('tabindex')
 }
 
 document.body.addEventListener('pointerdown', toggleNav)
 document.body.addEventListener('pointerdown', toggleStoreHours)
-document.addEventListener('DOMContentLoaded', () => {
-  if (document.body.clientWidth >= 900)
-    for (const node of queryAll('.nav_a')) node.removeAttribute('tabindex')
-})
+document.addEventListener('DOMContentLoaded', tabableNavIfDesktop)
