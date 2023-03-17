@@ -7,6 +7,6 @@ const backgroundImageURLs = [
   'about-6.jpg',
   'about-7.jpg',
   'about-8.jpg',
-].map(fileName => `../public/images/${fileName}`)
+].map(fileName => `../images/${fileName}`)
 
 setDynamicBackground(document, backgroundImageURLs)

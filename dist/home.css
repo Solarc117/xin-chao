@@ -1,0 +1,28 @@
+/* Layout */
+body {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.menu {
+  padding: 3px 21px;
+  border: 3px solid white;
+  border-radius: 5px;
+  font-size: 25px;
+  background: transparent;
+  transition: 0.5s;
+}
+
+@media only screen and (min-width: 400px) {
+  .menu {
+    font-size: 40px;
+  }
+}
+
+/***Desktop***/
+@media only screen and (min-width: 900px) {
+  .menu:is(:hover, :focus) {
+    margin-bottom: 10px;
+  }
+}
