@@ -1,12 +1,16 @@
-✅ minify scripts w/Vite build
-✅ check TSL certificate after one day
-⚠️ vite complains about the /public/:filename path, but without it (just /:filename), the build command does not work properly??
-✅ fix missing dynamic background in Vite build:
-  ✅ check script tags for reasons why setDynamicBackground & setCheckStoreHoursInterval are undefined (aka, debug the logs in vite)
- ✅ fix the vite build logs:
-    ✅ try using stackoverflow's answer: 
-      - ✅ look for how to define "$fonts: resolve(font/path)" in vite config, & use in css files
-      - ✅ add in css files  
+✅📄⚠️❌
+📄 for every resource:
 
-✅ remove google api code
-- commit
+1. move into xin-chao-vite
+2. test build to ensure transfer was successful
+
+✅ about.html
+✅ typography
+✅ global.js
+✅ images
+✅ individual page scripts:
+✅ svgs
+✅ contact.html
+✅ README.md
+
+✅ double check that no other files/resources are missing
