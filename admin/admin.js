@@ -18,7 +18,11 @@ class Authenticator {
       }),
       data = await response.json()
 
-    console.log('data:', data)
+    if (data.error) {
+      
+    }
+    // Username will likely be an unnecessary property to keep; will decide later.
+    const { username, token } = data
   }
 }
 

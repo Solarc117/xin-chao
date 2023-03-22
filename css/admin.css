@@ -19,10 +19,17 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  align-items: center;
+}
+
+.login_form label,
+.login_form input {
+  max-width: 100%;
 }
 
 .login_button {
-  width: 25%;
+  width: fit-content;
+  padding: 5px;
   align-self: center;
   color: white;
   background: transparent;

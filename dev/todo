@@ -1,5 +1,6 @@
 ✅📄⚠️❌
 
-✅ add mongodb serverless function from tutorial
-✅ follow fcc tutorial/online guide to implement passport & bcrypt  
-- push
+- store jwt on client side upon authentication w/cookies
+- create home admin page
+- setup home admin page on vite config
+- redirect user to home admin page on authentication
