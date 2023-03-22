@@ -1,49 +1,54 @@
-const session = require('express-session'),
-  passport = require('passport'),
-  express = require('express'),
-  { MongoClient } = require('mongodb'),
-  LocalStrategy = require('passport-local'),
-  app = express(),
+const { MongoClient } = require('mongodb'),
   mongoClient = new MongoClient(process.env.URI),
   clientPromise = mongoClient.connect()
 
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET,
-    resave: true,
-    saveUninitialized: true,
-    cookie: { secure: false },
-  })
-)
-app.use(passport.initialize())
-app.use(passport.session())
-
 exports.handler = async function (event, context) {
-  const { method, user, password } = event
-  console.log('method:', method)
-  if ()
+  const { httpMethod } = event,
+    { username, password } = JSON.parse(event.body)
+
+  if (httpMethod !== 'POST')
+    return {
+      statusCode: 404,
+      body: JSON.stringify({ error: '404 not found' }),
+    }
+  if (!username || !password)
+    return {
+      statusCode: 400,
+      body: JSON.stringify({ error: 'missing user or password fields' }),
+    }
 
   try {
     const database = (await clientPromise).db(process.env.DATABASE),
-      collection = database.collection(process.env.COLLECTION)
+      collection = database.collection(process.env.COLLECTION),
+      adminUser = await collection.findOne({ username })
 
-    passport.use(
-      new LocalStrategy(async (username, password, done) => {
-        let admin
-        try {
-          admin = await collection.findOne()
-        } catch (error) {
-          console.error(error)
-          return done(error)
-        }
+    if (
+      adminUser === null ||
+      !require('bcrypt').compareSync(password, adminUser.password)
+    )
+      return {
+        statusCode: 400,
+        body: JSON.stringify({
+          error: 'invalid username or password',
+        }),
+      }
 
-        console.log('admin:', admin)
-      })
+    const token = require('jsonwebtoken').sign(
+      {
+        username,
+      },
+      process.env.SESSION_SECRET,
+      {
+        expiresIn: '24h',
+      }
     )
 
     return {
       statusCode: 200,
-      body: JSON.stringify(results),
+      body: JSON.stringify({
+        username,
+        token,
+      }),
     }
   } catch (error) {
     return { statusCode: 500, body: error.toString() }

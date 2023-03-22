@@ -1,3 +1,0 @@
-use('xinchao')
-
-db.adminusers.findOne()
