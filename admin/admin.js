@@ -8,21 +8,20 @@ class Authenticator {
   static async authenticate(event) {
     event.preventDefault()
 
-    const body = {}
+    const formInputs = {}
     for (const [key, value] of new FormData(query('#admin_form')))
-      body[key] = value
+      formInputs[key] = value
 
     const response = await fetch('/.netlify/functions/auth', {
         method: 'POST',
-        body: JSON.stringify(body),
+        body: JSON.stringify(formInputs),
       }),
-      data = await response.json()
+      { error, username, token } = await response.json()
 
-    if (data.error) {
-      
-    }
+    if (error) return alert('Incorrect username or password')
+
     // Username will likely be an unnecessary property to keep; will decide later.
-    const { username, token } = data
+    document.cookie = `jwt=${token}; secure; httpOnly; sameSite=Lax`
   }
 }
 
