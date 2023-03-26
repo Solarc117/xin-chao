@@ -21,6 +21,8 @@ class Authenticator {
     if (clientError) return alert('Incorrect username or password')
     if (serverError)
       return alert('Something went wrong, please try again later')
+    if (response.status === 200)
+      window.location.replace(`${window.location.origin}/admin/home/`)
   }
 }
 

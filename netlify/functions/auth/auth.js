@@ -48,6 +48,10 @@ exports.handler = async function (event, context) {
       headers: {
         'set-cookie': `jwt=${token}; secure; httpOnly; sameSite=Lax`,
       },
+      body: JSON.stringify({
+        username,
+        token,
+      }),
     }
   } catch (error) {
     return {
