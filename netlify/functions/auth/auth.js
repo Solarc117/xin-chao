@@ -14,7 +14,7 @@ exports.handler = async function (event, context) {
   if (!username || !password)
     return {
       statusCode: 400,
-      body: JSON.stringify({ error: 'missing user or password fields' }),
+      body: JSON.stringify({ clientError: 'missing user or password fields' }),
     }
 
   try {
