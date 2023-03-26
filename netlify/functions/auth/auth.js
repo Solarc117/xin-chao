@@ -43,8 +43,6 @@ exports.handler = async function (event, context) {
       }
     )
 
-    document.cookie = 
-
     return {
       statusCode: 200,
       headers: {
