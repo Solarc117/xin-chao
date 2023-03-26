@@ -11,7 +11,7 @@ exports.handler = async function ({ headers: { cookie } }) {
   if (typeof token !== 'string')
     return {
       statusCode: 401,
-      body: 'Unauthorized',
+      body: JSON.stringify({ message: 'Unauthorized' }),
     }
 
   return await jwt.verify(
@@ -21,11 +21,11 @@ exports.handler = async function ({ headers: { cookie } }) {
       return error || username !== process.env.ADMIN_USERNAME
         ? {
             statusCode: 403,
-            body: 'Forbidden',
+            body: JSON.stringify({ message: 'Forbidden' }),
           }
         : {
             statusCode: 200,
-            body: 'Allowed',
+            body: JSON.stringify({ message: 'Allowed' }),
           }
     }
   )

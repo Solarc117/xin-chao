@@ -9,7 +9,7 @@ exports.handler = async function (event, context) {
   if (httpMethod !== 'POST')
     return {
       statusCode: 404,
-      body: JSON.stringify({ error: '404 not found' }),
+      body: JSON.stringify({ clientError: '404 not found' }),
     }
   if (!username || !password)
     return {
@@ -42,6 +42,8 @@ exports.handler = async function (event, context) {
         expiresIn: '24h',
       }
     )
+
+    document.cookie = 
 
     return {
       statusCode: 200,
