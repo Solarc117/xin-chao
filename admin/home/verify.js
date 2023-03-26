@@ -1,6 +1,6 @@
 fetch('/.netlify/functions/verify')
-  .then(response => response.json())
-  .then(data => {
-    console.log('data:', data)
+  .then(({ status }) => {
+    if (status === 401 || status === 403)
+      window.location.replace(`${window.location.origin}/admin/`)
   })
   .catch(console.error)
