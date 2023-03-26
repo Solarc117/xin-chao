@@ -32,9 +32,11 @@ function setDynamicBackground(document, imageURLs) {
     )
   }, 2000)
 }
-/** @type {string[]} */
-const images = ['home-1.jpg', 'home-2.jpg', 'home-3.jpg'].map(
-  fileName => `../images/${fileName}`
-)
+
+const { dataset: data } = document.querySelector('#background_script'),
+  /** @type {string[]} */
+  images = JSON.parse(data?.images).map(
+    fileName => `${data?.image_path}/${fileName}`
+  )
 
 setDynamicBackground(document, images)

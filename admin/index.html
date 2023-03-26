@@ -6,22 +6,23 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <link rel="icon" href="./images/light-logo.png" media="(prefers-color-scheme: dark)" />
-  <link rel="icon" href="./images/dark-logo.png" media="(prefers-color-scheme: light)" />
-  <link rel="stylesheet" href="./css/normalize.css" />
-  <link rel="stylesheet" href="./css/global.css" />
-  <link rel="stylesheet" href="./css/home.css" />
+  <link rel="icon" href="../images/light-logo.png" media="(prefers-color-scheme: dark)" />
+  <link rel="icon" href="../images/dark-logo.png" media="(prefers-color-scheme: light)" />
+  <link rel="stylesheet" href="../css/normalize.css" />
+  <link rel="stylesheet" href="../css/global.css" />
+  <link rel="stylesheet" href="../css/login.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat&display=swap" />
 
-  <script defer type="module" src="./global.js"></script>
-  <script defer type="module" src="./dynamic-background.js" id="background_script" data-image_path="./images" data-images='["home-1.jpg", "home-2.jpg", "home-3.jpg"]'></script>
+  <script defer type="module" src="../global.js"></script>
+  <script defer type="module" src="../dynamic-background.js" id="background_script" data-image_path="../images" data-images='["home-1.jpg", "home-2.jpg", "home-3.jpg"]'></script>
+  <script defer type="module" src="./login.js"></script>
 
   <title>Xin Chao Coffee</title>
 </head>
 
-<body style="background-image: url(./images/home-1.jpg)">
+<body style="background-image: url(../images/home-1.jpg)">
   <div class="gradient_container"></div>
   <div class="background_image"></div>
 
@@ -79,7 +80,19 @@
   </nav>
 
   <main class="main">
-    <a class="menu" href="./OFFICIAL_MENU.pdf" rel="noreferrer" target="_blank">Menu</a>
+    <form class="login_form" id="admin_form">
+      <label class="user_label">
+        Username:
+        <br />
+        <input type="text" class="user_input" name="username" />
+      </label>
+      <label class="password_label">
+        Password:
+        <br />
+        <input type="password" class="password_input" name="password" />
+      </label>
+      <button type="submit" class="login_button">Login</button>
+    </form>
   </main>
 
   <section id="store_hours" class="store_hours">
@@ -88,11 +101,6 @@
       <a id="google_hours_link" class="link" href="https://www.google.com/search?q=xin+chao+coffee+calgary+hours" target="_blank" rel="noreferrer" tabindex="-1">Google hours</a>, or call the store.
     </p>
   </section>
-  <div id="snippet" class="hours_snippet" title="Store hours">
-    <p id="snippet_text">
-      <a class="open_text link" tabindex="1">Business Hours</a>
-    </p>
-  </div>
 </body>
 
 </html>

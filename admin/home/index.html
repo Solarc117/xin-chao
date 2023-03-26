@@ -2,30 +2,21 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <link rel="icon" href="../images/light-logo.png" media="(prefers-color-scheme: dark)" />
-  <link rel="icon" href="../images/dark-logo.png" media="(prefers-color-scheme: light)" />
-  <link rel="stylesheet" href="../css/normalize.css" />
-  <link rel="stylesheet" href="../css/global.css" />
-  <link rel="stylesheet" href="../css/admin.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat&display=swap" />
+  <link rel="stylesheet" href="../../css/normalize.css">
+  <link rel="stylesheet" href="../../css/global.css">
+  <link rel="stylesheet" href="../../css/admin.css">
 
-  <script defer type="module" src="../global.js"></script>
-  <script defer type="module" src="../home.js"></script>
-  <script defer type="module" src="./admin.js"></script>
+  <script type="module" src="./verify.js"></script>
+  <script defer type="module" src="./menu.js"></script>
 
   <title>Xin Chao Coffee</title>
 </head>
 
-<body style="background-image: url(../images/home-1.jpg)">
-  <div class="gradient_container"></div>
-  <div class="background_image"></div>
-
+<body>
   <header class="header">
     <div class="logo_section">
       <a class="logo_link" href="/">
@@ -80,27 +71,48 @@
   </nav>
 
   <main class="main">
-    <form class="login_form" id="admin_form">
-      <label class="user_label">
-        Username:
-        <br />
-        <input type="text" class="user_input" name="username" />
-      </label>
-      <label class="password_label">
-        Password:
-        <br />
-        <input type="password" class="password_input" name="password" />
-      </label>
-      <button type="submit" class="login_button">Login</button>
-    </form>
+    <header class="menu_header">
+      <ul class="menu_categories">
+        <li class="category_title">
+          <a href="#coffee">Coffee ☕</a>
+        </li>
+        <li class="category_title">
+          <a href="#non_coffee">Non-Coffee 🥛</a>
+        </li>
+        <li class="category_title">
+          <a href="#tea">Tea 🍵</a>
+        </li>
+        <li class="category_title">
+          <a href="#appetizers">Appetizers 🥢</a>
+        </li>
+      </ul>
+    </header>
+    <hr />
+    <section class="menu_section">
+      <section id="coffee" class="">
+        <h2>Coffee</h2>
+        <div class="category_items">
+          <div class="item"></div>
+          <div class="item"></div>
+          <div class="item"></div>
+          <div class="item"></div>
+          <div class="item"></div>
+        </div>
+      </section>
+      <section id="non_coffee" class="">
+        <h2>Non-Coffee</h2>
+        <div class="category_items"></div>
+      </section>
+      <section id="tea" class="">
+        <h2>Tea</h2>
+        <div class="category_items"></div>
+      </section>
+      <section id="appetizers" class="">
+        <h2>Appetizers</h2>
+        <div class="category_items"></div>
+      </section>
+    </section>
   </main>
-
-  <section id="store_hours" class="store_hours">
-    <p id="hours_text">
-      For up to date hours, please search our
-      <a id="google_hours_link" class="link" href="https://www.google.com/search?q=xin+chao+coffee+calgary+hours" target="_blank" rel="noreferrer" tabindex="-1">Google hours</a>, or call the store.
-    </p>
-  </section>
 </body>
 
 </html>

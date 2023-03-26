@@ -1,0 +1,5 @@
+[[redirects]]
+  from = "/admin/"
+  to = "/"
+  status = 401 
+  conditions = { name = "jwt", op = "eq", value = "" }

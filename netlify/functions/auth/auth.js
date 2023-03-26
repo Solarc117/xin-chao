@@ -29,7 +29,7 @@ exports.handler = async function (event, context) {
       return {
         statusCode: 400,
         body: JSON.stringify({
-          error: 'invalid username or password',
+          clientError: 'invalid username or password',
         }),
       }
 
@@ -45,12 +45,16 @@ exports.handler = async function (event, context) {
 
     return {
       statusCode: 200,
-      body: JSON.stringify({
-        username,
-        token,
-      }),
+      headers: {
+        'set-cookie': `jwt=${token}; secure; httpOnly; sameSite=Lax`,
+      },
     }
   } catch (error) {
-    return { statusCode: 500, body: error.toString() }
+    return {
+      statusCode: 500,
+      body: JSON.stringify({
+        serverError: error.toString(),
+      }),
+    }
   }
 }

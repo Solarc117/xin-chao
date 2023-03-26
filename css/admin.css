@@ -1,54 +1,94 @@
 body {
+  background-image: url('../images/about-8.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 }
 
-.login_form {
-  padding: 50px 20px;
-  width: 80%;
-  height: 80%;
+.header, .nav_links {
   background: linear-gradient(
     to bottom,
     hsla(0, 0%, 0%, 0.8),
     hsla(0, 0%, 0%, 0.7),
-    hsla(0, 0%, 0%, 0.2)
+    hsla(0, 0%, 0%, 0.3)
   );
-  border-radius: 5px;
-  font-size: 25px;
+}
+
+.main {
+  padding: 10px;
+  background-color: hsla(0, 0%, 0%, 0.3);
+}
+
+hr {
+  width: 100%;
+  margin-top: 5px;
+}
+
+.menu_header {
+  width: 100%;
+  user-select: none;
+}
+.menu_categories {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: space-between;
-  align-items: center;
+  user-select: none;
 }
-
-.login_form label,
-.login_form input {
-  max-width: 100%;
+.category_title {
+  margin-right: 10px;
 }
-
-.login_button {
+.menu_section {
+  width: 100%;
+  padding: 10px;
+  flex-grow: 1;
+}
+.menu_section h2 {
   width: fit-content;
-  padding: 5px;
-  align-self: center;
-  color: white;
-  background: transparent;
-  border: 3px solid white;
+  margin: 10px auto;
+  user-select: none;
+  border-bottom: 1px solid white;
+}
+.category_items {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+.item {
+  height: 65px;
+  background: white;
   border-radius: 5px;
-  transition: 0.5s;
-  cursor: pointer;
 }
 
-/* Tablets */
-@media only screen and (min-width: 600px) {
-  .login_form {
-    width: 60%;
+.main,
+.menu_section h2 {
+  font-size: 20px;
+  font-family: 'Univers Next', 'Times New Roman', Times, serif;
+}
+
+/* Tablets or bigger phones. */
+@media only screen and (min-width: 450px) {
+  .main {
+    padding: 20px;
+  }
+  .main,
+  .menu_section h2 {
+    font-size: 21px;
+  }
+  .category {
+    margin-right: 15px;
   }
 }
 
-/***Desktop***/
+/* Desktop */
 @media only screen and (min-width: 900px) {
-  .login_form {
-    width: 40%;
+  .main {
+    padding: 30px;
+  }
+  .main,
+  .menu_section h2 {
+    font-size: 24px;
+  }
+  .category {
+    margin-right: 20px;
   }
 }

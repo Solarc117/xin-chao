@@ -1,8 +1,0 @@
-✅📄⚠️❌
-
-- store jwt on client side upon authentication w/cookies:
-  ✅ read how to create cookies w/js
-  - 
-- create home admin page
-- setup home admin page on vite config
-- redirect user to home admin page on authentication
