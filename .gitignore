@@ -13,7 +13,7 @@ dist-ssr
 *.local
 .vercel 
 .env
-.mongodb
+dev/test.mongodb
 
 # Editor directories and files
 .vscode/*

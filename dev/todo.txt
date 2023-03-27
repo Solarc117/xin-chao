@@ -6,21 +6,24 @@
   ✅ login
   ✅ admin home
 ✅ setup home admin page on vite config
-
 ✅ in admin login page:
   ✅ call verify serverless function, & if successful, redirect to home page
+✅ redirect user to home admin page on authentication
+
+✅ add mongo schema for products
+
 
 - create admin home page: 
+  - debug main flex bug
   - with editable fields for:
     - menu items:
       ✅ add a few menu-items to get a feel for the layout
-      - add real menu items in db
+      ✅ add real menu items in db
       - add a default "add item" div to every section (in js, as this will depend on how many food categories there are)
     - store hours
-  - ensure user is authenticated
-  - redirect user to /admin/ (login page) if not authenticated
+  ✅ ensure user is authenticated:
+    ✅ redirect user to login page if not authenticated
 
-- redirect user to home admin page on authentication
 
 - test page to ensure nothing broke:
   - seems good on mine. Will test on firefox in deploy, & will ask Khanh/Phuong to test on Mac.

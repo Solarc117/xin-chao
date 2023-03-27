@@ -5,7 +5,8 @@ body {
   background-repeat: no-repeat;
 }
 
-.header, .nav_links {
+.header,
+.nav_links {
   background: linear-gradient(
     to bottom,
     hsla(0, 0%, 0%, 0.8),
@@ -59,6 +60,10 @@ hr {
   border-radius: 5px;
 }
 
+.main {
+  height: auto; /* To override the height property in global.css. */
+  min-height: calc(100vh - 100px) ;
+}
 .main,
 .menu_section h2 {
   font-size: 20px;
