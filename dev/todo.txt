@@ -14,15 +14,26 @@
 
 
 - create admin home page: 
-  - debug main flex bug
-  - with editable fields for:
+  ✅ debug main flex bug
+  ✅ ensure user is authenticated:
+    ✅ redirect user to login page if not authenticated
+  ✅ wait for verification function before fetching from db & rendering html:
+    ✅ create a serverless function that fetches all menu items from db, grouped by category
+
+  - on data fetch:
+    ✅ create a li.category_title inside ul.menu_categories for every category
+    ✅ create an a:link with an href property set to `#${category.toLowerCase()}`, and text set to the category
+    ✅ append the a tag to the li tag
+    ✅ append the li tag to ul#category_nav
+    - inside #menu_section, create a section#[category.toLowerCase()].category for each category, with an h2 containing the category name, a div.category_items, & a div.item for each product inside that category
+    - at the end of each category, create a div#[`add$_{category.toLowerCase()}_item`], with "add <category> item" text
+
+  - create editable fields for:
     - menu items:
       ✅ add a few menu-items to get a feel for the layout
       ✅ add real menu items in db
       - add a default "add item" div to every section (in js, as this will depend on how many food categories there are)
     - store hours
-  ✅ ensure user is authenticated:
-    ✅ redirect user to login page if not authenticated
 
 
 - test page to ensure nothing broke:

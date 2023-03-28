@@ -19,7 +19,7 @@ exports.handler = async function (event, context) {
 
   try {
     const database = (await clientPromise).db(process.env.DATABASE),
-      collection = database.collection(process.env.COLLECTION),
+      collection = database.collection(process.env.USER_COLLECTION),
       adminUser = await collection.findOne({ username })
 
     if (

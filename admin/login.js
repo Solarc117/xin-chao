@@ -22,7 +22,7 @@ class Authenticator {
     if (serverError)
       return alert('Something went wrong, please try again later')
     if (response.status === 200)
-      window.location.replace(`${window.location.origin}/admin/home/`)
+      window.location.replace(`${window.location.origin}/admin/home/home.html`)
   }
 }
 
