@@ -20,19 +20,15 @@ exports.handler = async function ({ headers: { cookie } }) {
       body: JSON.stringify({ message: 'Unauthorized' }),
     }
 
-  return await jwt.verify(
-    token,
-    process.env.SESSION_SECRET,
-    (error, { username }) => {
-      return error || username !== process.env.ADMIN_USERNAME
-        ? {
-            statusCode: 403,
-            body: JSON.stringify({ message: 'Forbidden' }),
-          }
-        : {
-            statusCode: 200,
-            body: JSON.stringify({ message: 'Allowed' }),
-          }
-    }
-  )
+  return await jwt.verify(token, process.env.SESSION_SECRET, (error, user) => {
+    return error || user === undefined || user.username !== process.env.ADMIN_USERNAME
+      ? {
+          statusCode: 403,
+          body: JSON.stringify({ message: 'Forbidden' }),
+        }
+      : {
+          statusCode: 200,
+          body: JSON.stringify({ message: 'Allowed' }),
+        }
+  })
 }
