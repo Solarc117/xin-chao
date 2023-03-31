@@ -17,11 +17,11 @@ body {
 
 .main {
   /* To override the height property in global.css. */
-  height: auto;
-  min-height: calc(100vh - 100px);
+  height: calc(100vh - 100px);
   padding: 10px;
   display: block;
   background-color: hsla(0, 0%, 0%, 0.3);
+  overflow-y: scroll;
 }
 .main,
 .menu_section h2 {
@@ -30,7 +30,6 @@ body {
 }
 
 .category_nav_hr {
-  width: 100%;
   margin-top: 5px;
 }
 

@@ -9,9 +9,8 @@
 ✅ in admin login page:
   ✅ call verify serverless function, & if successful, redirect to home page
 ✅ redirect user to home admin page on authentication
-
 ✅ add mongo schema for products
-
+✅ debug admin home style on desk (after collapsing nav media query):
 
 - create admin home page: 
   ✅ debug main flex bug
@@ -26,23 +25,12 @@
     ✅ append the li tag to ul#category_navk
     ✅ complete #menu_section: 
     - at the end of each category, create an article#[`add$_{category.toLowerCase()}_item`], with "add <category> item" text
-
-- debug admin home style on desk (after collapsing nav media query):
-  📄 nav misalignment occurs only after data is rendered:
-  ✅ prevent items from rendering, and see if anything occurs when the item nav is rendered, to rule out the item nav
-  - add styles to page from scratch; if any styles are conflicting from global, remove from global css
-  - compare the styles of the major elements (header, nav, main) between admim home & contact (in order to make the main tag vertically scrollable without making the whole page horizontally scrollable):
-    - header
-    - nav
-    - main
-
   - create editable fields for:
     - menu items:
       ✅ add a few menu-items to get a feel for the layout
       ✅ add real menu items in db
       - add a default "add item" div to every section (in js, as this will depend on how many food categories there are)
     - store hours
-
 
 - test page to ensure nothing broke:
   - seems good on mine. Will test on firefox in deploy, & will ask Khanh/Phuong to test on Mac.
