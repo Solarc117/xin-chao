@@ -19,14 +19,22 @@
     ✅ redirect user to login page if not authenticated
   ✅ wait for verification function before fetching from db & rendering html:
     ✅ create a serverless function that fetches all menu items from db, grouped by category
-
   - on data fetch:
     ✅ create a li.category_title inside ul.menu_categories for every category
     ✅ create an a:link with an href property set to `#${category.toLowerCase()}`, and text set to the category
     ✅ append the a tag to the li tag
-    ✅ append the li tag to ul#category_nav
-    - inside #menu_section, create a section#[category.toLowerCase()].category for each category, with an h2 containing the category name, a div.category_items, & a div.item for each product inside that category
-    - at the end of each category, create a div#[`add$_{category.toLowerCase()}_item`], with "add <category> item" text
+    ✅ append the li tag to ul#category_navk
+    ✅ complete #menu_section: 
+    - at the end of each category, create an article#[`add$_{category.toLowerCase()}_item`], with "add <category> item" text
+
+- debug admin home style on desk (after collapsing nav media query):
+  📄 nav misalignment occurs only after data is rendered:
+  ✅ prevent items from rendering, and see if anything occurs when the item nav is rendered, to rule out the item nav
+  - add styles to page from scratch; if any styles are conflicting from global, remove from global css
+  - compare the styles of the major elements (header, nav, main) between admim home & contact (in order to make the main tag vertically scrollable without making the whole page horizontally scrollable):
+    - header
+    - nav
+    - main
 
   - create editable fields for:
     - menu items:

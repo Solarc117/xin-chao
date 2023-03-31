@@ -16,11 +16,20 @@ body {
 }
 
 .main {
+  /* To override the height property in global.css. */
+  height: auto;
+  min-height: calc(100vh - 100px);
   padding: 10px;
+  display: block;
   background-color: hsla(0, 0%, 0%, 0.3);
 }
+.main,
+.menu_section h2 {
+  font-size: 20px;
+  font-family: 'Univers Next', 'Times New Roman', Times, serif;
+}
 
-hr {
+.category_nav_hr {
   width: 100%;
   margin-top: 5px;
 }
@@ -53,19 +62,44 @@ hr {
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 }
 .item {
-  height: 65px;
+  padding: 5px;
+  min-height: 65px;
   background: white;
+  color: black;
   border-radius: 5px;
+  display: flex;
+  flex-direction: column;
 }
-
-.main {
-  height: auto; /* To override the height property in global.css. */
-  min-height: calc(100vh - 100px) ;
+.item_header {
+  height: fit-content;
+  display: flex;
+  flex-direction: row;
 }
-.main,
-.menu_section h2 {
-  font-size: 20px;
-  font-family: 'Univers Next', 'Times New Roman', Times, serif;
+.item_name {
+  width: fit-content;
+}
+.svgs {
+  margin-left: 5px;
+}
+.svg {
+  margin: auto 0;
+  height: 16px;
+}
+.price {
+  justify-self: flex-end;
+}
+.item_body {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-size: 17px;
+}
+.quantity_prices {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  column-gap: 5px;
 }
 
 /* Tablets or bigger phones. */
@@ -77,8 +111,19 @@ hr {
   .menu_section h2 {
     font-size: 21px;
   }
-  .category {
+  .category_title {
     margin-right: 15px;
+  }
+  .item_body {
+    font-size: 18px;
+  }
+}
+
+/* 1fr category items seem too wide after this point. */
+@media only screen and (min-width: 600px) {
+  .category_items {
+    justify-content: center;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 400px));
   }
 }
 
@@ -89,9 +134,12 @@ hr {
   }
   .main,
   .menu_section h2 {
-    font-size: 24px;
+    font-size: 22px;
   }
-  .category {
+  .category_title {
     margin-right: 20px;
+  }
+  .item_body {
+    font-size: 19px;
   }
 }
