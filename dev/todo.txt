@@ -24,7 +24,7 @@
     ✅ append the a tag to the li tag
     ✅ append the li tag to ul#category_navk
     ✅ complete #menu_section: 
-    - at the end of each category, create an article#[`add$_{category.toLowerCase()}_item`], with "add <category> item" text
+    - at the end of each category, create an article#[`add_${category.toLowerCase()}_item`], with "add <category> item" text
   - create editable fields for:
     - menu items:
       ✅ add a few menu-items to get a feel for the layout
