@@ -46,11 +46,7 @@ fetch('/.netlify/functions/verify')
     menuSection.parentNode.insertBefore(addCategoryItemButton, menuSection)
 
     for (const { category, products } of itemCategories) {
-      const [navTitle, categorySection, optionElement] = [
-          'li',
-          'section',
-          'option',
-        ].map(newElement),
+      const [navTitle, categorySection] = ['li', 'section'].map(newElement),
         categoryId = category.toLowerCase().replace(/\s/g, '_')
 
       // Category navigation.
@@ -120,8 +116,9 @@ fetch('/.netlify/functions/verify')
           </ul>`
       menuSection.appendChild(categorySection)
 
+      const optionElement = newElement('option')
       // Item form option tags.
-      optionElement.setAttribute('value', categoryId)
+      optionElement.setAttribute('value', category)
       optionElement.textContent = category
       categoryOptions?.appendChild(optionElement)
     }
@@ -178,7 +175,7 @@ fetch('/.netlify/functions/verify')
     )
 
     // Handle item form submit.
-    function addItem(event) {
+    async function addItem(event) {
       function getQuantityPrices(quantityPricesParent) {
         const pricesPerQuantity = {}
 
@@ -186,9 +183,9 @@ fetch('/.netlify/functions/verify')
           if (!/fieldset/i.test(child.tagName)) continue
 
           const [text, number] = Array.from(child.children),
-          [quantity, price] = [text, number].map(
-            element => element.children[0].value
-          )
+            [quantity, price] = [text, number].map(
+              element => element.children[0].value
+            )
 
           pricesPerQuantity[quantity] = price
         }
@@ -196,26 +193,34 @@ fetch('/.netlify/functions/verify')
         return pricesPerQuantity
       }
       event.preventDefault()
-      const data = new FormData(event.target)
-      let object = {}
-      for (const [key, value] of data)
+      const formdata = new FormData(event.target)
+      let item = {}
+      for (const [key, value] of formdata)
         switch (key) {
           case 'hot':
           case 'cold':
-            if (!Array.isArray(object.temperature)) object.temperature = []
+            if (!Array.isArray(item.temperature)) item.temperature = []
 
-            object.temperature.push(key)
+            item.temperature.push(key)
             break
           case 'price_option':
             if (value.includes('multiple'))
-              object.price = getQuantityPrices(quantitiesFieldset)
+              item.price = getQuantityPrices(quantitiesFieldset)
 
             break
           default:
-            object[key] = value
+            item[key] = value
         }
 
-      console.log('object:', object)
+      const response = await fetch('/.netlify/functions/item', {
+          method: 'POST',
+          body: JSON.stringify(item),
+        }),
+        data = await response.json()
+
+        if (data.acknowledged === true && data.insertedId) {
+
+        }
     }
     query('#edit_form').addEventListener('submit', addItem)
   })

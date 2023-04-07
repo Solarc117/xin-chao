@@ -16,7 +16,7 @@ exports.handler = async function (event, context) {
   if (httpMethod !== 'GET')
     return {
       statusCode: 404,
-      body: JSON.stringify({ clientError: '404 not found' }),
+      body: JSON.stringify({ clientError: 'not found' }),
     }
 
   try {

@@ -238,10 +238,10 @@ path {
   fill: white;
 }
 .snippet_circle.open {
-  animation: open-pulse 4s ease-in-out infinite;
+  animation: open_pulse 4s ease-in-out infinite;
 }
 .snippet_circle.closed {
-  animation: closed-pulse 4s ease-in-out infinite;
+  animation: closed_pulse 4s ease-in-out infinite;
 }
 .store_hours {
   z-index: 6;
@@ -259,6 +259,23 @@ path {
 }
 .store_hours.hide {
   animation: store_hours_out 0.5s forwards;
+}
+.notification {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+
+  padding: 10px;
+  background: hsla(0, 0%, 0%, 0.9);
+  border-radius: 10px;
+
+  font-size: 17px;
+  color: white;
+  cursor: pointer;
+
+  animation: show_notification 5s forwards;
 }
 
 ::-webkit-scrollbar {
@@ -305,15 +322,15 @@ path {
     width: 67vw;
   }
 
-.title_section {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: fit-content;
-  text-align: center;
-  pointer-events: none;
-}
+  .title_section {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: fit-content;
+    text-align: center;
+    pointer-events: none;
+  }
 
   .nav_section {
     display: none;
@@ -384,6 +401,7 @@ path {
     transform: translateX(100vw);
   }
 }
+
 @keyframes store_hours_in {
   from {
     transform: translateX(100vw);
@@ -400,6 +418,7 @@ path {
     transform: translateX(100vw);
   }
 }
+
 @keyframes darken {
   from {
     background: hsla(0, 0%, 0%, 0);
@@ -416,6 +435,7 @@ path {
     background: hsla(0, 0%, 0%, 0);
   }
 }
+
 @keyframes fade_in {
   from {
     opacity: 0;
@@ -432,7 +452,8 @@ path {
     opacity: 0;
   }
 }
-@keyframes open-pulse {
+
+@keyframes open_pulse {
   0% {
     fill: hsl(150, 100%, 34%);
     r: 10;
@@ -446,7 +467,7 @@ path {
     r: 10;
   }
 }
-@keyframes closed-pulse {
+@keyframes closed_pulse {
   0% {
     fill: hsl(348, 83%, 47%);
     r: 10;
@@ -460,3 +481,18 @@ path {
     r: 10;
   }
 }
+
+@keyframes show_notification {
+  0% {
+    top: -100vh;
+  }
+  22.5% {
+    top: 10px;
+  }
+  75% {
+    top: 10px;
+  }
+  100% {
+    top: -100vh;
+  }
+} 

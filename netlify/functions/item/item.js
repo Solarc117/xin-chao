@@ -1,4 +1,4 @@
-const { MongoClient } = require('mongodb'),
+const { MongoClient, MongoError } = require('mongodb'),
   { URI, DATABASE, PRODUCT_COLLECTION } = process.env,
   mongoClient = new MongoClient(URI, {
     appName: 'Xin Chao Coffee',
@@ -9,22 +9,42 @@ const { MongoClient } = require('mongodb'),
   }),
   clientPromise = mongoClient.connect()
 
-class ItemUpdater {
-  static async handler(event, context) {
-    const { httpMethod, body } = event
+class MenuDAO {
+  static async createItem(item) {
+    const database = (await clientPromise).db(DATABASE),
+      collection = database.collection(PRODUCT_COLLECTION),
+      result = await collection.insertOne(item)
 
-    console.log('httpMethod:', httpMethod)
-    console.log('body:', body)
-
-    // switch(httpMethod) {
-    //   case 'GET':
-    //     const result = await this.createItem()
-    // }
+    return result
   }
-
-  // static createItem(item) {
-
-  // }
 }
 
-exports.handler = ItemUpdater.handler
+exports.handler = async function (event, context) {
+  const { httpMethod, body } = event,
+    item = JSON.parse(body)
+
+  switch (httpMethod) {
+    case 'POST':
+      try {
+        const result = await MenuDAO.createItem(item)
+
+        return {
+          statusCode: 200,
+          body: JSON.stringify(result),
+        }
+      } catch (error) {
+        console.error(error)
+        return {
+          statusCode: error.code === 11000 ? 409 : 500,
+          body: JSON.stringify({
+            error: error.toString(),
+          }),
+        }
+      }
+    default:
+      return {
+        statusCode: 404,
+        body: JSON.stringify({ error: 'not found' }),
+      }
+  }
+}
