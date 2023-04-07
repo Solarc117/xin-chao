@@ -1,6 +1,14 @@
 const { MongoClient } = require('mongodb'),
-  mongoClient = new MongoClient(process.env.URI),
-  clientPromise = mongoClient.connect()
+  { URI, DATABASE, PRODUCT_COLLECTION } = process.env,
+  mongoClient = new MongoClient(URI, {
+    appName: 'Xin Chao Coffee',
+    maxPoolSize: 1,
+    maxIdleTimeMS: 10_000,
+    serverSelectionTimeoutMS: 10_000,
+    socketTimeoutMS: 20_000,
+  }),
+  clientPromise = mongoClient.connect(),
+  log = console.log.bind(console)
 
 exports.handler = async function (event, context) {
   const { httpMethod } = event
@@ -12,8 +20,8 @@ exports.handler = async function (event, context) {
     }
 
   try {
-    const database = (await clientPromise).db(process.env.DATABASE),
-      collection = database.collection(process.env.PRODUCT_COLLECTION),
+    const database = (await clientPromise).db(DATABASE),
+      collection = database.collection(PRODUCT_COLLECTION),
       cursor = await collection.aggregate([
         {
           $group: {
@@ -23,13 +31,7 @@ exports.handler = async function (event, context) {
         },
         {
           $addFields: {
-            'category': '$_id',
-          },
-        },
-        {
-          $project: {
-            _id: 0,
-            'products._id': 0,
+            category: '$_id',
           },
         },
       ]),

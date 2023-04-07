@@ -5,6 +5,7 @@ body {
   background-repeat: no-repeat;
 }
 
+/* Sections */
 .header,
 .nav_links {
   background: linear-gradient(
@@ -49,13 +50,21 @@ body {
   padding: 10px;
   flex-grow: 1;
 }
+
+/* Components */
 .menu_section h2 {
   width: fit-content;
   margin: 10px auto;
   user-select: none;
   border-bottom: 1px solid white;
 }
+.category {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 .category_items {
+  width: 100%;
   display: grid;
   gap: 10px;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -77,8 +86,15 @@ body {
 .item_name {
   width: fit-content;
 }
-.svgs {
-  margin-left: 5px;
+.admin_button {
+  cursor: pointer;
+}
+.admin_buttons {
+  text-align: right;
+  margin-left: auto;
+}
+.admin_svg {
+  cursor: pointer;
 }
 .svg {
   margin: auto 0;
@@ -105,6 +121,98 @@ body {
   border-bottom: 1px solid black;
   text-align: end;
 }
+.add_category_item {
+  margin: 10px 0;
+  padding: 20px;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  cursor: pointer;
+}
+.emoji {
+  font-size: 0.9em;
+}
+
+/* Edit Item Form */
+.edit_item {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80vw;
+  height: 80vh;
+  overflow-y: scroll;
+  background: hsla(0, 0%, 0%, 0.8);
+  border-radius: 5px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 7;
+}
+.edit_item[hidden] {
+  animation: hide 0.3s;
+}
+.edit_item:not([hidden]) {
+  animation: show 0.3s;
+}
+
+.price_fieldset,
+.quantity_prices_fieldset {
+  border: 1px solid white;
+}
+
+.edit_item button {
+  padding: 5px;
+  margin: 5px 0;
+  border-radius: 3px;
+  border: none;
+  cursor: pointer;
+}
+
+.edit_form_input {
+  margin-top: 5px;
+  width: 100%;
+}
+.price_fieldset > * {
+  margin: 10px 0;
+}
+label:has(> .price_option) {
+  margin-right: 20px;
+  user-select: none;
+  cursor: pointer;
+}
+.quantity_prices_fieldset > * {
+  border: none;
+}
+.quantity_prices_fieldset input {
+  width: 100%;
+}
+.quantity_price_pair label {
+  display: flex;
+  flex-direction: row;
+}
+.quantity_price_pair input {
+  margin-left: 10px;
+}
+.temperature_fieldset {
+  user-select: none;
+  margin: 0 auto;
+  border: 1px solid white;
+  width: fit-content;
+}
+.temperature_fieldset .svg {
+  margin: 0 10px;
+}
+.temperature_fieldset label {
+  display: flex;
+  justify-content: flex-start;
+  cursor: pointer;
+}
+.temperature_fieldset input {
+  margin-left: auto;
+  width: fit-content;
+}
 
 /* Tablets or bigger phones. */
 @media only screen and (min-width: 450px) {
@@ -123,11 +231,15 @@ body {
   }
 }
 
-/* 1fr category items seem too wide after this point. */
+/* 1fr category items seem too wide after 600px. */
 @media only screen and (min-width: 600px) {
   .category_items {
     justify-content: center;
     grid-template-columns: repeat(auto-fit, minmax(250px, 400px));
+  }
+
+  .edit_item {
+    font-size: 22px;
   }
 }
 
@@ -145,5 +257,30 @@ body {
   }
   .item_body {
     font-size: 19px;
+  }
+
+  .edit_item {
+    font-size: 24px;
+  }
+}
+
+[hidden] {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+@keyframes show {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes hide {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
   }
 }

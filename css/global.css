@@ -261,6 +261,20 @@ path {
   animation: store_hours_out 0.5s forwards;
 }
 
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: hsla(0, 0%, 0%, 0.6);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: white;
+  border-radius: 5px;
+}
+
 @media only screen and (min-width: 350px) {
   .bars {
     margin-right: 30px;
