@@ -30,7 +30,7 @@ fetch('/.netlify/functions/verify')
       console.error(itemCategories.serverError)
       return notify('❌ Something went wrong, please try again later')
     }
-    sessionStorage.setItem(
+    localStorage.setItem(
       'items',
       JSON.stringify(itemCategories.map(category => category.products).flat())
     )
@@ -75,12 +75,6 @@ fetch('/.netlify/functions/verify')
                       >
                       ✏️
                       </span>
-                      <span
-                        class="admin_button item_delete_button emoji"
-                        title="Delete ${name}"
-                      >
-                      ❌
-                      </span>
                     </span>
                   </header>
                   <hr />
@@ -93,7 +87,7 @@ fetch('/.netlify/functions/verify')
                           ${Object.keys(price)
                             .map(
                               quantity => `
-                                <li class="quantity_price">${quantity}: $${price[quantity]}</li>`
+                                <li class="quantity_price">${quantity}: <span class="price">$${price[quantity]}</span></li>`
                             )
                             .join('')}
                         </ul>`
@@ -208,9 +202,11 @@ fetch('/.netlify/functions/verify')
 
       const data = await response.json()
 
-      if (data.acknowledged === true && typeof data.insertedId === 'string')
+      if (data.acknowledged === true && typeof data.insertedId === 'string') {
+        hideAddItemForm()
+        editForm.reset()
         return notify('✅ Item created!')
-
+      }
       if (data.error) console.error(data.error)
       notify('❌ Something went wrong, please try again later')
     }

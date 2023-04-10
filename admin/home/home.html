@@ -86,19 +86,18 @@
     
     <label>
       Name:<br />
-      <input class="edit_form_input" type="text" name="name" placeholder="Great product..." required />
+      <input class="edit_form_input" type="text" name="name" placeholder="Great product..." maxlength="30" required />
     </label>
 
     <label>
       Description:<br />
-      <textarea class="edit_form_input" name="description" placeholder="The best..."></textarea>
+      <textarea class="edit_form_input" name="description" placeholder="The best..." maxlength="120"></textarea>
     </label>
 
     <label>
       Category:<br />
       <select class="edit_form_input" name="category" id="category_options" required>
         <option value selected>Please select a category</option>
-        <!-- Option tags dynamically created for each product category available. -->
       </select>
     </label>
 

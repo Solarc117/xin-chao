@@ -102,6 +102,7 @@ body {
 }
 .price {
   justify-self: flex-end;
+  color: green;
 }
 .item_body {
   height: 100%;
