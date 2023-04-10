@@ -10,14 +10,16 @@ fetch('/.netlify/functions/verify')
         `${window.location.origin}/admin/login.html`
       )
     if (status !== 200)
-      return alert('something went wrong, please try again later')
+      return notify('❌ Something went wrong, please try again later')
 
     const response = await fetch('/.netlify/functions/menu'),
-      itemCategories = await response.json(),
-      query = document.querySelector.bind(document),
+      itemCategories = await response.json()
+
+    const query = document.querySelector.bind(document),
       queryAll = document.querySelectorAll.bind(document),
-      newElement = document.createElement.bind(document),
-      [categoryNav, menuSection, categoryOptions] = [
+      newElement = document.createElement.bind(document)
+
+    const [categoryNav, menuSection, categoryOptions] = [
         '#category_nav',
         '#menu_section',
         '#category_options',
@@ -26,24 +28,12 @@ fetch('/.netlify/functions/verify')
 
     if (itemCategories.serverError) {
       console.error(itemCategories.serverError)
-      return alert('something went wrong, please try again later')
+      return notify('❌ Something went wrong, please try again later')
     }
     sessionStorage.setItem(
       'items',
       JSON.stringify(itemCategories.map(category => category.products).flat())
     )
-
-    // New item button.
-    function displayAddItemForm(event) {
-      const form = query('#edit_form')
-      form.removeAttribute('hidden')
-    }
-    const addCategoryItemButton = newElement('button'),
-      hr = query('.category_nav_')
-    addCategoryItemButton.classList.add('add_category_item')
-    addCategoryItemButton.textContent = 'Add New Item'
-    addCategoryItemButton.addEventListener('click', displayAddItemForm)
-    menuSection.parentNode.insertBefore(addCategoryItemButton, menuSection)
 
     for (const { category, products } of itemCategories) {
       const [navTitle, categorySection] = ['li', 'section'].map(newElement),
@@ -123,8 +113,13 @@ fetch('/.netlify/functions/verify')
       categoryOptions?.appendChild(optionElement)
     }
 
-    // Item form - price section.
-    const quantitiesFieldset = query('#quantity_prices_fieldset')
+    // EDIT FORM.
+    function displayAddItemForm() {
+      editForm.removeAttribute('hidden')
+    }
+    function hideAddItemForm() {
+      editForm.setAttribute('hidden', 'hidden')
+    }
     function switchPriceOption(event) {
       const { target } = event,
         singlePriceInput = query('#single_price')
@@ -167,14 +162,6 @@ fetch('/.netlify/functions/verify')
         quantitiesFieldset.lastElementChild
       )
     }
-    for (const id of ['#single_price_option', '#multiple_price_option'])
-      query(id)?.addEventListener('change', switchPriceOption)
-    query('#add_quantity_button')?.addEventListener(
-      'click',
-      addQuantityPricePair
-    )
-
-    // Handle item form submit.
     async function addItem(event) {
       function getQuantityPrices(quantityPricesParent) {
         const pricesPerQuantity = {}
@@ -213,18 +200,43 @@ fetch('/.netlify/functions/verify')
         }
 
       const response = await fetch('/.netlify/functions/item', {
-          method: 'POST',
-          body: JSON.stringify(item),
-        }),
-        data = await response.json()
+        method: 'POST',
+        body: JSON.stringify(item),
+      })
+      if (response.status === 409)
+        return notify('❌ An item with that name already exists')
 
-        if (data.acknowledged === true && data.insertedId) {
+      const data = await response.json()
 
-        }
+      if (data.acknowledged === true && typeof data.insertedId === 'string')
+        return notify('✅ Item created!')
+
+      if (data.error) console.error(data.error)
+      notify('❌ Something went wrong, please try again later')
     }
-    query('#edit_form').addEventListener('submit', addItem)
+    // New item button.
+    const addCategoryItemButton = newElement('button'),
+      hr = query('.category_nav_')
+    addCategoryItemButton.classList.add('add_category_item')
+    addCategoryItemButton.textContent = 'Add New Item'
+    addCategoryItemButton.addEventListener('click', displayAddItemForm)
+    menuSection.parentNode.insertBefore(addCategoryItemButton, menuSection)
+    const editForm = query('#edit_form'),
+      closeEditFormButton = query('#edit_form button')
+    // Button to close form.
+    closeEditFormButton.addEventListener('click', hideAddItemForm)
+    // Edit form - price section interactivity.
+    const quantitiesFieldset = query('#quantity_prices_fieldset')
+    for (const id of ['#single_price_option', '#multiple_price_option'])
+      query(id)?.addEventListener('change', switchPriceOption)
+    query('#add_quantity_button')?.addEventListener(
+      'click',
+      addQuantityPricePair
+    )
+    // Handle item form submit.
+    editForm.addEventListener('submit', addItem)
   })
   .catch(error => {
     console.error(error)
-    alert('something went wrong, please try again later')
+    notify('❌ Something went wrong, please try again later')
   })

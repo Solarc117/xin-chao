@@ -150,12 +150,6 @@ body {
   gap: 10px;
   z-index: 7;
 }
-.edit_item[hidden] {
-  animation: hide 0.3s;
-}
-.edit_item:not([hidden]) {
-  animation: show 0.3s;
-}
 
 .price_fieldset,
 .quantity_prices_fieldset {
@@ -180,6 +174,9 @@ body {
 label:has(> .price_option) {
   margin-right: 20px;
   user-select: none;
+  cursor: pointer;
+}
+.price_option {
   cursor: pointer;
 }
 .quantity_prices_fieldset > * {
@@ -261,26 +258,5 @@ label:has(> .price_option) {
 
   .edit_item {
     font-size: 24px;
-  }
-}
-
-[hidden] {
-  opacity: 0 !important;
-  pointer-events: none !important;
-}
-@keyframes show {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-@keyframes hide {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
   }
 }

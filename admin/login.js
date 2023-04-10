@@ -15,12 +15,16 @@ class Authenticator {
     const response = await fetch('/.netlify/functions/auth', {
         method: 'POST',
         body: JSON.stringify(formInputs),
-      }),
-      { clientError, serverError } = await response.json()
+      })
+      console.log('response:', response)
+      const data = await response.json(),
+      { clientError, serverError } = data
 
-    if (clientError) return alert('Incorrect username or password')
+      console.log('data:', data)
+
+    if (clientError) return notify('❌ Incorrect username or password')
     if (serverError)
-      return alert('Something went wrong, please try again later')
+      return notify('❌ Something went wrong, please try again later')
     if (response.status === 200)
       window.location.replace(`${window.location.origin}/admin/home/home.html`)
   }

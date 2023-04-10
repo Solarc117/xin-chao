@@ -1,5 +1,6 @@
 const { MongoClient } = require('mongodb'),
-  mongoClient = new MongoClient(process.env.URI),
+  { URI, DATABASE, USER_COLLECTION, SESSION_SECRET } = process.env,
+  mongoClient = new MongoClient(URI),
   clientPromise = mongoClient.connect()
 
 exports.handler = async function (event, context) {
@@ -11,6 +12,7 @@ exports.handler = async function (event, context) {
       statusCode: 404,
       body: JSON.stringify({ clientError: 'not found' }),
     }
+
   if (!username || !password)
     return {
       statusCode: 400,
@@ -18,8 +20,8 @@ exports.handler = async function (event, context) {
     }
 
   try {
-    const database = (await clientPromise).db(process.env.DATABASE),
-      collection = database.collection(process.env.USER_COLLECTION),
+    const database = (await clientPromise).db(DATABASE),
+      collection = database.collection(USER_COLLECTION),
       adminUser = await collection.findOne({ username })
 
     if (
@@ -37,7 +39,7 @@ exports.handler = async function (event, context) {
       {
         username,
       },
-      process.env.SESSION_SECRET,
+      SESSION_SECRET,
       {
         expiresIn: '24h',
       }
@@ -54,6 +56,8 @@ exports.handler = async function (event, context) {
       }),
     }
   } catch (error) {
+    console.error(error)
+
     return {
       statusCode: 500,
       body: JSON.stringify({

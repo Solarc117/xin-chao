@@ -23,28 +23,26 @@
 ✅ debug admin home style on desk (after collapsing nav media query):
 
 - create admin home page: 
-  ✅ debug main flex bug
-  ✅ ensure user is authenticated:
-    ✅ redirect user to login page if not authenticated
-  ✅ wait for verification function before fetching from db & rendering html:
-    ✅ create a serverless function that fetches all menu items from db, grouped by category
-  - on data fetch:
+  ✅ debug main flex bugi
+  ✅ ensure user is authenticated
+  ✅ wait for verification function before fetching from db & rendering html
+  ✅ on data fetch:
     ✅ create a li.category_title inside ul.menu_categories for every category
     ✅ create an a:link with an href property set to `#${category.toLowerCase()}`, and text set to the category
     ✅ append the a tag to the li tag
     ✅ append the li tag to ul#category_navk
     ✅ complete #menu_section: 
-    ✅ at the end of each category, create an article#[`add_${category.toLowerCase()}_item`], with "add <category> item" text
   - create editable fields for:
-    - menu items:
+    ✅ menu items:
       ✅ add a few menu-items to get a feel for the layout
       ✅ add real menu items in db
       ✅ add a default "add item" div to every section (in js, as this will depend on how many food categories there are)
       ✅ add a gradient_container div to admin home
       ✅ add a form element at center of page, with fields for every field in the item
-      ✅ add a checked event listener to input#multiple_price_option, which:
+      ✅ add a checked event listener to input#multiple_price_option
     - store hours
-
+  ✅ fix form hide renders add new item button unclickable for a few seconds bug
+  
 - test page to ensure nothing broke:
   - seems good on mine. Will test on firefox in deploy, & will ask Khanh/Phuong to test on Mac.
 

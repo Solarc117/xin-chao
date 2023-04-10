@@ -1,4 +1,5 @@
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken'),
+  { SESSION_SECRET, ADMIN_USERNAME } = process.env
 
 exports.handler = async function ({ headers: { cookie } }) {
   if (typeof cookie !== 'string')
@@ -20,8 +21,8 @@ exports.handler = async function ({ headers: { cookie } }) {
       body: JSON.stringify({ message: 'Unauthorized' }),
     }
 
-  return await jwt.verify(token, process.env.SESSION_SECRET, (error, user) => {
-    return error || user === undefined || user.username !== process.env.ADMIN_USERNAME
+  return await jwt.verify(token, SESSION_SECRET, (error, user) =>
+    error || user === undefined || user.username !== ADMIN_USERNAME
       ? {
           statusCode: 403,
           body: JSON.stringify({ message: 'Forbidden' }),
@@ -30,5 +31,5 @@ exports.handler = async function ({ headers: { cookie } }) {
           statusCode: 200,
           body: JSON.stringify({ message: 'Allowed' }),
         }
-  })
+  )
 }

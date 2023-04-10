@@ -85,6 +85,10 @@ path {
 .background_image:not(.opaque) {
   animation: fade_out 0.3s forwards;
 }
+[hidden] {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
 
 /* Sections */
 .header {
@@ -495,4 +499,4 @@ path {
   100% {
     top: -100vh;
   }
-} 
+}

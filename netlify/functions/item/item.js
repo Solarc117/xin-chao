@@ -35,7 +35,7 @@ exports.handler = async function (event, context) {
       } catch (error) {
         console.error(error)
         return {
-          statusCode: error.code === 11000 ? 409 : 500,
+          statusCode: error.code === 121 ? 409 : 500,
           body: JSON.stringify({
             error: error.toString(),
           }),
