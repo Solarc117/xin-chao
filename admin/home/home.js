@@ -79,8 +79,7 @@ fetch('/.netlify/functions/verify')
                     <p class="item_description">${description}</p>
                     ${
                       price instanceof Object
-                        ? `
-                        <ul class="quantity_prices">
+                        ? `<ul class="quantity_prices">
                           ${Object.keys(price)
                             .map(
                               quantity => `
@@ -256,6 +255,8 @@ fetch('/.netlify/functions/verify')
           }
 
           notify('✅ Item Updated!')
+          query(`[id="6421fed5325e41712599a698"]`).outerHTML =
+            liElementFromProduct(newItem, true)
           hideAndResetForm()
         } catch (error) {
           console.error(error)
