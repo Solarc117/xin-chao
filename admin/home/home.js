@@ -69,6 +69,13 @@ fetch('/.netlify/functions/verify')
                         title="Edit ${name}"
                       >
                       ✏️
+                      </span> 
+                      <span
+                        class="admin_button item_delete_button emoji"
+                        data-id="${_id}"
+                        title="Delete ${name}"
+                      >
+                      ❌
                       </span>
                     </span>`
                         : ''
@@ -105,13 +112,12 @@ fetch('/.netlify/functions/verify')
       // Items.
       categorySection.id = categoryId
       categorySection.classList.add('category')
-      categorySection.innerHTML = `
-        <h2>${category}</h2>
+      categorySection.innerHTML = `<h2>${category}</h2>
         <ul class="category_items">
           ${products
             .map(product => liElementFromProduct(product, true))
             .join(' ')}
-          </ul>`
+        </ul>`
       menuSection.appendChild(categorySection)
 
       const optionElement = newElement('option')
@@ -179,7 +185,7 @@ fetch('/.netlify/functions/verify')
         quantitiesFieldset.lastElementChild
       )
     }
-    class FormSubmitListener {
+    class ItemAPI {
       static apiUrl = '/.netlify/functions/item'
       static formatItemData(form) {
         const formData = new FormData(form)
@@ -215,10 +221,11 @@ fetch('/.netlify/functions/verify')
 
         return item
       }
-      static async addItem(event) {
-        event.preventDefault()
-        const { target } = event,
-          body = JSON.stringify(FormSubmitListener.formatItemData(target))
+      /** @param {SubmitEvent} submitEvent */
+      static async addItem(submitEvent) {
+        submitEvent.preventDefault()
+        const { target } = submitEvent,
+          body = JSON.stringify(ItemAPI.formatItemData(target))
 
         const response = await fetch('/.netlify/functions/item', {
           method: 'POST',
@@ -236,11 +243,12 @@ fetch('/.netlify/functions/verify')
         if (data.error) console.error(data.error)
         notify('❌ Something went wrong, please try again later')
       }
-      static async editItem(event) {
-        event.preventDefault()
-        const { target } = event,
+      /** @param {SubmitEvent} submitEvent */
+      static async editItemById(submitEvent) {
+        submitEvent.preventDefault()
+        const { target } = submitEvent,
           id = target.dataset.id,
-          item = FormSubmitListener.formatItemData(target)
+          item = ItemAPI.formatItemData(target)
 
         try {
           const response = await fetch('/.netlify/functions/item', {
@@ -255,12 +263,28 @@ fetch('/.netlify/functions/verify')
           }
 
           notify('✅ Item Updated!')
-          query(`[id="6421fed5325e41712599a698"]`).outerHTML =
-            liElementFromProduct(newItem, true)
+          query(`[id="${id}"]`).outerHTML = liElementFromProduct(newItem, true)
           hideAndResetForm()
         } catch (error) {
           console.error(error)
           return notify('❌ Something went wrong, please try again later')
+        }
+      }
+      /** @param {PointerEvent} clickEvent */
+      static async deleteItemById(clickEvent) {
+        const { id } = clickEvent.target.dataset
+
+        console.log('id:', id)
+
+        try {
+          const response = await fetch('/.netlify/functions/item', {
+              method: 'DELETE',
+              body: JSON.stringify({ id }),
+            }),
+            result = await response.json()
+        } catch (error) {
+          console.error(error)
+          return notify('❌ Could not delete item, please try again later')
         }
       }
     }
@@ -268,8 +292,8 @@ fetch('/.netlify/functions/verify')
     function displayAddItemForm() {
       resetForm()
       form.removeAttribute('hidden')
-      form.removeEventListener('submit', FormSubmitListener.editItem)
-      form.addEventListener('submit', FormSubmitListener.addItem)
+      form.removeEventListener('submit', ItemAPI.editItemById)
+      form.addEventListener('submit', ItemAPI.addItem)
     }
     const addItemButton = newElement('button')
     addItemButton.id = 'add_item_button'
@@ -295,8 +319,8 @@ fetch('/.netlify/functions/verify')
 
       resetForm()
       form.removeAttribute('hidden')
-      form.removeEventListener('submit', FormSubmitListener.addItem)
-      form.addEventListener('submit', FormSubmitListener.editItem)
+      form.removeEventListener('submit', ItemAPI.addItem)
+      form.addEventListener('submit', ItemAPI.editItemById)
       form.dataset.id = id
 
       const {
@@ -345,6 +369,18 @@ fetch('/.netlify/functions/verify')
       button.addEventListener('click', event =>
         displayEditItemForm(item, event.target.dataset.id)
       )
+    }
+
+    // Delete item buttons.
+    function displayDeletePopUp(itemName, itemId) {
+      const deletePopUp = newElement('div')
+      deletePopUp.id = 'delete_pop_up'
+      deletePopUp.classList.add('delete_pop_up')
+      deletePopUp.innerHTML = `<p class="warning">
+        ⚠️ Are you sure you wish to delete ${itemName}?
+        <button type="button" class="close_pop_up_button">Close</button>
+        <button type="button" class="delete">Delete</button>
+      </p>`
     }
   })
   .catch(error => {

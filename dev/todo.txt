@@ -121,19 +121,4 @@ class AdminHomeInitializer {
 AdminHomeInitializer.initializePage()
 
 
-      <input class="form_input" type="text" name="name" placeholder="Great product..." maxlength="30" required="">
-      <textarea class="form_input" name="description" placeholder="The best..." maxlength="120"></textarea>
-      <select class="form_input" name="category" id="category_options" required="">
-        <option value="" selected="">Please select a category</option>
-      <option value="Specialty Sodas">Specialty Sodas</option><option value="Coffee">Coffee</option><option value="Milk Teas">Milk Teas</option><option value="Non-Coffee">Non-Coffee</option><option value="Appetizers">Appetizers</option><option value="Smoothies">Smoothies</option></select>
-        <input type="radio" name="price_option" value="single_price" id="single_price_option" class="price_option" checked=""> Single
-        <input type="radio" name="price_option" value="multiple_prices"> Multiple
-        <input type="number" name="price"  step="0.01" min="0.01" required="">
-      <fieldset class="quantity_prices_fieldset" id="quantity_prices_fieldset" disabled="">
-        <fieldset class="quantity_price_pair">
-            <input type="text" placeholder="8oz" required="">
-            <input type="number" pattern="^\$?\d+\.?\d{0,2}?$" step="0.01" min="0.01" placeholder="$5.99" required="">
-        </fieldset>
-      </fieldset>
-        <input type="checkbox" name="hot" value="hot">
-        <input type="checkbox" name="cold" value="cold">
+    
