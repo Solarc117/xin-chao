@@ -1,4 +1,4 @@
-const { MongoClient } = require('mongodb'),
+const { MongoClient, ObjectId } = require('mongodb'),
   { URI, DATABASE, PRODUCT_COLLECTION } = process.env,
   clientPromise = new MongoClient(URI, {
     appName: 'Xin Chao Coffee',
@@ -15,7 +15,6 @@ class MenuDAO {
       collection = database.collection(PRODUCT_COLLECTION),
       result = await collection.insertOne(item)
 
-    // Not sure if I really need to await this - couldn't I just close the promise, & not wait for it to finish before returning the result?
     await promise.close()
 
     return result
@@ -24,7 +23,13 @@ class MenuDAO {
   static async updateItemById(promise, _id, newItem) {
     const database = (await promise).db(DATABASE),
       collection = database.collection(PRODUCT_COLLECTION),
-      result = await collection.updateOne({ _id }, newItem)
+      result = await collection.findOneAndUpdate(
+        { _id: new ObjectId(_id) },
+        {
+          $set: newItem,
+        },
+        { returnDocument: 'after' }
+      )
 
     await promise.close()
 
@@ -68,18 +73,18 @@ exports.handler = async function (event, context) {
         }
 
       try {
-        const result = await MenuDAO.createItem(clientPromise, data)
+        const result = await MenuDAO.createItem(clientPromise, data),
+          { acknowledged, insertedId } = result
 
         return {
-          statusCode:
-            result.matchedCount === 1 && result.modifiedCount === 1 ? 200 : 500,
+          statusCode: acknowledged && insertedId ? 200 : 500,
           body: JSON.stringify(result),
         }
       } catch (error) {
         handleErrorResponse(error)
       }
     case 'PATCH':
-      const { id, item } = body
+      const { id, item } = data
       if (typeof id !== 'string' || !item instanceof Object)
         return {
           statusCode: 400,
@@ -93,7 +98,7 @@ exports.handler = async function (event, context) {
 
         return {
           statusCode:
-            result.matchedCount === 1 && result.modifiedCount === 1 ? 200 : 500,
+            result.ok === 1 && result.value instanceof Object ? 200 : 500,
           body: JSON.stringify(result),
         }
       } catch (error) {

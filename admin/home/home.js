@@ -7,6 +7,7 @@ notify('🥐 toasting your croissaint...')
 
 fetch('/.netlify/functions/verify')
   .then(async ({ status }) => {
+    1
     if (status === 401 || status === 403)
       return window.location.replace(
         `${window.location.origin}/admin/login.html`
@@ -16,6 +17,15 @@ fetch('/.netlify/functions/verify')
 
     const response = await fetch('/.netlify/functions/menu'),
       itemCategories = await response.json()
+
+    if (response.status === 500) {
+      console.error(itemCategories.error)
+      return notify('❌ Something went wrong, please try again later')
+    }
+    localStorage.setItem(
+      'items',
+      JSON.stringify(itemCategories.map(category => category.products).flat())
+    )
 
     const query = document.querySelector.bind(document),
       queryAll = document.querySelectorAll.bind(document),
@@ -28,34 +38,16 @@ fetch('/.netlify/functions/verify')
       ].map(query),
       optionElementsHTML = ''
 
-    if (response.status === 500) {
-      console.error(itemCategories.error)
-      return notify('❌ Something went wrong, please try again later')
-    }
-    localStorage.setItem(
-      'items',
-      JSON.stringify(itemCategories.map(category => category.products).flat())
-    )
+    function liElementFromProduct(
+      { _id, name, description, price, temperature },
+      admin = false
+    ) {
+      const emojis = {
+        hot: '🔥',
+        cold: '❄️',
+      }
 
-    for (const { category, products } of itemCategories) {
-      const [navTitle, categorySection] = ['li', 'section'].map(newElement),
-        categoryId = category.toLowerCase().replace(/\s/g, '_')
-
-      // Category navigation.
-      navTitle.classList.add('category_title')
-      navTitle.innerHTML = `<a href="#${categoryId}">${category}</a>`
-      categoryNav.appendChild(navTitle)
-
-      // Items.
-      categorySection.id = categoryId
-      categorySection.classList.add('category')
-      categorySection.innerHTML = `
-        <h2>${category}</h2>
-        <ul class="category_items">
-          ${products
-            .map(
-              ({ _id, name, description, price, temperature }) =>
-                `<li class="item" id="${_id}">
+      return `<li class="item" id="${_id}">
                   <header class="item_header">
                     <span class="item_name">${
                       temperature.length === 0
@@ -64,13 +56,13 @@ fetch('/.netlify/functions/verify')
                           temperature
                             .map(
                               option =>
-                                `<span class="emoji" title="Available ${option}">${
-                                  option === 'hot' ? '🔥' : '❄️'
-                                }</span>`
+                                `<span class="emoji" title="Available ${option}">${emojis[option]}</span>`
                             )
                             .join('')
                     }</span>
-                    <span class="admin_buttons">
+                    ${
+                      admin
+                        ? `<span class="admin_buttons">
                       <span
                         class="admin_button item_edit_button emoji"
                         data-id="${_id}"
@@ -78,7 +70,9 @@ fetch('/.netlify/functions/verify')
                       >
                       ✏️
                       </span>
-                    </span>
+                    </span>`
+                        : ''
+                    }
                   </header>
                   <hr />
                   <div class="item_body">
@@ -98,7 +92,25 @@ fetch('/.netlify/functions/verify')
                     }
                   </div>
                 </li>`
-            )
+    }
+
+    for (const { category, products } of itemCategories) {
+      const [navTitle, categorySection] = ['li', 'section'].map(newElement),
+        categoryId = category.toLowerCase().replace(/\s/g, '_')
+
+      // Category navigation.
+      navTitle.classList.add('category_title')
+      navTitle.innerHTML = `<a href="#${categoryId}">${category}</a>`
+      categoryNav.appendChild(navTitle)
+
+      // Items.
+      categorySection.id = categoryId
+      categorySection.classList.add('category')
+      categorySection.innerHTML = `
+        <h2>${category}</h2>
+        <ul class="category_items">
+          ${products
+            .map(product => liElementFromProduct(product, true))
             .join(' ')}
           </ul>`
       menuSection.appendChild(categorySection)
@@ -202,12 +214,12 @@ fetch('/.netlify/functions/verify')
               item[key] = value
           }
 
-        return JSON.stringify(item)
+        return item
       }
       static async addItem(event) {
         event.preventDefault()
         const { target } = event,
-          body = FormSubmitListener.formatItemData(target)
+          body = JSON.stringify(FormSubmitListener.formatItemData(target))
 
         const response = await fetch('/.netlify/functions/item', {
           method: 'POST',
@@ -231,29 +243,20 @@ fetch('/.netlify/functions/verify')
           id = target.dataset.id,
           item = FormSubmitListener.formatItemData(target)
 
-        console.log('target:', target)
-        console.log('id:', id)
-        console.log('item:', item)
-        console.log({
-          id,
-          item,
-        })
-
         try {
           const response = await fetch('/.netlify/functions/item', {
               method: 'PATCH',
-              body: { id, item },
+              body: JSON.stringify({ id, item }),
             }),
-            data = await response.json()
+            { value: newItem } = await response.json()
 
           if (response.status !== 200) {
             console.error(data)
             return notify('❌ Something went wrong, please try again later')
           }
 
-          console.log('data:', data)
-
-          notify('❌ Something went wrong, please try again later')
+          notify('✅ Item Updated!')
+          hideAndResetForm()
         } catch (error) {
           console.error(error)
           return notify('❌ Something went wrong, please try again later')
@@ -289,13 +292,11 @@ fetch('/.netlify/functions/verify')
     function displayEditItemForm(item, id) {
       if (!item instanceof Object || typeof id !== 'string') return
 
+      resetForm()
       form.removeAttribute('hidden')
       form.removeEventListener('submit', FormSubmitListener.addItem)
       form.addEventListener('submit', FormSubmitListener.editItem)
-      console.log('id:', id)
-      console.log('form:', form)
       form.dataset.id = id
-      console.log('form.dataset:', form.dataset)
 
       const {
         name,
@@ -304,7 +305,6 @@ fetch('/.netlify/functions/verify')
         price,
         temperature: temperatures,
       } = item
-      resetForm()
 
       query('input[name="name"]').value = name
       query('textarea[name="description"]').value = description
@@ -341,11 +341,9 @@ fetch('/.netlify/functions/verify')
       for (const currentItem of items)
         if (currentItem._id === id) item = currentItem
 
-      button.addEventListener('click', event => {
-        console.log('event.target:', event.target)
-        console.log('id:', event.target.dataset.id)
+      button.addEventListener('click', event =>
         displayEditItemForm(item, event.target.dataset.id)
-      })
+      )
     }
   })
   .catch(error => {
