@@ -1,7 +1,13 @@
 const { MongoClient } = require('mongodb'),
   { URI, DATABASE, USER_COLLECTION, SESSION_SECRET } = process.env,
-  mongoClient = new MongoClient(URI),
-  clientPromise = mongoClient.connect()
+  clientPromise = new MongoClient(URI, {
+    appName: 'Xin Chao Coffee',
+    maxPoolSize: 1,
+    maxIdleTimeMS: 10_000,
+    serverSelectionTimeoutMS: 10_000,
+    socketTimeoutMS: 20_000,
+    keepAlive: true,
+  })
 
 exports.handler = async function (event, context) {
   const { httpMethod } = event,
@@ -10,13 +16,13 @@ exports.handler = async function (event, context) {
   if (httpMethod !== 'POST')
     return {
       statusCode: 404,
-      body: JSON.stringify({ clientError: 'not found' }),
+      body: JSON.stringify({ error: 'not found' }),
     }
 
   if (!username || !password)
     return {
       statusCode: 400,
-      body: JSON.stringify({ clientError: 'missing user or password fields' }),
+      body: JSON.stringify({ error: 'missing user or password fields' }),
     }
 
   try {
@@ -24,14 +30,16 @@ exports.handler = async function (event, context) {
       collection = database.collection(USER_COLLECTION),
       adminUser = await collection.findOne({ username })
 
+    await clientPromise.close()
+
     if (
       adminUser === null ||
       !require('bcrypt').compareSync(password, adminUser.password)
     )
       return {
-        statusCode: 400,
+        statusCode: 401,
         body: JSON.stringify({
-          clientError: 'invalid username or password',
+          error: 'incorrect username or password',
         }),
       }
 

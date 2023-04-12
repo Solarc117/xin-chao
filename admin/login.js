@@ -9,25 +9,26 @@ class Authenticator {
     event.preventDefault()
 
     const formInputs = {}
-    for (const [key, value] of new FormData(query('#admin_form')))
-      formInputs[key] = value
+    for (const [key, value] of new FormData(adminForm)) formInputs[key] = value
 
-    const response = await fetch('/.netlify/functions/auth', {
-        method: 'POST',
-        body: JSON.stringify(formInputs),
-      })
-      console.log('response:', response)
-      const data = await response.json(),
-      { clientError, serverError } = data
+    const { status } = await fetch('/.netlify/functions/auth', {
+      method: 'POST',
+      body: JSON.stringify(formInputs),
+    })
 
-      console.log('data:', data)
+    if (status === 401 || status === 403)
+      return notify('🔒 Incorrect username or password')
 
-    if (clientError) return notify('❌ Incorrect username or password')
-    if (serverError)
-      return notify('❌ Something went wrong, please try again later')
-    if (response.status === 200)
-      window.location.replace(`${window.location.origin}/admin/home/home.html`)
+    if (status !== 200) {
+      console.error(data)
+      return notify('🤔 Something went wrong, please try again later')
+    }
+
+    window.location.replace(`${window.location.origin}/admin/home/home.html`)
   }
 }
 
-adminForm.addEventListener('submit', Authenticator.authenticate)
+adminForm.addEventListener('submit', event => {
+  notify('🥚 prepping your egg coffee...')
+  Authenticator.authenticate(event)
+})

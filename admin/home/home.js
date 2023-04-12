@@ -3,6 +3,8 @@ window.removeParentOnClick = function (event) {
   parent.remove()
 }
 
+notify('🥐 toasting your croissaint...')
+
 fetch('/.netlify/functions/verify')
   .then(async ({ status }) => {
     if (status === 401 || status === 403)
@@ -26,8 +28,8 @@ fetch('/.netlify/functions/verify')
       ].map(query),
       optionElementsHTML = ''
 
-    if (itemCategories.serverError) {
-      console.error(itemCategories.serverError)
+    if (response.status === 500) {
+      console.error(itemCategories.error)
       return notify('❌ Something went wrong, please try again later')
     }
     localStorage.setItem(
@@ -71,6 +73,7 @@ fetch('/.netlify/functions/verify')
                     <span class="admin_buttons">
                       <span
                         class="admin_button item_edit_button emoji"
+                        data-id="${_id}"
                         title="Edit ${name}"
                       >
                       ✏️
@@ -108,11 +111,14 @@ fetch('/.netlify/functions/verify')
     }
 
     // EDIT FORM.
-    function displayAddItemForm() {
-      editForm.removeAttribute('hidden')
+    function resetForm() {
+      form.reset()
+      form.removeAttribute('data-id')
+      for (const element of queryAll('.additional_pair')) element.remove()
     }
-    function hideAddItemForm() {
-      editForm.setAttribute('hidden', 'hidden')
+    function hideAndResetForm() {
+      form.setAttribute('hidden', 'hidden')
+      resetForm()
     }
     function switchPriceOption(event) {
       const { target } = event,
@@ -126,15 +132,20 @@ fetch('/.netlify/functions/verify')
       singlePriceInput.setAttribute('disabled', true)
       quantitiesFieldset.removeAttribute('disabled')
     }
-    function addQuantityPricePair() {
+    function addQuantityPricePair(quantityPrice) {
       const newField = newElement('fieldset')
+      let quantity, price
+      if (quantityPrice instanceof Object)
+        [[quantity, price]] = Object.entries(quantityPrice)
 
       newField.classList.add('quantity_price_pair')
+      newField.classList.add('additional_pair')
       newField.innerHTML = `<label>
           Quantity:
           <input 
             type="text" 
             placeholder="8oz" 
+            ${typeof quantity === 'string' ? `value="${quantity}"` : ''}
             required 
           />
         </label>
@@ -146,6 +157,7 @@ fetch('/.netlify/functions/verify')
             step="0.01"
             min="0.01"
             placeholder="$5.99"
+            ${typeof price === 'string' ? `value="${price}"` : ''}
             required 
           />
         </label>
@@ -156,81 +168,185 @@ fetch('/.netlify/functions/verify')
         quantitiesFieldset.lastElementChild
       )
     }
-    async function addItem(event) {
-      function getQuantityPrices(quantityPricesParent) {
-        const pricesPerQuantity = {}
-
-        for (const child of quantityPricesParent.children) {
-          if (!/fieldset/i.test(child.tagName)) continue
-
-          const [text, number] = Array.from(child.children),
-            [quantity, price] = [text, number].map(
-              element => element.children[0].value
-            )
-
-          pricesPerQuantity[quantity] = price
+    class FormSubmitListener {
+      static apiUrl = '/.netlify/functions/item'
+      static formatItemData(form) {
+        const formData = new FormData(form)
+        let item = {
+          temperature: [],
         }
 
-        return pricesPerQuantity
+        for (const [key, value] of formData)
+          switch (key) {
+            case 'hot':
+            case 'cold':
+              item.temperature.push(key)
+              break
+            case 'price_option':
+              if (value.includes('multiple')) {
+                if (!item.price) item.price = {}
+                for (const child of query('#quantity_prices_fieldset')
+                  .children) {
+                  if (!/fieldset/i.test(child.tagName)) continue
+
+                  const [text, number] = Array.from(child.children),
+                    [quantity, price] = [text, number].map(
+                      element => element.children[0].value
+                    )
+
+                  item.price[quantity] = price
+                }
+              }
+              break
+            default:
+              item[key] = value
+          }
+
+        return JSON.stringify(item)
       }
-      event.preventDefault()
-      const formdata = new FormData(event.target)
-      let item = {}
-      for (const [key, value] of formdata)
-        switch (key) {
-          case 'hot':
-          case 'cold':
-            if (!Array.isArray(item.temperature)) item.temperature = []
+      static async addItem(event) {
+        event.preventDefault()
+        const { target } = event,
+          body = FormSubmitListener.formatItemData(target)
 
-            item.temperature.push(key)
-            break
-          case 'price_option':
-            if (value.includes('multiple'))
-              item.price = getQuantityPrices(quantitiesFieldset)
+        const response = await fetch('/.netlify/functions/item', {
+          method: 'POST',
+          body,
+        })
+        if (response.status === 409)
+          return notify('❌ An item with that name already exists')
 
-            break
-          default:
-            item[key] = value
+        const data = await response.json()
+
+        if (data.acknowledged === true && typeof data.insertedId === 'string') {
+          hideAndResetForm()
+          return notify('✅ Item created!')
         }
-
-      const response = await fetch('/.netlify/functions/item', {
-        method: 'POST',
-        body: JSON.stringify(item),
-      })
-      if (response.status === 409)
-        return notify('❌ An item with that name already exists')
-
-      const data = await response.json()
-
-      if (data.acknowledged === true && typeof data.insertedId === 'string') {
-        hideAddItemForm()
-        editForm.reset()
-        return notify('✅ Item created!')
+        if (data.error) console.error(data.error)
+        notify('❌ Something went wrong, please try again later')
       }
-      if (data.error) console.error(data.error)
-      notify('❌ Something went wrong, please try again later')
+      static async editItem(event) {
+        event.preventDefault()
+        const { target } = event,
+          id = target.dataset.id,
+          item = FormSubmitListener.formatItemData(target)
+
+        console.log('target:', target)
+        console.log('id:', id)
+        console.log('item:', item)
+        console.log({
+          id,
+          item,
+        })
+
+        try {
+          const response = await fetch('/.netlify/functions/item', {
+              method: 'PATCH',
+              body: { id, item },
+            }),
+            data = await response.json()
+
+          if (response.status !== 200) {
+            console.error(data)
+            return notify('❌ Something went wrong, please try again later')
+          }
+
+          console.log('data:', data)
+
+          notify('❌ Something went wrong, please try again later')
+        } catch (error) {
+          console.error(error)
+          return notify('❌ Something went wrong, please try again later')
+        }
+      }
     }
-    // New item button.
-    const addCategoryItemButton = newElement('button'),
-      hr = query('.category_nav_')
-    addCategoryItemButton.classList.add('add_category_item')
-    addCategoryItemButton.textContent = 'Add New Item'
-    addCategoryItemButton.addEventListener('click', displayAddItemForm)
-    menuSection.parentNode.insertBefore(addCategoryItemButton, menuSection)
-    const editForm = query('#edit_form'),
-      closeEditFormButton = query('#edit_form button')
+    // Add item button.
+    function displayAddItemForm() {
+      resetForm()
+      form.removeAttribute('hidden')
+      form.removeEventListener('submit', FormSubmitListener.editItem)
+      form.addEventListener('submit', FormSubmitListener.addItem)
+    }
+    const addItemButton = newElement('button')
+    addItemButton.id = 'add_item_button'
+    addItemButton.classList.add('add_item_button')
+    addItemButton.textContent = 'Add New Item'
+    addItemButton.addEventListener('click', displayAddItemForm)
+    menuSection.parentNode.insertBefore(addItemButton, menuSection)
+
+    const form = query('#item_form'),
+      closeFormButton = query('#close_form_button')
     // Button to close form.
-    closeEditFormButton.addEventListener('click', hideAddItemForm)
+    closeFormButton.addEventListener('click', hideAndResetForm)
     // Edit form - price section interactivity.
     const quantitiesFieldset = query('#quantity_prices_fieldset')
     for (const id of ['#single_price_option', '#multiple_price_option'])
       query(id)?.addEventListener('change', switchPriceOption)
-    query('#add_quantity_button')?.addEventListener(
-      'click',
-      addQuantityPricePair
+    query('#add_quantity_button')?.addEventListener('click', () =>
+      addQuantityPricePair()
     )
-    // Handle item form submit.
-    editForm.addEventListener('submit', addItem)
+    // Set form to patch instead of post on item_edit button click, and fill with the data of the object selected.
+    function displayEditItemForm(item, id) {
+      if (!item instanceof Object || typeof id !== 'string') return
+
+      form.removeAttribute('hidden')
+      form.removeEventListener('submit', FormSubmitListener.addItem)
+      form.addEventListener('submit', FormSubmitListener.editItem)
+      console.log('id:', id)
+      console.log('form:', form)
+      form.dataset.id = id
+      console.log('form.dataset:', form.dataset)
+
+      const {
+        name,
+        description,
+        category,
+        price,
+        temperature: temperatures,
+      } = item
+      resetForm()
+
+      query('input[name="name"]').value = name
+      query('textarea[name="description"]').value = description
+      query('select[name="category"]').value = category
+
+      if (typeof price === 'string') {
+        query('input[value="single_price"]').checked = true
+        query('input[name="price"]').value = price
+      } else {
+        query('input[value="multiple_prices"]').checked = true
+        const fieldset = query('#quantity_prices_fieldset')
+        fieldset.disabled = false
+        query('input[name="price"]').disabled = true
+
+        const quantityPriceArrays = Object.entries(price),
+          [firstQuantity, firstPrice] = quantityPriceArrays.shift(),
+          firstText = query('#quantity_prices_fieldset input[type="text"]'),
+          firstNumber = query('#quantity_prices_fieldset input[type="number"]')
+        firstText.value = firstQuantity
+        firstNumber.value = firstPrice
+
+        for (const [quantity, price] of quantityPriceArrays)
+          addQuantityPricePair({ [quantity]: price })
+      }
+
+      for (const temperature of temperatures)
+        query(`input[value="${temperature}"]`).checked = true
+    }
+
+    for (const button of queryAll('.item_edit_button')) {
+      const id = button.dataset.id,
+        items = JSON.parse(localStorage.getItem('items'))
+      let item
+      for (const currentItem of items)
+        if (currentItem._id === id) item = currentItem
+
+      button.addEventListener('click', event => {
+        console.log('event.target:', event.target)
+        console.log('id:', event.target.dataset.id)
+        displayEditItemForm(item, event.target.dataset.id)
+      })
+    }
   })
   .catch(error => {
     console.error(error)

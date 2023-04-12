@@ -42,11 +42,18 @@
       ✅ add a checked event listener to input#multiple_price_option
     - store hours
   ✅ fix form hide renders add new item button unclickable for a few seconds bug
-  
+  ✅ on add item click:
+    ✅ remove EditForm class' onSubmit listener from the submit event on form
+    ✅ add addItem method as a submit event listener to form 
+  - on edit item click:
+    - fill out form with object data
+    - remove the addItem listener from the form's submit event
+    - add the edit item listener to the form's submit event
+
 - test page to ensure nothing broke:
   - seems good on mine. Will test on firefox in deploy, & will ask Khanh/Phuong to test on Mac.
 
-                   
+- edit/delete svgs:
                                             <img 
                         class="svg admin_svg" 
                         src="../../svgs/edit.svg"
@@ -59,3 +66,74 @@
                         alt="Delete button"
                         title="Delete ${name}"
                       />
+
+- organize home.js:
+class AdminHomeInitializer {
+  static async initializePage() {
+    if (!(await this.authenticateUser()))
+      return notify('❌ Something went wrong, please try again later')
+
+    if (!this.cacheOldMenu('items'))
+  }
+
+  /** @returns {Promise<boolean>} A promise which resolves to a boolean indicating whether the user has been authenticated. */
+  static async authenticateUser() {
+    const verifyResponse = await fetch('/.netlify/functions/verify'),
+      { status } = verifyResponse
+
+    if ([401, 403].includes(status))
+      window.location.replace(`${window.location.origin}/admin/login.html`)
+
+    if (status !== 200) {
+      console.error(verifyResponse)
+      return false
+    }
+
+    return true
+  }
+
+  /** @returns {Promise<boolean>} A promise which resolves to a boolean indicating whether the menu data was fetched & cached. */
+  static async cacheOldMenu(key) {
+    
+
+    const response = await fetch('/.netlify/functions/menu'),
+      itemCategories = await response.json()
+
+    if (itemCategories.serverError) {
+      console.error(itemCategories.serverError)
+      return false
+    }
+
+    try {
+      localStorage.setItem(
+        key,
+        JSON.stringify(itemCategories.map(category => category.products).flat())
+      )
+      localStorage.setItem('lastCachedDateUTC', new Date().toUTCString())
+    } catch (error) {
+      console.error(error)
+      return false
+    }
+
+    return true
+  }
+}
+AdminHomeInitializer.initializePage()
+
+
+      <input class="form_input" type="text" name="name" placeholder="Great product..." maxlength="30" required="">
+      <textarea class="form_input" name="description" placeholder="The best..." maxlength="120"></textarea>
+      <select class="form_input" name="category" id="category_options" required="">
+        <option value="" selected="">Please select a category</option>
+      <option value="Specialty Sodas">Specialty Sodas</option><option value="Coffee">Coffee</option><option value="Milk Teas">Milk Teas</option><option value="Non-Coffee">Non-Coffee</option><option value="Appetizers">Appetizers</option><option value="Smoothies">Smoothies</option></select>
+        <input type="radio" name="price_option" value="single_price" id="single_price_option" class="price_option" checked=""> Single
+        <input type="radio" name="price_option" value="multiple_prices"> Multiple
+        <input type="number" name="price"  step="0.01" min="0.01" required="">
+      <fieldset class="quantity_prices_fieldset" id="quantity_prices_fieldset" disabled="">
+        <fieldset class="quantity_price_pair">
+            <input type="text" placeholder="8oz" required="">
+            <input type="number" pattern="^\$?\d+\.?\d{0,2}?$" step="0.01" min="0.01" placeholder="$5.99" required="">
+        </fieldset>
+      </fieldset>
+        <input type="checkbox" name="hot" value="hot">
+        <input type="checkbox" name="cold" value="cold">

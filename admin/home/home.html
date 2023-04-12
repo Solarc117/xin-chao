@@ -81,22 +81,22 @@
     </section>
   </main>
 
-  <form id="edit_form" class="edit_item" hidden>
-    <button type="button">Close</button>
-    
+  <form id="item_form" class="item_form" hidden>
+    <button type="button" id="close_form_button">Close</button>
+
     <label>
       Name:<br />
-      <input class="edit_form_input" type="text" name="name" placeholder="Great product..." maxlength="30" required />
+      <input class="form_input" type="text" name="name" placeholder="Great product..." maxlength="30" required />
     </label>
 
     <label>
       Description:<br />
-      <textarea class="edit_form_input" name="description" placeholder="The best..." maxlength="120"></textarea>
+      <textarea class="form_input" name="description" placeholder="The best..." maxlength="120"></textarea>
     </label>
 
     <label>
       Category:<br />
-      <select class="edit_form_input" name="category" id="category_options" required>
+      <select class="form_input" name="category" id="category_options" required>
         <option value selected>Please select a category</option>
       </select>
     </label>
@@ -104,12 +104,10 @@
     <fieldset class="price_fieldset">
       <legend>Price Options</legend>
       <label>
-        <input type="radio" name="price_option"
-        value="single_price" id="single_price_option" class="price_option" checked /> Single
+        <input type="radio" name="price_option" value="single_price" id="single_price_option" class="price_option" checked /> Single
       </label>
       <label>
-        <input type="radio" name="price_option"
-        value="multiple_prices" id="multiple_price_option" class="price_option" /> Multiple
+        <input type="radio" name="price_option" value="multiple_prices" id="multiple_price_option" class="price_option" /> Multiple
       </label>
       <hr />
       <label>
@@ -144,7 +142,7 @@
       </label>
     </fieldset>
 
-    <button type="submit">Add New Item</button>
+    <button type="submit">Submit</button>
   </form>
 </body>
 

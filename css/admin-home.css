@@ -122,7 +122,7 @@ body {
   border-bottom: 1px solid black;
   text-align: end;
 }
-.add_category_item {
+.add_item_button {
   margin: 10px 0;
   padding: 20px;
   position: relative;
@@ -135,7 +135,7 @@ body {
 }
 
 /* Edit Item Form */
-.edit_item {
+.item_form {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -157,7 +157,7 @@ body {
   border: 1px solid white;
 }
 
-.edit_item button {
+.item_form button {
   padding: 5px;
   margin: 5px 0;
   border-radius: 3px;
@@ -165,7 +165,7 @@ body {
   cursor: pointer;
 }
 
-.edit_form_input {
+.form_input {
   margin-top: 5px;
   width: 100%;
 }
@@ -236,7 +236,7 @@ label:has(> .price_option) {
     grid-template-columns: repeat(auto-fit, minmax(250px, 400px));
   }
 
-  .edit_item {
+  .item_form {
     font-size: 22px;
   }
 }
@@ -257,7 +257,7 @@ label:has(> .price_option) {
     font-size: 19px;
   }
 
-  .edit_item {
+  .item_form {
     font-size: 24px;
   }
 }

@@ -1,14 +1,13 @@
 const { MongoClient } = require('mongodb'),
   { URI, DATABASE, PRODUCT_COLLECTION } = process.env,
-  mongoClient = new MongoClient(URI, {
+  clientPromise = new MongoClient(URI, {
     appName: 'Xin Chao Coffee',
     maxPoolSize: 1,
     maxIdleTimeMS: 10_000,
     serverSelectionTimeoutMS: 10_000,
     socketTimeoutMS: 20_000,
-  }),
-  clientPromise = mongoClient.connect(),
-  log = console.log.bind(console)
+    keepAlive: true,
+  })
 
 exports.handler = async function (event, context) {
   const { httpMethod } = event
@@ -16,7 +15,7 @@ exports.handler = async function (event, context) {
   if (httpMethod !== 'GET')
     return {
       statusCode: 404,
-      body: JSON.stringify({ clientError: 'not found' }),
+      body: JSON.stringify({ error: 'not found' }),
     }
 
   try {
@@ -37,6 +36,8 @@ exports.handler = async function (event, context) {
       ]),
       products = await cursor.toArray()
 
+    await clientPromise.close()
+
     return {
       statusCode: 200,
       body: JSON.stringify(products),
@@ -45,7 +46,7 @@ exports.handler = async function (event, context) {
     return {
       statusCode: 500,
       body: JSON.stringify({
-        serverError: error.toString(),
+        error: error.toString(),
       }),
     }
   }
