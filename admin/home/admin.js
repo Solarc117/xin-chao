@@ -1,4 +1,4 @@
-import messages from '../messages.json'
+import messages from '../../messages.json'
 const randomMessage = messages[Math.floor(Math.random() * messages.length)]
 notify(randomMessage)
 
@@ -9,6 +9,7 @@ window.removeParentOnClick = function (event) {
 
 fetch('/.netlify/functions/verify')
   .then(async ({ status }) => {
+    1
     if (status === 401 || status === 403)
       return window.location.replace(
         `${window.location.origin}/admin/login.html`
@@ -23,7 +24,7 @@ fetch('/.netlify/functions/verify')
       console.error(itemCategories.error)
       return notify('❌ Something went wrong, please try again later')
     }
-    localStorage.setItem(
+    sessionStorage.setItem(
       'items',
       JSON.stringify(itemCategories.map(category => category.products).flat())
     )
@@ -33,11 +34,10 @@ fetch('/.netlify/functions/verify')
       newElement = document.createElement.bind(document)
 
     const [categoryNav, menuSection, categoryOptions] = [
-        '#category_nav',
-        '#menu_section',
-        '#category_options',
-      ].map(query),
-      optionElementsHTML = ''
+      '#category_nav',
+      '#menu_section',
+      '#category_options',
+    ].map(query)
 
     function liElementFromProduct(
       { _id, name, description, price, temperature },
@@ -100,6 +100,8 @@ fetch('/.netlify/functions/verify')
                   </div>
                 </li>`
     }
+
+    console.log('itemCategories:', itemCategories)
 
     for (const { category, products } of itemCategories) {
       const [navTitle, categorySection] = ['li', 'section'].map(newElement),
@@ -360,7 +362,7 @@ fetch('/.netlify/functions/verify')
 
     for (const button of queryAll('.item_edit_button')) {
       const id = button.dataset.id,
-        items = JSON.parse(localStorage.getItem('items'))
+        items = JSON.parse(sessionStorage.getItem('items'))
       let item
       for (const currentItem of items)
         if (currentItem._id === id) item = currentItem
