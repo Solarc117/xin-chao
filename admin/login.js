@@ -1,3 +1,5 @@
+import messages from '../messages.json'
+
 const query = document.querySelector.bind(document),
   adminForm = query('#admin_form')
 
@@ -29,6 +31,7 @@ class Authenticator {
 }
 
 adminForm.addEventListener('submit', event => {
-  notify('🥚 prepping your egg coffee...')
+  const randomMessage = messages[Math.floor(Math.random() * messages.length)]
+  notify(randomMessage)
   Authenticator.authenticate(event)
 })

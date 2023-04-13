@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="icon" href="../images/light-logo.png" media="(prefers-color-scheme: dark)" />
+  <link rel="icon" href="../images/dark-logo.png" media="(prefers-color-scheme: light)" />
+  <link rel="stylesheet" href="../css/normalize.css" />
+  <link rel="stylesheet" href="../css/global.css" />
+  <link rel="stylesheet" href="../css/login.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat&display=swap" />
+
+  <script defer type="module" src="../global.js"></script>
+  <script defer type="module" src="../dynamic-background.js" id="background_script" data-image_path="../images" data-images='["home-1.jpg", "home-2.jpg", "home-3.jpg"]'></script>
+  <script defer type="module" src="./login.js"></script>
+
+  <title>Xin Chào Coffee</title>
+</head>
+
+<body style="background-image: url(../images/home-1.jpg)">
+  <div class="gradient_container"></div>
+  <div class="background_image"></div>
+
+  <header class="header">
+    <div class="logo_section">
+      <a class="logo_link" href="/">
+        <img src="/svgs/light-logo.svg" alt="Xin Chào logo" class="logo_svg" />
+      </a>
+    </div>
+    <div class="title_section">
+      <h1 class="title">Xin Chào</h1>
+      &nbsp;
+      <p class="title_coffee">COFFEE</p>
+    </div>
+    <div class="nav_section">
+      <img src="/svgs/bars.svg" alt="Browse" class="bars" />
+    </div>
+  </header>
+
+  <nav class="nav_links">
+    <ul class="nav_links_ul">
+      <li class="page">
+        <a class="page_link nav_a" href="../about/" tabindex="-1">About</a>
+      </li>
+      <li class="page">
+        <a class="page_link nav_a" href="../contact/" tabindex="-1">Contact</a>
+      </li>
+      <li class="page">
+        <a class="page_link nav_a" href="../menu/" tabindex="-1">Menu</a>
+      </li>
+      <li class="logos">
+        <p>Follow</p>
+        <ul class="logo_list">
+          <li class="facebook_logo">
+            <a class="media_link nav_a" href="https://www.facebook.com/profile.php?id=100087433302511" tabindex="-1">
+              <img src="../svgs/face.svg" alt="Facebook logo" class="media_svg" />
+            </a>
+          </li>
+          <li class="instagram_logo">
+            <a class="media_link nav_a" href="https://www.instagram.com/xinchaoyyc/" tabindex="-1">
+              <img src="../svgs/insta.svg" alt="Instagram logo" class="media_svg" />
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <main class="main">
+    <form class="login_form" id="admin_form">
+      <label class="user_label">
+        Username:
+        <br />
+        <input type="text" class="user_input" name="username" required />
+      </label>
+      <label class="password_label">
+        Password:
+        <br />
+        <input type="password" class="password_input" name="password" required />
+      </label>
+      <button type="submit" class="login_button">Login</button>
+    </form>
+  </main>
+
+  <section id="store_hours" class="store_hours">
+    <p id="hours_text">
+      For up to date hours, please search our
+      <a id="google_hours_link" class="link" href="https://www.google.com/search?q=xin+chao+coffee+calgary+hours" target="_blank" rel="noreferrer" tabindex="-1">Google hours</a>, or call the store.
+    </p>
+  </section>
+</body>
+
+</html>

@@ -134,9 +134,6 @@ path {
 }
 
 /* Components */
-.logo_svg {
-  margin-top: 8px;
-}
 .title {
   margin-top: 20px;
   height: -moz-fit-content;

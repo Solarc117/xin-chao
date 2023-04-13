@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="../../css/normalize.css">
+  <link rel="stylesheet" href="../../css/global.css">
+  <link rel="stylesheet" href="../../css/admin-home.css">
+
+  <script defer type="module" src="../../global.js"></script>
+  <script defer type="module" src="../../hours.js"></script>
+  <script defer type="module" src="./menu.js"></script>
+
+  <title>Xin Chào Coffee</title>
+</head>
+
+<body>
+  <div class="gradient_container"></div>
+
+  <header class="header">
+    <div class="logo_section">
+      <a class="logo_link" href="/">
+        <img src="../svgs/light-logo.svg" alt="Xin Chào logo" class="logo_svg" />
+      </a>
+    </div>
+    <div class="title_section">
+      <h1 class="title">Xin Chào</h1>
+      &nbsp;
+      <p class="title_coffee">COFFEE</p>
+    </div>
+    <div class="nav_section">
+      <img src="../svgs/bars.svg" alt="Browse" class="bars" />
+    </div>
+  </header>
+
+  <nav class="nav_links">
+    <ul class="nav_links_ul">
+      <li class="page">
+        <a class="page_link nav_a" href="../about/" tabindex="-1">About</a>
+      </li>
+      <li class="page">
+        <a class="page_link nav_a" href="../contact/" tabindex="-1">Contact</a>
+      </li>
+      <li class="page">
+        <a class="page_link nav_a" href="../menu/" tabindex="-1">Menu</a>
+      </li>
+      <li class="logos">
+        <p>Follow</p>
+        <ul class="logo_list">
+          <li class="facebook_logo">
+            <a class="media_link nav_a" href="https://www.facebook.com/profile.php?id=100087433302511" tabindex="-1">
+              <img src="../svgs/face.svg" alt="Facebook logo" class="media_svg" />
+            </a>
+          </li>
+          <li class="instagram_logo">
+            <a class="media_link nav_a" href="https://www.instagram.com/xinchaoyyc/" tabindex="-1">
+              <img src="../svgs/insta.svg" alt="Instagram logo" class="media_svg" />
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <main class="main">
+    <header class="menu_header">
+      <ul class="menu_categories" id="category_nav"></ul>
+    </header>
+    <hr class="category_nav_hr" />
+    <section class="menu_section" id="menu_section">
+    </section>
+  </main>
+
+  <section id="store_hours" class="store_hours">
+    <p id="hours_text">
+      For up to date hours, please search our
+      <a id="google_hours_link" class="link" href="https://www.google.com/search?q=xin+chao+coffee+calgary+hours" target="_blank" rel="noreferrer" tabindex="-1">Google hours</a>, or call the store.
+    </p>
+  </section>
+  <div id="snippet" class="hours_snippet" title="Store hours">
+    <p id="snippet_text">
+      <a class="open_text link" tabindex="1">Business Hours</a>
+    </p>
+  </div>
+</body>
+
+</html>

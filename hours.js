@@ -1,4 +1,5 @@
-const storeHoursKey = 'storeHours',
+const query = document.querySelector.bind(document),
+  storeHoursKey = 'storeHours',
   storeHours = query('.store_hours'),
   hoursDefaultHTML = `<p id="hours_text">
         For up to date hours, please search our

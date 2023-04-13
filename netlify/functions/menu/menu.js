@@ -1,7 +1,7 @@
 const { MongoClient } = require('mongodb'),
   { URI, DATABASE, PRODUCT_COLLECTION } = process.env,
   clientPromise = new MongoClient(URI, {
-    appName: 'Xin Chao Coffee',
+    appName: 'Xin Chào Coffee',
     maxPoolSize: 1,
     maxIdleTimeMS: 10_000,
     serverSelectionTimeoutMS: 10_000,

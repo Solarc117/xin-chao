@@ -22,7 +22,7 @@
 ✅ add mongo schema for products
 ✅ debug admin home style on desk (after collapsing nav media query):
 
-- create admin home page: 
+✅ create admin home page: 
   ✅ debug main flex bugi
   ✅ ensure user is authenticated
   ✅ wait for verification function before fetching from db & rendering html
@@ -40,20 +40,24 @@
       ✅ add a gradient_container div to admin home
       ✅ add a form element at center of page, with fields for every field in the item
       ✅ add a checked event listener to input#multiple_price_option
-    - store hours
+    ⚠️ store hours (I think it's a Good Idea to keep the google hours API, as I underestimated how many times it can be called/month (I believe around 400, gotta double check)), as this would lessen the burden on Netlify function calls, & I can configure the build to not mess with the name of the function that serves as the API callback.
   ✅ fix form hide renders add new item button unclickable for a few seconds bug
   ✅ on add item click:
     ✅ remove EditForm class' onSubmit listener from the submit event on form
     ✅ add addItem method as a submit event listener to form 
-  - on edit item click:
-    - fill out form with object data
-    - remove the addItem listener from the form's submit event
-    - add the edit item listener to the form's submit event
+  ✅ on edit item click:
+    ✅ fill out form with object data
+    ✅ remove the addItem listener from the form's submit event
+    ✅ add the edit item listener to the form's submit event
+
+- edit nav & logo to link to svgs instead of being in page
+
+- add menu page for customers
 
 - test page to ensure nothing broke:
   - seems good on mine. Will test on firefox in deploy, & will ask Khanh/Phuong to test on Mac.
 
-- edit/delete svgs:
+⚠️ edit/delete svgs (will wait for Phuong's feedback):
                                             <img 
                         class="svg admin_svg" 
                         src="../../svgs/edit.svg"
