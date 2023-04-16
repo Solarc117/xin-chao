@@ -2,22 +2,15 @@ import messages from '../messages.json'
 
 const query = document.querySelector.bind(document),
   queryAll = document.querySelectorAll.bind(document),
-  newElement = document.createElement.bind(document)
-
-const [categoryNav, menuSection, categoryOptions] = [
-  '#category_nav',
-  '#menu_section',
-  '#category_options',
-].map(query)
+  element = document.createElement.bind(document)
 
 class ClientMenu {
-  constructor(storageItemKey) {
-    this.itemKey = storageItemKey
-  }
+  itemKey = 'items'
 
   /** @returns {boolean} An indicator of whether the menu is stored after the operation. */
   async storeMenuIfNotStored() {
     if (typeof sessionStorage.getItem(this.itemKey) === 'string') return true
+    notify(messages[Math.floor(Math.random() * messages.length)])
 
     let categories
     try {
@@ -100,8 +93,6 @@ class ClientMenu {
   }
 
   async initializePage() {
-    notify(messages[Math.floor(Math.random() * messages.length)])
-
     const menuIsStored = await this.storeMenuIfNotStored()
 
     if (!menuIsStored)
@@ -115,24 +106,27 @@ class ClientMenu {
       const categoryId = category.toLowerCase().replace(/\s/g, '_')
 
       // Category navigation.
-      const navTitle = newElement('li')
+      const categoryNav = query('#category_nav'),
+        navTitle = element('li')
       navTitle.classList.add('category_title')
       navTitle.innerHTML = `<a href="#${categoryId}">${category}</a>`
       categoryNav.appendChild(navTitle)
 
       // Items.
-      const categorySection = newElement('section')
+      const menuSection = query('#menu_section'),
+        categorySection = element('section')
       categorySection.id = categoryId
       categorySection.classList.add('category')
       categorySection.innerHTML = `<h2>${category}</h2>
-        <ul class="category_items">
-          ${products
-            .map(product => this.liElementFromProduct(product, false))
-            .join(' ')}
+      <ul class="category_items">
+      ${products
+        .map(product => this.liElementFromProduct(product, false))
+        .join(' ')}
         </ul>`
       menuSection.appendChild(categorySection)
 
-      const optionElement = newElement('option')
+      const categoryOptions = query('#category_options'),
+        optionElement = element('option')
       // Item form option tags.
       optionElement.setAttribute('value', category)
       optionElement.textContent = category
@@ -141,6 +135,4 @@ class ClientMenu {
   }
 }
 
-const client = new ClientMenu('items')
-
-client.initializePage()
+new ClientMenu().initializePage()

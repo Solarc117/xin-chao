@@ -26,7 +26,7 @@ class Authenticator {
       return notify('🤔 Something went wrong, please try again later')
     }
 
-    window.location.replace(`${window.location.origin}/admin/home/home.html`)
+    window.location.replace(`${window.location.origin}/admin/home/`)
   }
 }
 
