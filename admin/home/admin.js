@@ -1,6 +1,8 @@
 import '../../types.js'
 import messages from '../../messages.json'
 
+const API_URL = '/.netlify/functions/item'
+
 class Page {
   /**
    * Returns the first Element within the document that matches the specified selector.
@@ -59,6 +61,8 @@ class AdminHome extends Page {
     this.popUpDeleteButtonId = popUpDeleteButtonId
   }
 
+  #deleteProductFunction = 'deleteProduct'
+
   /**
    * Redirects client to login page if the authentication request fails (different from the request returning an unauthorized or forbidden code; server error).
    * @returns {boolean} An indicator of whether the client could be authenticated or not (due to a server error; if request shows client is explicitly missing credentials, they are redirected).
@@ -83,7 +87,7 @@ class AdminHome extends Page {
 
   /** @returns {boolean} An indicator of whether the menu is stored after the operation. */
   async #storeMenuIfNotStored() {
-    if (typeof sessionStorage.getItem(ITEM_KEY) === 'string') return true
+    if (typeof sessionStorage.getItem(PRODUCT_KEY) === 'string') return true
     notify(messages[Math.floor(Math.random() * messages.length)])
 
     let categories
@@ -91,7 +95,7 @@ class AdminHome extends Page {
       categories = await fetch('/.netlify/functions/menu').then(response =>
         response.json()
       )
-      sessionStorage.setItem(ITEM_KEY, JSON.stringify(categories))
+      sessionStorage.setItem(PRODUCT_KEY, JSON.stringify(categories))
     } catch (error) {
       console.error(error)
       return false
@@ -101,6 +105,30 @@ class AdminHome extends Page {
   }
 
   #initializeDeleteItemPopUp() {
+    window[this.#deleteProductFunction] = async function ({ target }) {
+      const { product_id } = target.dataset
+
+      let response, result
+      try {
+        response = await fetch(API_URL, {
+          method: 'DELETE',
+          body: JSON.stringify({ id: product_id }),
+        })
+        result = await response.json()
+      } catch (error) {
+        console.error(error)
+        return notify('❌ Could not delete product, please try again later')
+      }
+
+      if (response.status !== 200) {
+        console.error(result)
+        return notify('❌ Could not delete product, please try again later')
+      }
+
+      notify('✅ product deleted!')
+      document.getElementById(product_id).remove()
+    }
+
     const popUp = this.element('div')
     document.body.appendChild(popUp)
     popUp.outerHTML = `<div 
@@ -110,8 +138,14 @@ class AdminHome extends Page {
     >
       <span></span>
       <div class="pop_up_buttons">
-        <button id="${this.popUpCancelButtonId}" class="cancel_button">Cancel</button>
-        <button id="${this.popUpDeleteButtonId}" class="delete_button">Delete</button>
+        <button id="${
+          this.popUpCancelButtonId
+        }" class="cancel_button">Cancel</button>
+        <button id="${
+          this.popUpDeleteButtonId
+        }" class="delete_button" onclick="${
+      this.#deleteProductFunction
+    }(event)">Delete</button>
       </div>
     </div>`
 
@@ -256,7 +290,7 @@ class AdminHome extends Page {
         Add A Product
       </div>`
 
-    const itemCategories = JSON.parse(sessionStorage.getItem(ITEM_KEY))
+    const itemCategories = JSON.parse(sessionStorage.getItem(PRODUCT_KEY))
 
     for (const { category, products } of itemCategories) {
       const categoryId = category.toLowerCase().replace(/\s/g, '_')
@@ -310,20 +344,30 @@ class AdminForm extends Page {
     this.hideFunctionName = hideFunctionName
   }
 
-  apiURL = '/.netlify/functions'
-  removeParentFunction = 'removeParent'
-  switchPriceFunction = 'switchPriceOption'
-  addQuantityPriceFunction = 'addQuantityPricePair'
+  removeParentMethodName = 'removeParent'
+  switchPriceMethodName = 'switchPriceOption'
+  addQuantityPriceMethodName = 'addQuantityPricePair'
+  createProductMethodName = 'createProduct'
+  editProductMethodName = 'editProduct'
 
-  resetForm() {
+  #form() {
+    return this.queryId(this.formId)
+  }
+
+  #resetForm() {
     const form = this.queryId(this.formId)
     form.reset()
     form.removeAttribute('data-id')
     for (const element of this.queryAll('.additional_pair')) element.remove()
+    for (const submitListener of [
+      this.createProductMethodName,
+      this.editProductMethodName,
+    ])
+      form.removeEventListener('submit', submitListener)
   }
 
-  formatProductData(form) {
-    const formData = new FormData(form)
+  #formatProductData() {
+    const formData = new FormData(this.#form())
     let item = {
       temperature: [],
     }
@@ -338,14 +382,13 @@ class AdminForm extends Page {
           if (!value.includes('multiple')) break
 
           if (!item.price) item.price = {}
-          for (const child of this.query('#quantity_prices_fieldset')
+          for (const child of this.queryId(this.quantitiesFieldsetId)
             .children) {
             if (!/fieldset/i.test(child.tagName)) continue
 
-            const [text, number] = Array.from(child.children),
-              [quantity, price] = [text, number].map(
-                element => element.children[0].value
-              )
+            const [quantity, price] = Array.from(child.children).map(
+              element => element.children[0].value
+            )
 
             item.price[quantity] = price
           }
@@ -361,13 +404,81 @@ class AdminForm extends Page {
   initialize() {
     const self = this
 
-    window[self.displayFunctionName] = function (event) {
+    window[self.createProductMethodName] = async function (event) {
+      event.preventDefault()
+
+      try {
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          body: JSON.stringify(self.#formatProductData()),
+        })
+
+        if (response.status === 409)
+          return notify('❌ An item with that name already exists')
+
+        const { acknowledged, insertedId, error } = await response.json()
+
+        if (acknowledged === true && typeof insertedId === 'string') {
+          self[self.hideFunctionName]()
+          self.#resetForm()
+          return notify('✅ Item created!')
+        }
+
+        if (data.error) console.error(data.error)
+        notify('❌ Something went wrong, please try again later')
+      } catch (error) {
+        console.error(error)
+        notify('❌ Could not create product, please try again later')
+      }
+    }
+
+    window[self.editProductMethodName] = async function (event) {
+      event.preventDefault()
+      const { id } = target.dataset
+      if (typeof id !== 'string') {
+        console.error('❌ Missing id property in form to edit product')
+        return notify('❌ Something went wrong, please try again later')
+      }
+
+      try {
+        const response = await fetch(API_URL, {
+            method: 'PATCH',
+            body: JSON.stringify({ id, item: self.#formatProductData() }),
+          }),
+          { value: newProduct } = await response.json()
+
+        if (response.status !== 200) {
+          console.error(data)
+          return notify('❌ Something went wrong, please try again later')
+        }
+
+        notify('✅ Item Updated!')
+        self.query(`[id="${id}"]`).outerHTML = self.liElementFromProduct(newProduct)
+        self.#resetForm()
+        self[self.hideFunctionName]()
+        hideAndResetForm()
+      } catch (error) {
+        console.error(error)
+        notify('❌ Could not create product, please try again later')
+      }
+    }
+
+    window[self.displayFunctionName] = function ({ target }) {
       const form = self.queryId(self.formId)
       form.removeAttribute('hidden')
 
-      const { id } = event.target.dataset
+      const { id } = target.dataset
+
+      if (!id)
+        return form.addEventListener(
+          'submit',
+          window[self.createProductMethodName]
+        )
+
+      form.addEventListener('submit', window[self.editProductMethodName])
+
       findProductLoop: for (const { products } of JSON.parse(
-        sessionStorage.getItem(ITEM_KEY)
+        sessionStorage.getItem(PRODUCT_KEY)
       ))
         for (const product of products)
           if (product._id === id) {
@@ -403,7 +514,7 @@ class AdminForm extends Page {
               firstNumber.value = firstPrice
 
               for (const [quantity, price] of quantityPriceArrays)
-                window[self.addQuantityPriceFunction]({ [quantity]: price })
+                window[self.addQuantityPriceMethodName]({ [quantity]: price })
             }
 
             for (const temperature of temperatures)
@@ -415,11 +526,11 @@ class AdminForm extends Page {
 
     window[self.hideFunctionName] = function () {
       const form = self.queryId(self.formId)
-      self.resetForm()
+      self.#resetForm()
       form.setAttribute('hidden', true)
     }
 
-    window[self.switchPriceFunction] = function ({ target }) {
+    window[self.switchPriceMethodName] = function ({ target }) {
       const singlePriceInput = self.queryId(self.singlePriceInputId),
         quantitiesFieldset = self.queryId(self.quantitiesFieldsetId)
 
@@ -432,11 +543,11 @@ class AdminForm extends Page {
       quantitiesFieldset.removeAttribute('disabled')
     }
 
-    window[self.removeParentFunction] = function ({ target }) {
+    window[self.removeParentMethodName] = function ({ target }) {
       target.parentElement.remove()
     }
 
-    window[self.addQuantityPriceFunction] = function (quantityPrice) {
+    window[self.addQuantityPriceMethodName] = function (quantityPrice) {
       let quantity, price
       if (quantityPrice.type !== 'click')
         [[quantity, price]] = Object.entries(quantityPrice)
@@ -472,7 +583,7 @@ class AdminForm extends Page {
       <button 
         class="remove_quantity_button" 
         type="button" 
-        onclick="${self.removeParentFunction}(event)"
+        onclick="${self.removeParentMethodName}(event)"
       >
         Remove Quantity
       </button>
@@ -516,14 +627,14 @@ class AdminForm extends Page {
             <input type="radio" name="price_option" value="single_price" id="${
               this.singlePriceOptionId
             }" class="price_option" onclick="${
-      this.switchPriceFunction
+      this.switchPriceMethodName
     }(event)" checked /> Single
           </label>
           <label>
             <input type="radio" name="price_option" value="multiple_prices" id="${
               this.multiplePriceOptionId
             }" class="price_option" onclick="${
-      this.switchPriceFunction
+      this.switchPriceMethodName
     }(event)"/> Multiple
           </label>
           <hr />
@@ -548,7 +659,7 @@ class AdminForm extends Page {
               </label>
             </fieldset>
             <button class="add_quantity_button" type="button" onclick="${
-              this.addQuantityPriceFunction
+              this.addQuantityPriceMethodName
             }(event)">Add Quantity</button>
           </fieldset>
         </fieldset>
@@ -570,7 +681,7 @@ class AdminForm extends Page {
   }
 }
 
-const ITEM_KEY = 'items'
+const PRODUCT_KEY = 'items'
 
 const adminFormSettings = {
     formId: 'admin_form',
@@ -830,12 +941,12 @@ adminForm.initialize()
 
 //     const data = await response.json()
 
-//     if (data.acknowledged === true && typeof data.insertedId === 'string') {
-//       hideAndResetForm()
-//       return notify('✅ Item created!')
-//     }
-//     if (data.error) console.error(data.error)
-//     notify('❌ Something went wrong, please try again later')
+// if (data.acknowledged === true && typeof data.insertedId === 'string') {
+//   hideAndResetForm()
+//   return notify('✅ Item created!')
+// }
+// if (data.error) console.error(data.error)
+// notify('❌ Something went wrong, please try again later')
 //   }
 //   /** @param {SubmitEvent} submitEvent */
 //   static async editItemById(submitEvent) {
