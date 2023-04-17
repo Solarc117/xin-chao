@@ -225,6 +225,7 @@ label:has(> .price_option) {
 .temperature_fieldset input {
   margin-left: auto;
   width: fit-content;
+  cursor: pointer;
 }
 
 /* Pop Up */

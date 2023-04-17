@@ -358,75 +358,6 @@ class AdminForm extends Page {
     return item
   }
 
-  /** @param {SubmitEvent} submitEvent */
-  async addItem(submitEvent) {
-    submitEvent.preventDefault()
-    const { target } = submitEvent,
-      body = JSON.stringify(this.formatProductData(target))
-
-    const response = await fetch('/.netlify/functions/item', {
-      method: 'POST',
-      body,
-    })
-    if (response.status === 409)
-      return notify('❌ An item with that name already exists')
-
-    const data = await response.json()
-
-    if (data.acknowledged === true && typeof data.insertedId === 'string') {
-      hideAndResetForm()
-      return notify('✅ Item created!')
-    }
-    if (data.error) console.error(data.error)
-    notify('❌ Something went wrong, please try again later')
-  }
-  /** @param {SubmitEvent} submitEvent */
-  async editItemById(submitEvent) {
-    submitEvent.preventDefault()
-    const { target } = submitEvent,
-      id = target.dataset.id,
-      item = ProductAPI.formatItemData(target)
-
-    try {
-      const response = await fetch('/.netlify/functions/item', {
-          method: 'PATCH',
-          body: JSON.stringify({ id, item }),
-        }),
-        { value: newItem } = await response.json()
-
-      if (response.status !== 200) {
-        console.error(data)
-        return notify('❌ Something went wrong, please try again later')
-      }
-
-      notify('✅ Item Updated!')
-      this.query(`[id="${id}"]`).outerHTML = liElementFromProduct(newItem, true)
-      hideAndResetForm()
-    } catch (error) {
-      console.error(error)
-      return notify('❌ Something went wrong, please try again later')
-    }
-  }
-  /** @param {PointerEvent} clickEvent */
-  async deleteItemById(clickEvent) {
-    const { product_id } = clickEvent.target.dataset
-
-    console.log('id:', id)
-
-    try {
-      const response = await fetch('/.netlify/functions/item', {
-          method: 'DELETE',
-          body: JSON.stringify({ id }),
-        }),
-        result = await response.json()
-
-      console.log('result:', result)
-    } catch (error) {
-      console.error(error)
-      return notify('❌ Could not delete item, please try again later')
-    }
-  }
-
   initialize() {
     const self = this
 
@@ -435,7 +366,9 @@ class AdminForm extends Page {
       form.removeAttribute('hidden')
 
       const { id } = event.target.dataset
-      for (const { products } of JSON.parse(sessionStorage.getItem(ITEM_KEY)))
+      findProductLoop: for (const { products } of JSON.parse(
+        sessionStorage.getItem(ITEM_KEY)
+      ))
         for (const product of products)
           if (product._id === id) {
             const {
@@ -475,6 +408,8 @@ class AdminForm extends Page {
 
             for (const temperature of temperatures)
               self.query(`input[value="${temperature}"]`).checked = true
+
+            break findProductLoop
           }
     }
 
@@ -497,13 +432,13 @@ class AdminForm extends Page {
       quantitiesFieldset.removeAttribute('disabled')
     }
 
-    window[self.addQuantityPriceFunction] = function (quantityPrice) {
-      window[self.removeParentFunction] = function ({ target }) {
-        target.parentElement.remove()
-      }
+    window[self.removeParentFunction] = function ({ target }) {
+      target.parentElement.remove()
+    }
 
+    window[self.addQuantityPriceFunction] = function (quantityPrice) {
       let quantity, price
-      if (quantityPrice instanceof Object)
+      if (quantityPrice.type !== 'click')
         [[quantity, price]] = Object.entries(quantityPrice)
 
       const newField = self.element('fieldset'),
@@ -621,11 +556,11 @@ class AdminForm extends Page {
         <fieldset class="temperature_fieldset">
           <legend>Temperature Options</legend>
           <label>
-            Hot 🔥
+            Hot 🔴
             <input type="checkbox" name="hot" value="hot" />
           </label>
           <label>
-            Cold ❄️
+            Cold 🔵
             <input type="checkbox" name="cold" value="cold" />
           </label>
         </fieldset>
@@ -880,71 +815,71 @@ adminForm.initialize()
 
 //         return item
 //       }
-//       /** @param {SubmitEvent} submitEvent */
-//       static async addItem(submitEvent) {
-//         submitEvent.preventDefault()
-//         const { target } = submitEvent,
-//           body = JSON.stringify(ItemAPI.formatItemData(target))
+//   /** @param {SubmitEvent} submitEvent */
+//   static async addItem(submitEvent) {
+//     submitEvent.preventDefault()
+//     const { target } = submitEvent,
+//       body = JSON.stringify(ItemAPI.formatItemData(target))
 
-//         const response = await fetch('/.netlify/functions/item', {
-//           method: 'POST',
-//           body,
-//         })
-//         if (response.status === 409)
-//           return notify('❌ An item with that name already exists')
+//     const response = await fetch('/.netlify/functions/item', {
+//       method: 'POST',
+//       body,
+//     })
+//     if (response.status === 409)
+//       return notify('❌ An item with that name already exists')
 
-//         const data = await response.json()
+//     const data = await response.json()
 
-//         if (data.acknowledged === true && typeof data.insertedId === 'string') {
-//           hideAndResetForm()
-//           return notify('✅ Item created!')
-//         }
-//         if (data.error) console.error(data.error)
-//         notify('❌ Something went wrong, please try again later')
-//       }
-//       /** @param {SubmitEvent} submitEvent */
-//       static async editItemById(submitEvent) {
-//         submitEvent.preventDefault()
-//         const { target } = submitEvent,
-//           id = target.dataset.id,
-//           item = ItemAPI.formatItemData(target)
-
-//         try {
-//           const response = await fetch('/.netlify/functions/item', {
-//               method: 'PATCH',
-//               body: JSON.stringify({ id, item }),
-//             }),
-//             { value: newItem } = await response.json()
-
-//           if (response.status !== 200) {
-//             console.error(data)
-//             return notify('❌ Something went wrong, please try again later')
-//           }
-
-//           notify('✅ Item Updated!')
-//           this.query(`[id="${id}"]`).outerHTML = liElementFromProduct(newItem, true)
-//           hideAndResetForm()
-//         } catch (error) {
-//           console.error(error)
-//           return notify('❌ Something went wrong, please try again later')
-//         }
-//       }
-//       /** @param {PointerEvent} clickEvent */
-//       static async deleteItemById(clickEvent) {
-//         const { id } = clickEvent.target.dataset
-
-//         try {
-//           const response = await fetch('/.netlify/functions/item', {
-//               method: 'DELETE',
-//               body: JSON.stringify({ id }),
-//             }),
-//             result = await response.json()
-//         } catch (error) {
-//           console.error(error)
-//           return notify('❌ Could not delete item, please try again later')
-//         }
-//       }
+//     if (data.acknowledged === true && typeof data.insertedId === 'string') {
+//       hideAndResetForm()
+//       return notify('✅ Item created!')
 //     }
+//     if (data.error) console.error(data.error)
+//     notify('❌ Something went wrong, please try again later')
+//   }
+//   /** @param {SubmitEvent} submitEvent */
+//   static async editItemById(submitEvent) {
+//     submitEvent.preventDefault()
+//     const { target } = submitEvent,
+//       id = target.dataset.id,
+//       item = ItemAPI.formatItemData(target)
+
+//     try {
+//       const response = await fetch('/.netlify/functions/item', {
+//           method: 'PATCH',
+//           body: JSON.stringify({ id, item }),
+//         }),
+//         { value: newItem } = await response.json()
+
+//       if (response.status !== 200) {
+//         console.error(data)
+//         return notify('❌ Something went wrong, please try again later')
+//       }
+
+//       notify('✅ Item Updated!')
+//       this.query(`[id="${id}"]`).outerHTML = liElementFromProduct(newItem, true)
+//       hideAndResetForm()
+//     } catch (error) {
+//       console.error(error)
+//       return notify('❌ Something went wrong, please try again later')
+//     }
+//   }
+//   /** @param {PointerEvent} clickEvent */
+//   static async deleteItemById(clickEvent) {
+//     const { id } = clickEvent.target.dataset
+
+//     try {
+//       const response = await fetch('/.netlify/functions/item', {
+//           method: 'DELETE',
+//           body: JSON.stringify({ id }),
+//         }),
+//         result = await response.json()
+//     } catch (error) {
+//       console.error(error)
+//       return notify('❌ Could not delete item, please try again later')
+//     }
+//   }
+// }
 //     // Add item button.
 //     function displayAddItemForm() {
 // resetForm()
