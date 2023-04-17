@@ -62,6 +62,7 @@ class AdminHome extends Page {
   }
 
   #deleteProductFunction = 'deleteProduct'
+  #liElementFromProductMethodName = 'productLiElement'
 
   /**
    * Redirects client to login page if the authentication request fails (different from the request returning an unauthorized or forbidden code; server error).
@@ -164,20 +165,117 @@ class AdminHome extends Page {
     )
   }
 
-  /**
-   *
-   * @param {Product} product The product object from which to construct the li's outerHTML.
-   * @param {boolean} admin An indicator of whether to generate a li item for the admin page, with edit options. Defaults to false.
-   * @returns {string} The li element's outerHTML.
-   */
-  #liElementFromProduct(product) {
-    const { _id, name, description, price, temperature } = product,
-      symbols = {
-        hot: '🔴',
-        cold: '🔵',
-      }
+  // #liElementFromProduct(product) {
+  //   const { _id, name, description, price, temperature } = product,
+  //     symbols = {
+  //       hot: '🔴',
+  //       cold: '🔵',
+  //     }
 
-    return `<li class="item" id="${_id}">
+  //   return `<li class="item" id="${_id}">
+  //                 <header class="item_header">
+  //                   <span class="item_name">
+  //                     ${
+  //                       temperature.length === 0
+  //                         ? name
+  //                         : name +
+  //                           temperature
+  //                             .map(
+  //                               option =>
+  //                                 `<span class="emoji" title="Available ${option}">${symbols[option]}</span>`
+  //                             )
+  //                             .join('')
+  //                     }
+  //                   </span>
+  //                   <span class="admin_buttons">
+  //                     ${
+  //                       ''
+  //                       //   `<span
+  //                       // class="admin_button emoji"
+  //                       // data-id="${_id}"
+  //                       // title="Edit ${name}"
+  //                       // onclick="${this.displayFunctionName}(event)"
+  //                       // ></span>`
+  //                     }
+  //                     <img
+  //                       class="svg admin_svg"
+  //                       src="../../svgs/edit.svg"
+  //                       alt="Edit button"
+  //                       title="Edit ${name}"
+  //                       data-id="${_id}"
+  //                       onclick="${this.displayFunctionName}(event)"
+  //                     />
+  //                     ${
+  //                       ''
+  //                       //     `<span
+  //                       //   class="admin_button emoji"
+  //                       //   data-id="${_id}"
+  //                       //   data-name="${name}"
+  //                       //   title="Delete ${name}"
+  //                       //   onclick="${this.displayPopUpFunction}(event, ${this.popUpId}, ${this.popUpDeleteButtonId})"
+  //                       //   >
+  //                       //   ❌
+  //                       // </span>`
+  //                     }
+  //                      <img
+  //                       class="svg admin_svg"
+  //                       src="../../svgs/delete.svg"
+  //                       alt="Delete button"
+  //                       title="Delete ${name}"
+  //                       data-id="${_id}"
+  //                       data-name="${name}"
+  //                       onclick="${this.displayPopUpFunction}(event, ${
+  //     this.popUpId
+  //   }, ${this.popUpDeleteButtonId})"
+  //                     />
+  //                   </span>
+  //                 </header>
+  //                 <hr />
+  //                 <div class="item_body">
+  //                   <p class="item_description">${description}</p>
+  //                   ${
+  //                     price instanceof Object
+  //                       ? `<ul class="quantity_prices">
+  //                         ${Object.keys(price)
+  //                           .map(
+  //                             quantity => `
+  //                               <li class="quantity_price">${quantity}: <span class="price">$${price[quantity]}</span></li>`
+  //                           )
+  //                           .join('')}
+  //                       </ul>`
+  //                       : `<span class="price">${price}</span>`
+  //                   }
+  //                 </div>
+  //           </li>`
+  // }
+
+  async initialize() {
+    if (!(await this.#authenticate()))
+      return notify('❌ Something went wrong, please try again later')
+
+    if (!(await this.#storeMenuIfNotStored()))
+      return notify(
+        '❌ Could not fetch menu; please refer to our Google page or try again later'
+      )
+
+    this.#initializeDeleteItemPopUp()
+
+    const self = this
+
+    /**
+     *
+     * @param {Product} product The product object from which to construct the li's outerHTML.
+     * @param {boolean} admin An indicator of whether to generate a li item for the admin page, with edit options. Defaults to false.
+     * @returns {string} The li element's outerHTML.
+     */
+    window[this.#liElementFromProductMethodName] = function (product) {
+      const { _id, name, description, price, temperature } = product,
+        symbols = {
+          hot: '🔴',
+          cold: '🔵',
+        }
+
+      return `<li class="item" id="${_id}">
                   <header class="item_header">
                     <span class="item_name">
                       ${
@@ -208,7 +306,7 @@ class AdminHome extends Page {
                         alt="Edit button"
                         title="Edit ${name}"
                         data-id="${_id}"
-                        onclick="${this.displayFunctionName}(event)"
+                        onclick="${self.displayFunctionName}(event)"
                       />
                       ${
                         ''
@@ -229,9 +327,9 @@ class AdminHome extends Page {
                         title="Delete ${name}"
                         data-id="${_id}"
                         data-name="${name}"
-                        onclick="${this.displayPopUpFunction}(event, ${
-      this.popUpId
-    }, ${this.popUpDeleteButtonId})"
+                        onclick="${self.displayPopUpFunction}(event, ${
+        self.popUpId
+      }, ${self.popUpDeleteButtonId})"
                       />
                     </span>
                   </header>
@@ -252,18 +350,7 @@ class AdminHome extends Page {
                     }
                   </div>
             </li>`
-  }
-
-  async initialize() {
-    if (!(await this.#authenticate()))
-      return notify('❌ Something went wrong, please try again later')
-
-    if (!(await this.#storeMenuIfNotStored()))
-      return notify(
-        '❌ Could not fetch menu; please refer to our Google page or try again later'
-      )
-
-    this.#initializeDeleteItemPopUp()
+    }
 
     window[this.displayPopUpFunction] = function (
       {
@@ -309,7 +396,7 @@ class AdminHome extends Page {
         <h2>${category}</h2>
         <ul class="category_items">
         ${products
-          .map(product => this.#liElementFromProduct(product))
+          .map(product => window[self.#liElementFromProductMethodName](product))
           .join(' ')}
         </ul>
       </section>`
@@ -362,8 +449,10 @@ class AdminForm extends Page {
     for (const submitListener of [
       this.createProductMethodName,
       this.editProductMethodName,
-    ])
-      form.removeEventListener('submit', submitListener)
+    ]) {
+      const method = this[submitListener]
+      form.removeEventListener('submit', method)
+    }
   }
 
   #formatProductData() {
@@ -382,15 +471,18 @@ class AdminForm extends Page {
           if (!value.includes('multiple')) break
 
           if (!item.price) item.price = {}
-          for (const child of this.queryId(this.quantitiesFieldsetId)
-            .children) {
+          fieldsetChildLoop: for (const child of this.queryId(
+            this.quantitiesFieldsetId
+          ).children) {
             if (!/fieldset/i.test(child.tagName)) continue
 
-            const [quantity, price] = Array.from(child.children).map(
-              element => element.children[0].value
-            )
+            const [text, number] = Array.from(child.children),
+              [quantity, price] = [text, number].map(
+                element => element.children[0].value
+              )
 
             item.price[quantity] = price
+            break fieldsetChildLoop
           }
 
           break
@@ -406,6 +498,7 @@ class AdminForm extends Page {
 
     window[self.createProductMethodName] = async function (event) {
       event.preventDefault()
+      const product = self.#formatProductData()
 
       try {
         const response = await fetch(API_URL, {
@@ -419,9 +512,9 @@ class AdminForm extends Page {
         const { acknowledged, insertedId, error } = await response.json()
 
         if (acknowledged === true && typeof insertedId === 'string') {
-          self[self.hideFunctionName]()
+          window[self.hideFunctionName]()
           self.#resetForm()
-          return notify('✅ Item created!')
+          return notify('✅ Product added!')
         }
 
         if (data.error) console.error(data.error)
@@ -453,9 +546,10 @@ class AdminForm extends Page {
         }
 
         notify('✅ Item Updated!')
-        self.query(`[id="${id}"]`).outerHTML = self.liElementFromProduct(newProduct)
+        self.query(`[id="${id}"]`).outerHTML =
+          self.liElementFromProduct(newProduct)
         self.#resetForm()
-        self[self.hideFunctionName]()
+        window[self.hideFunctionName]()
         hideAndResetForm()
       } catch (error) {
         console.error(error)
@@ -613,7 +707,7 @@ class AdminForm extends Page {
             this.categoryOptions
           }" required>
             <option value selected>Please select a category</option>
-            ${JSON.parse(sessionStorage.getItem('items'))
+            ${JSON.parse(sessionStorage.getItem(PRODUCT_KEY))
               .map(
                 ({ category }) =>
                   `<option value="${category}">${category}</option>`

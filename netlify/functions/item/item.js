@@ -1,6 +1,5 @@
-import '../../../types.js'
-import jwt from 'jsonwebtoken'
-import { MongoClient, ObjectId } from 'mongodb'
+const jwt = require('jsonwebtoken'),
+  { MongoClient, ObjectId } = require('mongodb')
 
 const { URI, DATABASE, PRODUCT_COLLECTION, SESSION_SECRET, ADMIN_USERNAME } =
     process.env,
@@ -34,10 +33,8 @@ class MenuDAO {
    * Ensures request is paird with a valid json web token.
    * @returns {Promise<boolean>} An indicator of whether the client token could be authenticated or not.
    */
-  async authenticate() {
-    const {
-      headers: { cookie },
-    } = request
+  async #authenticate() {
+    const { cookie } = this.headers
 
     if (typeof cookie !== 'string') return false
 
@@ -68,6 +65,12 @@ class MenuDAO {
    * @returns {Promise< Error | import('mongodb').InsertOneResult<Document> >}
    */
   async createProduct(product) {
+    if (!(await this.#authenticate()))
+      return {
+        statusCode: 401,
+        body: JSON.stringify({ error: 'Unauthorized' }),
+      }
+
     try {
       const database = (await this.client).db(DATABASE),
         collection = database.collection(PRODUCT_COLLECTION),
@@ -89,6 +92,12 @@ class MenuDAO {
    * @returns {Promise< Error | Product >} The result of the update operation.
    */
   async updateProductById(_id, newProduct) {
+    if (!(await this.#authenticate()))
+      return {
+        statusCode: 401,
+        body: JSON.stringify({ error: 'Unauthorized' }),
+      }
+
     try {
       const database = (await this.client).db(DATABASE),
         collection = database.collection(PRODUCT_COLLECTION),
@@ -115,6 +124,12 @@ class MenuDAO {
    * @returns {Promise< Error | import('mongodb').DeleteResult >} The result of the delete operation.
    */
   async deleteProductById(_id) {
+    if (!(await this.#authenticate()))
+      return {
+        statusCode: 401,
+        body: JSON.stringify({ error: 'Unauthorized' }),
+      }
+
     try {
       const database = (await this.client).db(DATABASE),
         collection = database.collection(PRODUCT_COLLECTION),
@@ -128,27 +143,6 @@ class MenuDAO {
       return error
     }
   }
-
-  // logAndRespondWithError(error) {
-  //   console.error(error)
-
-  //   return error.code === 121
-  //     ? {
-  //         statusCode: 400,
-  //         body: JSON.stringify({
-  //           name: error.name,
-  //           message: error.message,
-  //           code: error.code,
-  //           stack: error.stack,
-  //         }),
-  //       }
-  //     : {
-  //         statusCode: error.code === 121 ? 409 : 500,
-  //         body: JSON.stringify({
-  //           error: error.toString(),
-  //         }),
-  //       }
-  // }
 }
 
 exports.handler = async function (event, context) {
@@ -157,7 +151,7 @@ exports.handler = async function (event, context) {
     dao = new MenuDAO(event, clientPromise)
 
   switch (httpMethod) {
-    case 'POST':
+    case 'POST': {
       console.log('data:', data)
       if (!data instanceof Object)
         return {
@@ -181,8 +175,8 @@ exports.handler = async function (event, context) {
         statusCode: acknowledged && insertedId ? 200 : 500,
         body: JSON.stringify(result),
       }
-
-    case 'PATCH':
+    }
+    case 'PATCH': {
       const { id, item } = data
       if (typeof id !== 'string' || !item instanceof Object)
         return {
@@ -199,8 +193,8 @@ exports.handler = async function (event, context) {
           result.ok === 1 && result.value instanceof Object ? 200 : 500,
         body: JSON.stringify(result),
       }
-
-    case 'DELETE':
+    }
+    case 'DELETE': {
       const { id } = data
       if (typeof id !== 'string')
         return {
@@ -209,7 +203,7 @@ exports.handler = async function (event, context) {
             error: 'missing id or item properties',
           }),
         }
-
+    }
     default:
       return {
         statusCode: 404,
