@@ -56,14 +56,14 @@ class ClientMenu {
                       admin
                         ? `<span class="admin_buttons">
                       <span
-                        class="admin_button item_edit_button emoji"
+                        class="admin_button product_edit_button emoji"
                         data-id="${_id}"
                         title="Edit ${name}"
                       >
                       ✏️
                       </span> 
                       <span
-                        class="admin_button item_delete_button emoji"
+                        class="admin_button product_delete_button emoji"
                         data-id="${_id}"
                         title="Delete ${name}"
                       >

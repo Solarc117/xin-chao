@@ -1,16 +1,20 @@
 import '../../types.js'
 import messages from '../../messages.json'
 
-/**
- * A browser page.
- */
 class Page {
   /**
-   * Returns the first this.Element within the document that matches the specified selector.
+   * Returns the first Element within the document that matches the specified selector.
    * @param {string} selector - A DOMString containing one or more selectors to match.
-   * @returns {this.Element | null} - An this.Element object representing the first this.element in the document that matches the specified set of CSS selectors, or null if no matches are found.
+   * @returns {Element | null} - An Element object representing the first element in the document that matches the specified set of CSS selectors, or null if no matches are found.
    */
   query = document.querySelector.bind(document)
+
+  /**
+   * Returns an element with the specified ID.
+   * @param {string} id - The ID of the element to find.
+   * @returns {Element | null} The element with the specified ID or null if no such element exists.
+   */
+  queryId = document.getElementById.bind(document)
 
   /**
    * Returns a static NodeList representing a list of elements matching the specified group of selectors.
@@ -22,37 +26,44 @@ class Page {
   /**
    * Creates an this.element with the specified tag name.
    * @param {string} tagName - A string that specifies the type of this.element to be created.
-   * @returns {this.Element} - The created this.Element object.
+   * @returns {Element} - The created Element object.
    */
   element = document.createElement.bind(document)
 }
 
-/**
- * The admin home page.
- */
 class AdminHome extends Page {
-  constructor(
+  constructor({
     itemKey,
     adminLoginPath,
     categoryNavId,
     menuSectionId,
     categoryOptionsId,
-    itemDeletePopUpId
-  ) {
+    displayFunctionName,
+    popUp: {
+      popUpId,
+      displayPopUpFunction,
+      popUpCancelButtonId,
+      popUpDeleteButtonId,
+    },
+  }) {
     super()
-    this.itemKey = itemKey
     this.adminLoginPath = adminLoginPath
     this.categoryNav = this.query(`#${categoryNavId}`)
     this.menuSection = this.query(`#${menuSectionId}`)
     this.categoryOptions = this.query(`#${categoryOptionsId}`)
-    this.popUpId = itemDeletePopUpId
+    this.displayFunctionName = displayFunctionName
+
+    this.popUpId = popUpId
+    this.displayPopUpFunction = displayPopUpFunction
+    this.popUpCancelButtonId = popUpCancelButtonId
+    this.popUpDeleteButtonId = popUpDeleteButtonId
   }
 
   /**
    * Redirects client to login page if the authentication request fails (different from the request returning an unauthorized or forbidden code; server error).
    * @returns {boolean} An indicator of whether the client could be authenticated or not (due to a server error; if request shows client is explicitly missing credentials, they are redirected).
    */
-  async authenticate() {
+  async #authenticate() {
     let response
     try {
       response = await fetch('/.netlify/functions/verify')
@@ -71,8 +82,8 @@ class AdminHome extends Page {
   }
 
   /** @returns {boolean} An indicator of whether the menu is stored after the operation. */
-  async storeMenuIfNotStored() {
-    if (typeof sessionStorage.getItem(this.itemKey) === 'string') return true
+  async #storeMenuIfNotStored() {
+    if (typeof sessionStorage.getItem(ITEM_KEY) === 'string') return true
     notify(messages[Math.floor(Math.random() * messages.length)])
 
     let categories
@@ -80,7 +91,7 @@ class AdminHome extends Page {
       categories = await fetch('/.netlify/functions/menu').then(response =>
         response.json()
       )
-      sessionStorage.setItem(this.itemKey, JSON.stringify(categories))
+      sessionStorage.setItem(ITEM_KEY, JSON.stringify(categories))
     } catch (error) {
       console.error(error)
       return false
@@ -89,56 +100,47 @@ class AdminHome extends Page {
     return true
   }
 
-  initializeDeleteItemPopUp() {
+  #initializeDeleteItemPopUp() {
     const popUp = this.element('div')
     document.body.appendChild(popUp)
     popUp.outerHTML = `<div 
       id="${this.popUpId}" 
       class="delete_product_pop_up"
+      hidden
     >
       <span></span>
       <div class="pop_up_buttons">
-        <button id="cancel_pop_up_button" class="cancel_button">Cancel</button>
-        <button id="delete_product" class="delete_button">Delete</button>
+        <button id="${this.popUpCancelButtonId}" class="cancel_button">Cancel</button>
+        <button id="${this.popUpDeleteButtonId}" class="delete_button">Delete</button>
       </div>
     </div>`
 
-    function hidePopUp(popUpId) {
+    function hidePopUp(popUpId, deleteButtonId) {
       const deletePopUp = document.querySelector(`#${popUpId}`),
-        span = document.querySelector(`#${popUpId} span`)
+        span = document.querySelector(`#${popUpId} span`),
+        deleteButton = document.querySelector(`#${deleteButtonId}`)
 
-      deletePopUp.setAttribute('hidden', 'hidden')
+      deletePopUp.setAttribute('hidden', true)
       span.textContent = ''
+      delete deleteButton.dataset.product_id
     }
-    const cancelButtonId = 'cancel_pop_up_button'
-    this.query(`#${cancelButtonId}`).addEventListener('click', () =>
-      hidePopUp(this.popUpId)
+
+    this.queryId(this.popUpCancelButtonId).addEventListener('click', () =>
+      hidePopUp(this.popUpId, this.popUpDeleteButtonId)
     )
-  }
-
-  displayDeletePopUp(productName, productId) {
-    const popUp = this.query(`#${this.popUpId}`),
-      span = this.query(`#${this.popUpId} span`)
-
-    span.textContent = `Are you sure you wish to delete ${productName}?`
-
-    const deleteButton = this.query(
-      `#${this.popUpId} button:contains('Delete')`
-    )
-    deleteButton.dataset.product_id = productId
   }
 
   /**
    *
    * @param {Product} product The product object from which to construct the li's outerHTML.
    * @param {boolean} admin An indicator of whether to generate a li item for the admin page, with edit options. Defaults to false.
-   * @returns {string} The li this.element's outerHTML.
+   * @returns {string} The li element's outerHTML.
    */
-  liElementFromProduct(product) {
+  #liElementFromProduct(product) {
     const { _id, name, description, price, temperature } = product,
-      emojis = {
-        hot: '🔥',
-        cold: '❄️',
+      symbols = {
+        hot: '🔴',
+        cold: '🔵',
       }
 
     return `<li class="item" id="${_id}">
@@ -151,26 +153,52 @@ class AdminHome extends Page {
                             temperature
                               .map(
                                 option =>
-                                  `<span class="emoji" title="Available ${option}">${emojis[option]}</span>`
+                                  `<span class="emoji" title="Available ${option}">${symbols[option]}</span>`
                               )
                               .join('')
                       }
                     </span>
                     <span class="admin_buttons">
-                      <span
-                        class="admin_button item_edit_button emoji"
-                        data-id="${_id}"
+                      ${
+                        ''
+                        //   `<span
+                        // class="admin_button emoji"
+                        // data-id="${_id}"
+                        // title="Edit ${name}"
+                        // onclick="${this.displayFunctionName}(event)"
+                        // ></span>`
+                      }
+                      <img 
+                        class="svg admin_svg" 
+                        src="../../svgs/edit.svg"
+                        alt="Edit button"
                         title="Edit ${name}"
-                      >
-                      ✏️
-                      </span> 
-                      <span
-                        class="admin_button item_delete_button emoji"
                         data-id="${_id}"
+                        onclick="${this.displayFunctionName}(event)"
+                      />
+                      ${
+                        ''
+                        //     `<span
+                        //   class="admin_button emoji"
+                        //   data-id="${_id}"
+                        //   data-name="${name}"
+                        //   title="Delete ${name}"
+                        //   onclick="${this.displayPopUpFunction}(event, ${this.popUpId}, ${this.popUpDeleteButtonId})"
+                        //   >
+                        //   ❌
+                        // </span>`
+                      }
+                       <img
+                        class="svg admin_svg"
+                        src="../../svgs/delete.svg"
+                        alt="Delete button"
                         title="Delete ${name}"
-                      >
-                      ❌
-                      </span>
+                        data-id="${_id}"
+                        data-name="${name}"
+                        onclick="${this.displayPopUpFunction}(event, ${
+      this.popUpId
+    }, ${this.popUpDeleteButtonId})"
+                      />
                     </span>
                   </header>
                   <hr />
@@ -192,18 +220,43 @@ class AdminHome extends Page {
             </li>`
   }
 
-  async initializePage() {
-    if (!(await this.authenticate()))
+  async initialize() {
+    if (!(await this.#authenticate()))
       return notify('❌ Something went wrong, please try again later')
 
-    if (!(await this.storeMenuIfNotStored()))
+    if (!(await this.#storeMenuIfNotStored()))
       return notify(
         '❌ Could not fetch menu; please refer to our Google page or try again later'
       )
 
-    this.initializeDeleteItemPopUp()
+    this.#initializeDeleteItemPopUp()
 
-    const itemCategories = JSON.parse(sessionStorage.getItem(this.itemKey))
+    window[this.displayPopUpFunction] = function (
+      {
+        target: {
+          dataset: { name, id },
+        },
+      },
+      popUp,
+      deleteButton
+    ) {
+      const span = popUp.children[0]
+
+      span.textContent = `Are you sure you wish to delete ${name}?`
+      deleteButton.dataset.product_id = id
+      popUp.removeAttribute('hidden')
+    }
+
+    const addProductButton = this.element('button')
+    this.menuSection.parentNode.insertBefore(addProductButton, this.menuSection)
+    addProductButton.outerHTML = `<div 
+        class="add_product_button" 
+        onclick="${this.displayFunctionName}(event)"
+      >
+        Add A Product
+      </div>`
+
+    const itemCategories = JSON.parse(sessionStorage.getItem(ITEM_KEY))
 
     for (const { category, products } of itemCategories) {
       const categoryId = category.toLowerCase().replace(/\s/g, '_')
@@ -215,22 +268,17 @@ class AdminHome extends Page {
         <a href="#${categoryId}">${category}</a>
       </li>`
 
-      // Items.
+      // Products.
       const categorySection = this.element('section')
       this.menuSection.appendChild(categorySection)
       categorySection.outerHTML = `<section id="${categoryId}" class="category">
         <h2>${category}</h2>
         <ul class="category_items">
         ${products
-          .map(product => this.liElementFromProduct(product, true))
+          .map(product => this.#liElementFromProduct(product))
           .join(' ')}
         </ul>
       </section>`
-
-      // Item form option tags.
-      const optionElement = this.element('option')
-      this.categoryOptions.appendChild(optionElement)
-      optionElement.outerHTML = `<option value="${category}">${category}</option>`
     }
   }
 }
@@ -238,133 +286,43 @@ class AdminHome extends Page {
 /**
  * The admin product edit/submit form.
  */
-class AdminForm {
-  constructor(formId, quantitiesFieldsetId) {
-    window.removeParentOnClick = event => event.target.parentElement.remove()
-
+class AdminForm extends Page {
+  constructor({
+    formId,
+    formChildrenIds: {
+      quantitiesFieldset,
+      categoryOptions,
+      singlePriceOption,
+      multiplePriceOption,
+      singlePriceInputId,
+    },
+    displayFunctionName,
+    hideFunctionName,
+  }) {
+    super()
     this.formId = formId
-    this.quantitiesFieldsetId = quantitiesFieldsetId
+    this.quantitiesFieldsetId = quantitiesFieldset
+    this.categoryOptionsId = categoryOptions
+    this.singlePriceOptionId = singlePriceOption
+    this.multiplePriceOptionId = multiplePriceOption
+    this.singlePriceInputId = singlePriceInputId
+    this.displayFunctionName = displayFunctionName
+    this.hideFunctionName = hideFunctionName
   }
 
-  initializeForm() {
-    const adminForm = this.element('form')
-    adminForm.outerHTML = `<form id="${this.formId}" class="admin_form" hidden>
-        <button type="button" id="close_form_button">Close</button>
-
-        <label>
-          Name:<br />
-          <input class="form_input" type="text" name="name" placeholder="Name" maxlength="30" required />
-        </label>
-
-        <label>
-          Description:<br />
-          <textarea class="form_input" name="description" placeholder="Description" maxlength="120"></textarea>
-        </label>
-
-        <label>
-          Category:<br />
-          <select class="form_input" name="category" id="category_options" required>
-            <option value selected>Please select a category</option>
-          </select>
-        </label>
-
-        <fieldset class="price_fieldset">
-          <legend>Price Options</legend>
-          <label>
-            <input type="radio" name="price_option" value="single_price" id="single_price_option" class="price_option" checked /> Single
-          </label>
-          <label>
-            <input type="radio" name="price_option" value="multiple_prices" id="multiple_price_option" class="price_option" /> Multiple
-          </label>
-          <hr />
-          <label>
-            Price:<br />
-            <input type="number" name="price" class="single_price" id="single_price" step="0.01" min="0.01" placeholder="$4.99" required />
-          </label>
-          <fieldset class="quantity_prices_fieldset" id="quantity_prices_fieldset" disabled>
-            <legend>Price Per Quantity:</legend>
-            <fieldset class="quantity_price_pair">
-              <label>
-                Quantity:
-                <input type="text" placeholder="8oz" required />
-              </label>
-              <label>
-                Price:
-                <input type="number" pattern="^\$?\d+\.?\d{0,2}?$" step="0.01" min="0.01" placeholder="$5.99" required />
-              </label>
-            </fieldset>
-            <button class="add_quantity_button" id="add_quantity_button">Add Quantity</button>
-          </fieldset>
-        </fieldset>
-
-        <fieldset class="temperature_fieldset">
-          <legend>Temperature Options</legend>
-          <label>
-            Hot 🔥
-            <input type="checkbox" name="hot" value="hot" />
-          </label>
-          <label>
-            Cold ❄️
-            <input type="checkbox" name="cold" value="cold" />
-          </label>
-        </fieldset>
-
-        <button type="submit">Submit</button>
-      </form>`
-  }
+  apiURL = '/.netlify/functions'
+  removeParentFunction = 'removeParent'
+  switchPriceFunction = 'switchPriceOption'
+  addQuantityPriceFunction = 'addQuantityPricePair'
 
   resetForm() {
-    const form = this.query(this.formId)
+    const form = this.queryId(this.formId)
     form.reset()
+    form.removeAttribute('data-id')
+    for (const element of this.queryAll('.additional_pair')) element.remove()
   }
 
-  addQuantityPricePair(price, quantity) {
-    const newField = this.element('fieldset')
-    newFieldset.outerHTML = `<fieldset class="quantity_price_pair additional_pair">
-      <label>
-        Quantity:
-        <input
-          type="text"
-          placeholder="8oz"
-          ${typeof quantity === 'string' ? `value="${quantity}"` : ''}
-          required
-        />
-      </label>
-      <label>
-        Price:
-        <input
-          type="number"
-          pattern="^\$?\d+\.?\d{0,2}?$"
-          step="0.01"
-          min="0.01"
-          placeholder="$5.99"
-          ${typeof price === 'string' ? `value="${price}"` : ''}
-          required
-        />
-      </label>
-      <button 
-        class="remove_quantity_button" 
-        type="button" 
-        onclick="removeParentOnClick(event)"
-      >
-        Remove Quantity
-      </button>
-    </fieldset>`
-
-    const quantitiesFieldset = this.query(`#${this.quantitiesFieldsetId}`)
-    quantitiesFieldset.insertBefore(
-      newField,
-      quantitiesFieldset.lastElementChild
-    )
-  }
-}
-
-class ProductAPI {
-  constructor(apiUrl) {
-    this.apiUrl = apiUrl
-  }
-
-  formatItemData(form) {
+  formatProductData(form) {
     const formData = new FormData(form)
     let item = {
       temperature: [],
@@ -404,7 +362,7 @@ class ProductAPI {
   async addItem(submitEvent) {
     submitEvent.preventDefault()
     const { target } = submitEvent,
-      body = JSON.stringify(this.formatItemData(target))
+      body = JSON.stringify(this.formatProductData(target))
 
     const response = await fetch('/.netlify/functions/item', {
       method: 'POST',
@@ -423,7 +381,7 @@ class ProductAPI {
     notify('❌ Something went wrong, please try again later')
   }
   /** @param {SubmitEvent} submitEvent */
-  static async editItemById(submitEvent) {
+  async editItemById(submitEvent) {
     submitEvent.preventDefault()
     const { target } = submitEvent,
       id = target.dataset.id,
@@ -450,8 +408,10 @@ class ProductAPI {
     }
   }
   /** @param {PointerEvent} clickEvent */
-  static async deleteItemById(clickEvent) {
-    const { id } = clickEvent.target.dataset
+  async deleteItemById(clickEvent) {
+    const { product_id } = clickEvent.target.dataset
+
+    console.log('id:', id)
 
     try {
       const response = await fetch('/.netlify/functions/item', {
@@ -459,23 +419,255 @@ class ProductAPI {
           body: JSON.stringify({ id }),
         }),
         result = await response.json()
+
+      console.log('result:', result)
     } catch (error) {
       console.error(error)
       return notify('❌ Could not delete item, please try again later')
     }
   }
+
+  initialize() {
+    const self = this
+
+    window[self.displayFunctionName] = function (event) {
+      const form = self.queryId(self.formId)
+      form.removeAttribute('hidden')
+
+      const { id } = event.target.dataset
+      for (const { products } of JSON.parse(sessionStorage.getItem(ITEM_KEY)))
+        for (const product of products)
+          if (product._id === id) {
+            const {
+              name,
+              description,
+              category,
+              price,
+              temperature: temperatures,
+            } = product
+
+            self.query('input[name="name"]').value = name
+            self.query('textarea[name="description"]').value = description
+            self.query('select[name="category"]').value = category
+            if (typeof price === 'string') {
+              self.query('input[value="single_price"]').checked = true
+              self.query('input[name="price"]').value = price
+            } else {
+              self.query('input[value="multiple_prices"]').checked = true
+              const fieldset = self.queryId(self.quantitiesFieldsetId)
+              fieldset.disabled = false
+              self.query('input[name="price"]').disabled = true
+
+              const quantityPriceArrays = Object.entries(price),
+                [firstQuantity, firstPrice] = quantityPriceArrays.shift(),
+                firstText = self.query(
+                  `#${self.quantitiesFieldsetId} input[type="text"]`
+                ),
+                firstNumber = self.query(
+                  `#${self.quantitiesFieldsetId} input[type="number"]`
+                )
+              firstText.value = firstQuantity
+              firstNumber.value = firstPrice
+
+              for (const [quantity, price] of quantityPriceArrays)
+                window[self.addQuantityPriceFunction]({ [quantity]: price })
+            }
+
+            for (const temperature of temperatures)
+              self.query(`input[value="${temperature}"]`).checked = true
+          }
+    }
+
+    window[self.hideFunctionName] = function () {
+      const form = self.queryId(self.formId)
+      self.resetForm()
+      form.setAttribute('hidden', true)
+    }
+
+    window[self.switchPriceFunction] = function ({ target }) {
+      const singlePriceInput = self.queryId(self.singlePriceInputId),
+        quantitiesFieldset = self.queryId(self.quantitiesFieldsetId)
+
+      if (target.id === 'single_price_option') {
+        singlePriceInput.removeAttribute('disabled')
+        return quantitiesFieldset.setAttribute('disabled', true)
+      }
+
+      singlePriceInput.setAttribute('disabled', true)
+      quantitiesFieldset.removeAttribute('disabled')
+    }
+
+    window[self.addQuantityPriceFunction] = function (quantityPrice) {
+      window[self.removeParentFunction] = function ({ target }) {
+        target.parentElement.remove()
+      }
+
+      let quantity, price
+      if (quantityPrice instanceof Object)
+        [[quantity, price]] = Object.entries(quantityPrice)
+
+      const newField = self.element('fieldset'),
+        quantitiesFieldset = self.queryId(self.quantitiesFieldsetId)
+      quantitiesFieldset.insertBefore(
+        newField,
+        quantitiesFieldset.lastElementChild
+      )
+      newField.outerHTML = `<fieldset class="quantity_price_pair additional_pair">
+      <label>
+        Quantity:
+        <input
+          type="text"
+          placeholder="8oz"
+          ${typeof quantity === 'string' ? `value="${quantity}"` : ''}
+          required
+        />
+      </label>
+      <label>
+        Price:
+        <input
+          type="number"
+          pattern="^\$?\d+\.?\d{0,2}?$"
+          step="0.01"
+          min="0.01"
+          placeholder="$5.99"
+          ${typeof price === 'string' ? `value="${price}"` : ''}
+          required
+        />
+      </label>
+      <button 
+        class="remove_quantity_button" 
+        type="button" 
+        onclick="${self.removeParentFunction}(event)"
+      >
+        Remove Quantity
+      </button>
+        </fieldset>`
+    }
+
+    const adminForm = this.element('form')
+    document.body.appendChild(adminForm)
+    adminForm.outerHTML = `<form id="${this.formId}" class="admin_form" hidden>
+        <button type="button" onclick="${
+          this.hideFunctionName
+        }(event)">Close</button>
+
+        <label>
+          Name:<br />
+          <input class="form_input" type="text" name="name" placeholder="Name" maxlength="30" required />
+        </label>
+
+        <label>
+          Description:<br />
+          <textarea class="form_input" name="description" placeholder="Description" maxlength="120"></textarea>
+        </label>
+
+        <label>
+          Category:<br />
+          <select class="form_input" name="category" id="${
+            this.categoryOptions
+          }" required>
+            <option value selected>Please select a category</option>
+            ${JSON.parse(sessionStorage.getItem('items'))
+              .map(
+                ({ category }) =>
+                  `<option value="${category}">${category}</option>`
+              )
+              .join('')}
+          </select>
+        </label>
+        <fieldset class="price_fieldset">
+          <legend>Price Options</legend>
+          <label>
+            <input type="radio" name="price_option" value="single_price" id="${
+              this.singlePriceOptionId
+            }" class="price_option" onclick="${
+      this.switchPriceFunction
+    }(event)" checked /> Single
+          </label>
+          <label>
+            <input type="radio" name="price_option" value="multiple_prices" id="${
+              this.multiplePriceOptionId
+            }" class="price_option" onclick="${
+      this.switchPriceFunction
+    }(event)"/> Multiple
+          </label>
+          <hr />
+          <label>
+            Price:<br />
+            <input type="number" name="price" class="single_price" id="${
+              this.singlePriceInputId
+            }" step="0.01" min="0.01" placeholder="$4.99" required />
+          </label>
+          <fieldset class="quantity_prices_fieldset" id="${
+            this.quantitiesFieldsetId
+          }" disabled>
+            <legend>Price Per Quantity:</legend>
+            <fieldset class="quantity_price_pair">
+              <label>
+                Quantity:
+                <input type="text" placeholder="8oz" required />
+              </label>
+              <label>
+                Price:
+                <input type="number" pattern="^\$?\d+\.?\d{0,2}?$" step="0.01" min="0.01" placeholder="$5.99" required />
+              </label>
+            </fieldset>
+            <button class="add_quantity_button" type="button" onclick="${
+              this.addQuantityPriceFunction
+            }(event)">Add Quantity</button>
+          </fieldset>
+        </fieldset>
+
+        <fieldset class="temperature_fieldset">
+          <legend>Temperature Options</legend>
+          <label>
+            Hot 🔥
+            <input type="checkbox" name="hot" value="hot" />
+          </label>
+          <label>
+            Cold ❄️
+            <input type="checkbox" name="cold" value="cold" />
+          </label>
+        </fieldset>
+
+        <button type="submit">Submit</button>
+      </form>`
+  }
 }
 
-const adminHome = new AdminHome(
-  'items',
-  '/admin/',
-  'category_nav',
-  'menu_section',
-  'category_options',
-  'delete_product_pop_up'
-)
+const ITEM_KEY = 'items'
 
-adminHome.initializePage()
+const adminFormSettings = {
+    formId: 'admin_form',
+    formChildrenIds: {
+      quantitiesFieldset: 'quantity_prices_fieldset',
+      categoryOptions: 'category_options',
+      singlePriceOption: 'single_price_option',
+      multiplePriceOption: 'multiple_price_option',
+      singlePriceInputId: 'single_price',
+    },
+    displayFunctionName: 'displayForm',
+    hideFunctionName: 'hideForm',
+  },
+  adminForm = new AdminForm(adminFormSettings)
+
+const adminHomeSettings = {
+    adminLoginPath: '/admin/',
+    categoryNavId: 'category_nav',
+    menuSectionId: 'menu_section',
+    categoryOptionsId: 'category_options',
+    displayFunctionName: adminForm.displayFunctionName,
+    popUp: {
+      popUpId: 'delete_product_pop_up',
+      displayPopUpFunction: 'displayPopUp',
+      popUpCancelButtonId: 'cancel_pop_up_button',
+      popUpDeleteButtonId: 'delete_product',
+    },
+  },
+  adminHome = new AdminHome(adminHomeSettings)
+
+adminHome.initialize()
+adminForm.initialize()
 
 // fetch('/.netlify/functions/verify')
 //   .then(async ({ status }) => {
@@ -531,14 +723,14 @@ adminHome.initializePage()
 //                       admin
 //                         ? `<span class="admin_buttons">
 //                       <span
-//                         class="admin_button item_edit_button emoji"
+//                         class="admin_button product_edit_button emoji"
 //                         data-id="${_id}"
 //                         title="Edit ${name}"
 //                       >
 //                       ✏️
 //                       </span>
 //                       <span
-//                         class="admin_button item_delete_button emoji"
+//                         class="admin_button product_delete_button emoji"
 //                         data-id="${_id}"
 //                         title="Delete ${name}"
 //                       >
@@ -601,7 +793,7 @@ adminHome.initializePage()
 //       for (const this.element of this.queryAll('.additional_pair')) this.element.remove()
 //     }
 //     function hideAndResetForm() {
-//       form.setAttribute('hidden', 'hidden')
+//       form.setAttribute('hidden', true)
 //       resetForm()
 //     }
 //     function switchPriceOption(event) {
@@ -755,17 +947,17 @@ adminHome.initializePage()
 //     }
 //     // Add item button.
 //     function displayAddItemForm() {
-//       resetForm()
-//       form.removeAttribute('hidden')
-//       form.removeEventListener('submit', ItemAPI.editItemById)
-//       form.addEventListener('submit', ItemAPI.addItem)
+// resetForm()
+// form.removeAttribute('hidden')
+// form.removeEventListener('submit', ItemAPI.editItemById)
+// form.addEventListener('submit', ItemAPI.addItem)
 //     }
-//     const addItemButton = newElement('button')
-//     addItemButton.id = 'add_item_button'
-//     addItemButton.classList.add('add_item_button')
-//     addItemButton.textContent = 'Add New Item'
-//     addItemButton.addEventListener('click', displayAddItemForm)
-//     menuSection.parentNode.insertBefore(addItemButton, menuSection)
+// const addItemButton = newElement('button')
+// addItemButton.id = 'add_product_button'
+// addItemButton.classList.add('add_product_button')
+// addItemButton.textContent = 'Add New Item'
+// addItemButton.addEventListener('click', displayAddItemForm)
+// menuSection.parentNode.insertBefore(addItemButton, menuSection)
 
 //     const form = this.query('#admin_form'),
 //       closeFormButton = this.query('#close_form_button')
@@ -800,31 +992,31 @@ adminHome.initializePage()
 //       this.query('textarea[name="description"]').value = description
 //       this.query('select[name="category"]').value = category
 
-//       if (typeof price === 'string') {
-//         this.query('input[value="single_price"]').checked = true
-//         this.query('input[name="price"]').value = price
-//       } else {
-//         this.query('input[value="multiple_prices"]').checked = true
-//         const fieldset = this.query('#quantity_prices_fieldset')
-//         fieldset.disabled = false
-//         this.query('input[name="price"]').disabled = true
+// if (typeof price === 'string') {
+//   this.query('input[value="single_price"]').checked = true
+//   this.query('input[name="price"]').value = price
+// } else {
+//   this.query('input[value="multiple_prices"]').checked = true
+//   const fieldset = this.query('#quantity_prices_fieldset')
+//   fieldset.disabled = false
+//   this.query('input[name="price"]').disabled = true
 
-//         const quantityPriceArrays = Object.entries(price),
-//           [firstQuantity, firstPrice] = quantityPriceArrays.shift(),
-//           firstText = this.query('#quantity_prices_fieldset input[type="text"]'),
-//           firstNumber = this.query('#quantity_prices_fieldset input[type="number"]')
-//         firstText.value = firstQuantity
-//         firstNumber.value = firstPrice
+//   const quantityPriceArrays = Object.entries(price),
+//     [firstQuantity, firstPrice] = quantityPriceArrays.shift(),
+//     firstText = this.query('#quantity_prices_fieldset input[type="text"]'),
+//     firstNumber = this.query('#quantity_prices_fieldset input[type="number"]')
+//   firstText.value = firstQuantity
+//   firstNumber.value = firstPrice
 
-//         for (const [quantity, price] of quantityPriceArrays)
-//           addQuantityPricePair({ [quantity]: price })
-//       }
+//   for (const [quantity, price] of quantityPriceArrays)
+//     addQuantityPricePair({ [quantity]: price })
+// }
 
-//       for (const temperature of temperatures)
-//         this.query(`input[value="${temperature}"]`).checked = true
+// for (const temperature of temperatures)
+//   this.query(`input[value="${temperature}"]`).checked = true
 //     }
 
-//     for (const button of this.queryAll('.item_edit_button')) {
+//     for (const button of this.queryAll('.product_edit_button')) {
 //       const id = button.dataset.id,
 //         items = JSON.parse(sessionStorage.getItem('items'))
 //           .map(category => category.products)

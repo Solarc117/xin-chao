@@ -50,9 +50,16 @@
     ✅ remove the addItem listener from the form's submit event
     ✅ add the edit item listener to the form's submit event
 
-- edit nav & logo to link to svgs instead of being in page
+✅ edit nav & logo to link to svgs instead of being in page
 
-- add menu page for customers
+✅ add menu page for customers
+
+- add price_option functionality:
+  ✅ for categoryOptions (category_options), single price option (single_price_option) & multiple price option (multiple_price_option)
+  ✅ pass single/multiple price ids to adminform constructor
+  ✅ implement in html string literal
+  ✅ add the switchPriceOption method as an event listener to both single & multiple price options
+  - setup addQuantityPricePair as an event listener on the addquantity button
 
 - test page to ensure nothing broke:
   - seems good on mine. Will test on firefox in deploy, & will ask Khanh/Phuong to test on Mac.

@@ -102,7 +102,6 @@ body {
 }
 .price {
   justify-self: flex-end;
-  color: green;
 }
 .item_body {
   height: 100%;
@@ -119,19 +118,35 @@ body {
   column-gap: 5px;
 }
 .quantity_price {
-  border-bottom: 1px solid black;
   text-align: end;
 }
-.add_item_button {
-  margin: 10px 0;
-  padding: 20px;
+.add_product_button {
   position: relative;
   left: 50%;
   transform: translateX(-50%);
+  margin: 10px 0;
+
+  width: 200px;
+  color: black;
+  background: hsl(0, 0%, 100%);
   cursor: pointer;
+  border-radius: 5px;
+
+  padding: 20px;
+  text-align: center;
+}
+.add_product_button:hover {
+  color: white;
+  background: black;
 }
 .emoji {
-  font-size: 0.9em;
+  font-size: 0.8em;
+}
+.emoji:nth-of-type(1) {
+  margin-left: 6px;
+}
+.emoji:nth-of-type(1) {
+  margin-left: 3px;
 }
 
 /* Edit Item Form */
@@ -221,7 +236,7 @@ label:has(> .price_option) {
   z-index: 5;
 
   width: 80%;
-  background: black;
+  background: hsla(0, 0%, 0%, 0.9);
   border-radius: 5px;
   padding: 10px;
 
@@ -282,6 +297,10 @@ label:has(> .price_option) {
 
 /* 1fr category items seem too wide after 600px. */
 @media only screen and (min-width: 600px) {
+  .add_product_button {
+    width: 300px;
+  }
+
   .category_items {
     justify-content: center;
     grid-template-columns: repeat(auto-fit, minmax(250px, 400px));
