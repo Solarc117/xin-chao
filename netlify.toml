@@ -5,3 +5,4 @@
   conditions = { name = "jwt", op = "eq", value = "" }
 [functions]
   external_node_modules = ["jsonwebtoken", "mongodb"]
+  node_bundler = "esbuild"

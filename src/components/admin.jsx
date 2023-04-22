@@ -1,32 +1,66 @@
+import { useState, useEffect } from 'preact/hooks'
 import messages from '../data/messages.json'
 import Login from './admin/login'
 import AdminMenu from './admin/admin-menu'
 
-const form = 
-
 export default function Admin() {
-  async function verify() {
-    const { status } = await fetch('/.netlify/functions/verify')
-    // event.preventDefault()
+  const [authenticated, setAuthenticated] = useState(false)
 
-    // const formInputs = {}
-    // for (const [key, value] of new FormData(adminForm)) formInputs[key] = value
+  useEffect(() => {
+    ;(async () => {
+      const { status } = await fetch('/.netlify/functions/verify')
 
-    // const { status } = await fetch('/.netlify/functions/auth', {
-    //   method: 'POST',
-    //   body: JSON.stringify(formInputs),
-    // })
+      if (status === 200) setAuthenticated(true)
+    })()
+  }, [])
 
-    // if (status === 401 || status === 403)
-    //   return notify('❌ Incorrect username or password')
+  async function handleSubmit(event) {
+    event.preventDefault()
 
-    // if (status !== 200) {
-    //   console.error(data)
-    //   return notify('❌ Something went wrong, please try again later')
-    // }
+    const formData = new FormData(event.target),
+      username = formData.get('username'),
+      password = formData.get('password'),
+      { status } = await fetch('/.netlify/functions/auth', {
+        method: 'POST',
+        body: JSON.stringify({ username, password }),
+      })
 
-    // window.location.replace(`${window.location.origin}/admin/home/`)
+    if (status === 200) return setAuthenticated(true)
+
+    alert('Incorrect credentials, please try again')
   }
 
-  return <main className='login_main main'></main>
+  return (
+    <main className='admin_main main'>
+      {/* {authenticated ? (
+        <div>Authenticated!</div>
+      ) : (
+        <form className='login_form' onSubmit={handleSubmit}>
+          <label className='user_label'>
+            Username:
+            <br />
+            <input
+              type='text'
+              className='user_input'
+              name='username'
+              required
+            />
+          </label>
+          <label className='password_label'>
+            Password:
+            <br />
+            <input
+              type='password'
+              className='password_input'
+              name='password'
+              required
+            />
+          </label>
+          <button type='submit' className='login_button'>
+            Login
+          </button>
+        </form>
+      )} */}
+    </main>
+  )
 }

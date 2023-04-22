@@ -10,4 +10,9 @@
   ✅ find zindex required to pop background image 2 above background image 1, but still behind everything else (-1 and 0 maybe?)
   ✅ extract main into different components, to style differently (.contact_main, .home_main, etc.)
 
-- 
+Admin component functionality:
+- create an authorized stateful variable, defaulting to false
+- on initial render:
+  - make a request to the verify endpoint
+  - if the request returns a status of 200, set the authorized stateful variable to true
+  - whenever the form is submitted, make a request to the auth endpoint, and set the authorized stateful variable to true

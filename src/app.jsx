@@ -4,7 +4,7 @@ import Nav from './components/nav'
 import Home from './components/home'
 import About from './components/about'
 import Contact from './components/contact'
-import Footer from './components/footer'
+import Admin from './components/admin'
 import HoursSnippet from './components/hours-snippet'
 import './css/home.css'
 
@@ -18,6 +18,7 @@ export default function App() {
         <Home path='/' />
         <About path='/about' />
         <Contact path='/contact' />
+        <Admin path='/admin' />
       </Router>
       <HoursSnippet />
     </>
