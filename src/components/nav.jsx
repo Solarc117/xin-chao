@@ -1,19 +1,21 @@
+import { face, insta } from '../assets/svgs'
+
 export default function Nav() {
   return (
     <nav class='nav_links'>
       <ul class='nav_links_ul'>
         <li class='page'>
-          <a class='page_link nav_a' href='/about/' tabindex='-1'>
+          <a class='page_link nav_a' href='/about' tabindex='-1'>
             About
           </a>
         </li>
         <li class='page'>
-          <a class='page_link nav_a' href='/contact/' tabindex='-1'>
+          <a class='page_link nav_a' href='/contact' tabindex='-1'>
             Contact
           </a>
         </li>
         <li class='page'>
-          <a class='page_link nav_a' href='/menu/' tabindex='-1'>
+          <a class='page_link nav_a' href='/menu' tabindex='-1'>
             Menu
           </a>
         </li>
@@ -26,11 +28,7 @@ export default function Nav() {
                 href='https://www.facebook.com/profile.php?id=100087433302511'
                 tabindex='-1'
               >
-                <img
-                  src='../assets'
-                  alt='Facebook logo'
-                  class='media_svg'
-                />
+                <img src={face} alt='Facebook logo' class='media_svg' />
               </a>
             </li>
             <li class='instagram_logo'>
@@ -39,11 +37,7 @@ export default function Nav() {
                 href='https://www.instagram.com/xinchaoyyc/'
                 tabindex='-1'
               >
-                <img
-                  src='./svgs/insta.svg'
-                  alt='Instagram logo'
-                  class='media_svg'
-                />
+                <img src={insta} alt='Instagram logo' class='media_svg' />
               </a>
             </li>
           </ul>

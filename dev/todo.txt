@@ -1,0 +1,13 @@
+✅ add background images in home component (rotate btw 2 divs):
+  ✅ rotate 1 div between 3 images
+  ✅ rotate second div between image ahead of current image
+  ✅ initialize a boolean firstDivOpaque value
+  ✅ add 'opaque' class to first div if val above true, & opposite for second div
+  ✅ after updating imageindex, update firstDivOpaque after 750ms 
+  ✅ store second image index in a stateful value as well
+  ✅ use second image index for second div
+  ✅ increment imageIndex by steps of 2 instead of 1
+  ✅ find zindex required to pop background image 2 above background image 1, but still behind everything else (-1 and 0 maybe?)
+  ✅ extract main into different components, to style differently (.contact_main, .home_main, etc.)
+
+- 

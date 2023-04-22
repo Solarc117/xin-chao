@@ -11,6 +11,9 @@ node_modules
 dist
 dist-ssr
 *.local
+.vercel 
+.env
+dev/test.mongodb
 
 # Editor directories and files
 .vscode/*
@@ -22,9 +25,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-
-# Development
-dev/
 
 # Local Netlify folder
 .netlify

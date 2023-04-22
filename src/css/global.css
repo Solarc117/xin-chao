@@ -39,6 +39,7 @@ body,
   background-attachment: fixed;
   background-repeat: no-repeat;
 }
+
 h1,
 h2,
 h3,
@@ -59,9 +60,6 @@ a {
   color: hsl(200, 100%, 50%);
   text-decoration: underline;
 }
-path {
-  fill: white;
-}
 .gradient_container {
   z-index: 5;
   pointer-events: none;
@@ -75,11 +73,13 @@ path {
   animation: darken 0.5s forwards;
 }
 .background_image {
-  position: fixed;
-  width: 100%;
-  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
 }
-.opaque {
+.background_image.opaque {
   animation: fade_in 0.3s forwards;
 }
 .background_image:not(.opaque) {
@@ -126,11 +126,44 @@ path {
 .main {
   height: calc(100vh - 100px);
   z-index: 1;
+  overflow-y: scroll;
+}
+
+.footer {
+  width: 100%;
+  min-height: 100%;
+  z-index: 1;
+
+  padding: 5%;
+  background: linear-gradient(
+    to top,
+    hsla(0, 0%, 0%, 0.8),
+    hsla(0, 0%, 0%, 0.7),
+    hsla(0, 0%, 0%, 0.2)
+  );
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  align-items: start;
+  justify-content: space-around;
+  align-items: start;
+  font-size: 20px;
+}
+
+.footer > a {
+  display: flex;
+  flex-direction: row;
   align-items: center;
-  font-size: 16px;
+  flex-wrap: wrap;
+}
+
+.footer_mail_logo, .footer_number_logo, .footer_address_logo {
+  width: 40px;
+  margin: 10px;
+}   
+
+.footer_main_logo {
+  align-self: center;
+  height: 100%;
 }
 
 /* Components */
@@ -226,8 +259,8 @@ path {
   font-size: 17px;
 }
 .open_text {
-  text-decoration: underline;
-  color: blueviolet;
+  text-decoration: none;
+  color: white;
   font-display: flex;
 }
 .snippet_svg {

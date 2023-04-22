@@ -1,0 +1,7 @@
+[[redirects]]
+  from = "/admin/home/"
+  to = "/admin/"
+  status = 401
+  conditions = { name = "jwt", op = "eq", value = "" }
+[functions]
+  external_node_modules = ["jsonwebtoken", "mongodb"]

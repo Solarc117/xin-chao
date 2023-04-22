@@ -1,25 +1,23 @@
 /* Page globals */
-body {
+.contact_background {
   background: linear-gradient(
       to right,
       hsla(0, 0%, 0%, 0.6),
       hsla(38, 89%, 49%, 0.2)
     ),
-    url('../images/store.jpg');
-  background-size: cover;
-  background-attachment: fixed;
+    url('../assets/images/store.jpg');
 }
 
 /* Sections */
-.main {
+.contact_main {
   display: block;
   font-size: 18px;
-  padding: 0 50px;
+  padding: 0 10px;
   overflow-y: scroll;
 }
 
 /* Components */
-.main > p {
+.contact_main > p {
   margin: 10px 0;
   padding: 0.25cm;
   font-family: 'Univers Next', 'Times New Roman', Times, serif;
@@ -33,14 +31,15 @@ body {
 
 /* Tablets */
 @media only screen and (min-width: 450px) {
-  .main {
+  .contact_main {
     font-size: 20px;
+    padding: 0 30px;
   }
 }
 
 /* Desktop */
 @media only screen and (min-width: 900px) {
-  .main {
+  .contact_main {
     font-size: 24px;
     padding: 0 100px;
   }
