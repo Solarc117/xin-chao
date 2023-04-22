@@ -1,5 +1,3 @@
-import jwt from 'jsonwebtoken'
-
 const { SESSION_SECRET, ADMIN_USERNAME } = process.env
 
 export const handler = async function ({ headers: { cookie } }) {
@@ -21,6 +19,8 @@ export const handler = async function ({ headers: { cookie } }) {
       statusCode: 401,
       body: JSON.stringify({ message: 'Unauthorized' }),
     }
+
+  const jwt = await import('jsonwebtoken')
 
   return await jwt.verify(token, SESSION_SECRET, (error, user) =>
     error || user === undefined || user.username !== ADMIN_USERNAME

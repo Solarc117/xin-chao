@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'preact/hooks'
-import messages from '../data/messages.json'
 import Login from './admin/login'
 import AdminMenu from './admin/admin-menu'
+import { home1 } from '../assets/images'
+import messages from '../data/messages.json'
+import '../css/login.css'
 
 export default function Admin() {
   const [authenticated, setAuthenticated] = useState(false)
@@ -31,36 +33,42 @@ export default function Admin() {
   }
 
   return (
-    <main className='admin_main main'>
-      {/* {authenticated ? (
+    <main className={`${authenticated ? 'admin_main' : 'login_main'} main`}>
+      {authenticated ? (
         <div>Authenticated!</div>
       ) : (
-        <form className='login_form' onSubmit={handleSubmit}>
-          <label className='user_label'>
-            Username:
-            <br />
-            <input
-              type='text'
-              className='user_input'
-              name='username'
-              required
-            />
-          </label>
-          <label className='password_label'>
-            Password:
-            <br />
-            <input
-              type='password'
-              className='password_input'
-              name='password'
-              required
-            />
-          </label>
-          <button type='submit' className='login_button'>
-            Login
-          </button>
-        </form>
-      )} */}
+        <>
+          <div
+            className='background_image opaque'
+            style={{ backgroundImage: `url(${home1})` }}
+          />
+          <form className='login_form' onSubmit={handleSubmit}>
+            <label className='user_label'>
+              Username:
+              <br />
+              <input
+                type='text'
+                className='user_input'
+                name='username'
+                required
+              />
+            </label>
+            <label className='password_label'>
+              Password:
+              <br />
+              <input
+                type='password'
+                className='password_input'
+                name='password'
+                required
+              />
+            </label>
+            <button type='submit' className='login_button'>
+              Login
+            </button>
+          </form>
+        </>
+      )}
     </main>
   )
 }

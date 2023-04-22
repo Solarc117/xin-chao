@@ -1,14 +1,8 @@
 import { MongoClient } from 'mongodb'
+import { mongoConfig } from '../config'
 
 const { URI, DATABASE, PRODUCT_COLLECTION } = process.env,
-  clientPromise = new MongoClient(URI, {
-    appName: 'Xin Chào Coffee',
-    maxPoolSize: 1,
-    maxIdleTimeMS: 10_000,
-    serverSelectionTimeoutMS: 10_000,
-    socketTimeoutMS: 20_000,
-    keepAlive: true,
-  })
+  clientPromise = new MongoClient(URI, mongoConfig)
 
 export const handler = async function (event, context) {
   const { httpMethod } = event
