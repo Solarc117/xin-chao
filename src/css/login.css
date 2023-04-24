@@ -10,7 +10,7 @@
   height: 80%;
   background: linear-gradient(
     to bottom,
-    hsla(0, 0%, 0%, 0 .8),
+    hsla(0, 0%, 0%, 0.8),
     hsla(0, 0%, 0%, 0.7),
     hsla(0, 0%, 0%, 0.2)
   );

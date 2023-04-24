@@ -1,10 +1,15 @@
 import jwt from 'jsonwebtoken'
 import { MongoClient, ObjectId } from 'mongodb'
-import { mongoConfig } from '../config'
 
 const { URI, DATABASE, PRODUCT_COLLECTION, SESSION_SECRET, ADMIN_USERNAME } =
-    process.env,
-  clientPromise = new MongoClient(URI, mongoConfig)
+  process.env,
+  client = new MongoClient(URI, {
+    appName: 'Xin Chào Coffee',
+    maxPoolSize: 1,
+    maxIdleTimeMS: 10_000,
+    serverSelectionTimeoutMS: 10_000,
+    socketTimeoutMS: 20_000,
+  })
 
 class MenuDAO {
   /**
@@ -42,15 +47,15 @@ class MenuDAO {
     return typeof token !== 'string'
       ? false
       : await jwt.verify(token, SESSION_SECRET, (error, user) => {
-          if (error) {
-            console.error(error)
-            return false
-          }
+        if (error) {
+          console.error(error)
+          return false
+        }
 
-          return user === undefined || user.username !== ADMIN_USERNAME
-            ? false
-            : true
-        })
+        return user === undefined || user.username !== ADMIN_USERNAME
+          ? false
+          : true
+      })
   }
 
   /**
@@ -66,7 +71,9 @@ class MenuDAO {
       }
 
     try {
-      const database = (await this.client).db(DATABASE),
+      await this.client.connect()
+
+      const database = this.client.db(DATABASE),
         collection = database.collection(PRODUCT_COLLECTION),
         result = await collection.insertOne(product)
 
@@ -93,7 +100,9 @@ class MenuDAO {
       }
 
     try {
-      const database = (await this.client).db(DATABASE),
+      await this.client.connect()
+
+      const database = this.client.db(DATABASE),
         collection = database.collection(PRODUCT_COLLECTION),
         result = await collection.findOneAndUpdate(
           { _id: new ObjectId(_id) },
@@ -125,7 +134,9 @@ class MenuDAO {
       }
 
     try {
-      const database = (await this.client).db(DATABASE),
+      await this.client.connect()
+
+      const database = this.client.db(DATABASE),
         collection = database.collection(PRODUCT_COLLECTION),
         result = await collection.deleteOne({ _id: new ObjectId(_id) })
 
@@ -142,7 +153,7 @@ class MenuDAO {
 export async function handler(event, context) {
   const { httpMethod, body } = event,
     data = JSON.parse(body),
-    dao = new MenuDAO(event, clientPromise)
+    dao = new MenuDAO(event, client)
 
   switch (httpMethod) {
     case 'POST': {

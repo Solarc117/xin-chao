@@ -1,8 +1,15 @@
+import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
 import { MongoClient } from 'mongodb'
-import { mongoConfig } from '../config'
 
 const { URI, DATABASE, USER_COLLECTION, SESSION_SECRET } = process.env,
-  clientPromise = new MongoClient(URI, mongoConfig)
+  client = new MongoClient(URI, {
+    appName: 'Xin Chào Coffee',
+    maxPoolSize: 1,
+    maxIdleTimeMS: 10_000,
+    serverSelectionTimeoutMS: 10_000,
+    socketTimeoutMS: 20_000,
+  })
 
 export const handler = async function (event, context) {
   const { httpMethod } = event,
@@ -21,13 +28,14 @@ export const handler = async function (event, context) {
     }
 
   try {
-    const database = (await clientPromise).db(DATABASE),
+    await client.connect()
+
+    const database = client.db(DATABASE),
       collection = database.collection(USER_COLLECTION),
       adminUser = await collection.findOne({ username })
 
-    await clientPromise.close()
+    await client.close()
 
-    const bcrypt = await import('bcrypt')
     if (adminUser === null || !bcrypt.compareSync(password, adminUser.password))
       return {
         statusCode: 401,
@@ -36,16 +44,15 @@ export const handler = async function (event, context) {
         }),
       }
 
-    const jwt = await import('jsonwebtoken'),
-      token = jwt.sign(
-        {
-          username,
-        },
-        SESSION_SECRET,
-        {
-          expiresIn: '24h',
-        }
-      )
+    const token = jwt.sign(
+      {
+        username,
+      },
+      SESSION_SECRET,
+      {
+        expiresIn: '24h',
+      }
+    )
 
     return {
       statusCode: 200,

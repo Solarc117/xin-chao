@@ -1,8 +1,13 @@
 import { MongoClient } from 'mongodb'
-import { mongoConfig } from '../config'
 
 const { URI, DATABASE, PRODUCT_COLLECTION } = process.env,
-  clientPromise = new MongoClient(URI, mongoConfig)
+  client = new MongoClient(URI, {
+    appName: 'Xin Chào Coffee',
+    maxPoolSize: 1,
+    maxIdleTimeMS: 10_000,
+    serverSelectionTimeoutMS: 10_000,
+    socketTimeoutMS: 20_000,
+  })
 
 export const handler = async function (event, context) {
   const { httpMethod } = event
@@ -14,7 +19,9 @@ export const handler = async function (event, context) {
     }
 
   try {
-    const database = (await clientPromise).db(DATABASE),
+    await client.connect()
+
+    const database = client.db(DATABASE),
       collection = database.collection(PRODUCT_COLLECTION),
       cursor = await collection.aggregate([
         {
@@ -31,7 +38,7 @@ export const handler = async function (event, context) {
       ]),
       products = await cursor.toArray()
 
-    await clientPromise.close()
+    await client.close()
 
     return {
       statusCode: 200,

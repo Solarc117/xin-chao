@@ -1,14 +1,25 @@
-✅ add background images in home component (rotate btw 2 divs):
-  ✅ rotate 1 div between 3 images
-  ✅ rotate second div between image ahead of current image
-  ✅ initialize a boolean firstDivOpaque value
-  ✅ add 'opaque' class to first div if val above true, & opposite for second div
-  ✅ after updating imageindex, update firstDivOpaque after 750ms 
-  ✅ store second image index in a stateful value as well
-  ✅ use second image index for second div
-  ✅ increment imageIndex by steps of 2 instead of 1
-  ✅ find zindex required to pop background image 2 above background image 1, but still behind everything else (-1 and 0 maybe?)
-  ✅ extract main into different components, to style differently (.contact_main, .home_main, etc.)
+🎯 objective for today: finish the editable product component
+
+- create a simplified version, with only the default html and no functionality:
+  -  render out a single editable product component after fetching menu, to see the missing parts/errors
+
+- style editable component
+
+- add an event listener to the save button
+
+- make an update request in the event listener, and alert the user of the result
+
+- test to ensure component does update the db
+
+
+
+- render a quantitypricepair by default (set default values to the first quantity and price in the quantityprices array, if they exist, and undefined (none) if not) inside editable product
+
+- render out a QuantityPricePair for every key in price (set the array that we map through to generate quantitypricepairs to a length of 0 if price is a string)
+
+- create an editable product component:
+  - create initial html:
+    - if price is an Object instance, map through its elements, skipping the first element and rendering an fieldset.additional_pair in .quantity_prices_fieldset
 
 Admin component functionality:
 - create an authorized stateful variable, defaulting to false
