@@ -253,15 +253,11 @@ label:has(> .price_option) {
 .quantity_prices_fieldset > * {
   border: none;
 }
-.form_quantities_fieldset,
-.single_price_label {
-  display: flex;
-  flex-direction: column;
-}
 .quantity_price_pair label,
 .single_price_label {
   display: flex;
   flex-direction: row;
+  padding: 3px;
 }
 .quantity_price_pair input,
 .single_price_label input {

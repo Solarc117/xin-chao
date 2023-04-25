@@ -11,16 +11,56 @@ export default function EditableProduct({
         : Object.keys(price).map(key => [key, price[key]])
     )
 
-  console.log('quantityPricePairs:', quantityPricePairs)
-
   async function saveChanges(event) {
     event.preventDefault()
+
+    // TODO: notify user.
     console.log('saving...')
 
-    const formData = new FormData(event.target),
-      data = Object.fromEntries(formData.entries())
+    const data = Object.fromEntries(new FormData(event.target).entries()),
+      item = {
+        name: data.name,
+        description: data.description,
+        category: data.category,
+        temperature: ['hot', 'cold'].filter(key => key in data),
+        price:
+          price in data
+            ? data.price
+            : (() => {
+                const prices = {}
 
-    console.log('data:', data)
+                for (const quantityKey of Object.keys(data).filter(key =>
+                  key.startsWith('quantity')
+                )) {
+                  const index = quantityKey.at(-1),
+                    quantity = data[quantityKey],
+                    price = data[`price${index}`]
+                  prices[quantity] = price
+                }
+
+                return prices
+              })(),
+      }
+
+    let response
+    try {
+      response = await fetch('/.netlify/functions/item', {
+        method: 'PATCH',
+        body: JSON.stringify({ id: _id, item }),
+      })
+    } catch (error) {
+      console.error(error)
+      // TODO: Notify user.
+      return console.log('error updating item...')
+    }
+
+    // TODO: Notify user.
+    if (response.status !== 200) return console.log('could not update item...')
+
+    const { value: updatedProduct } = await response.json()
+
+    // TODO: Notify user & update UI.
+    console.log('✅ product updated!')
   }
 
   return (
@@ -32,6 +72,7 @@ export default function EditableProduct({
           className='product_name product_form_name'
           placeholder='Name...'
           defaultValue={name}
+          required
         />
         <div className='temperature_checkbox_labels'>
           <label className='temperature_checkbox_label'>
@@ -64,11 +105,14 @@ export default function EditableProduct({
         <label className='category_selection'>
           Category:
           <select name='category' className='form_input' required>
-            <option value='' disabled selected>
-              Select a category
-            </option>
-            {categories.map((category, i) => (
-              <option value={category}>{category}</option>
+            {categories.map((currentCategory, i) => (
+              <option
+                key={i}
+                value={currentCategory}
+                selected={currentCategory === category}
+              >
+                {currentCategory}
+              </option>
             ))}
           </select>
         </label>
@@ -114,7 +158,6 @@ export default function EditableProduct({
             </label>
           ) : (
             <fieldset className='quantity_prices_fieldset form_quantities_fieldset'>
-              <legend>Per Quantity:</legend>
               {quantityPricePairs.map(([quantity, price], i) => (
                 <fieldset
                   key={i}
@@ -173,7 +216,7 @@ export default function EditableProduct({
                   )}
                 </fieldset>
               ))}
-              {quantityPricePairs.length <= 5 && (
+              {quantityPricePairs.length <= 4 && (
                 <button
                   className='button'
                   type='button'
