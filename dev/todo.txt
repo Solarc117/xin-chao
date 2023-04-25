@@ -1,11 +1,13 @@
 🎯 objective for today: finish the editable product component
 
-- create a simplified version, with only the default html and no functionality:
-  -  render out a single editable product component after fetching menu, to see the missing parts/errors
+✅ create a simplified version, with only the default html and no functionality:
+  
+✅ style editable component
 
-- style editable component
+✅ add an event listener to the save button
 
-- add an event listener to the save button
+- Set an onchange event listener on each quantity/price pair, which updates their respective item and subitem in the quantityPricePairs state
+-  
 
 - make an update request in the event listener, and alert the user of the result
 

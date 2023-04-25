@@ -1,10 +1,3 @@
-body {
-  background-image: url('../images/about-8.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
 /* Sections */
 .header,
 .nav_links {
@@ -69,7 +62,7 @@ body {
   gap: 10px;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 }
-.item {
+.product {
   padding: 5px;
   min-height: 65px;
   background: white;
@@ -78,12 +71,12 @@ body {
   display: flex;
   flex-direction: column;
 }
-.item_header {
+.product_header {
   height: fit-content;
   display: flex;
   flex-direction: row;
 }
-.item_name {
+.product_name {
   width: fit-content;
 }
 .admin_button {
@@ -103,12 +96,12 @@ body {
 .price {
   justify-self: flex-end;
 }
-.item_body {
+.product_body {
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  font-size: 17px;
+  font-size: 20px;
 }
 .quantity_prices {
   align-self: flex-end;
@@ -150,6 +143,68 @@ body {
 }
 
 /* Edit Item Form */
+.product_form {
+  font-size: 24px;
+}
+.product_form_header {
+  display: flex;
+  flex-direction: column;
+}
+.product_form_name {
+  width: 100%;
+  padding: 5px;
+}
+.temperature_checkbox_labels {
+  margin: 5px 0;
+
+  display: flex;
+  align-items: center;
+}
+.temperature_checkbox_label {
+  margin: 0 10px;
+  user-select: none;
+  cursor: pointer;
+}
+.product_form hr {
+  margin: 3px 0;
+  height: 1px;
+
+  background-color: black;
+}
+.product_form_description {
+  padding: 5px;
+  max-width: 100%;
+}
+.category_selection {
+  margin: 5px 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.category_selection select {
+  margin-left: 10px;
+}
+.product_form_price_fieldset {
+  border: none;
+}
+.product_form_price_option {
+  margin: 0 10px;
+}
+.form_quantities_fieldset {
+  padding: 0;
+}
+.button {
+  margin: 3px 0;
+  padding: 5px;
+  border-radius: 3px;
+  border: none;
+  cursor: pointer;
+}
+.button:hover {
+  background-color: hsl(0, 0%, 20%);
+  color: hsl(0, 0%, 100%);
+}
+
 .admin_form {
   position: fixed;
   top: 50%;
@@ -198,14 +253,18 @@ label:has(> .price_option) {
 .quantity_prices_fieldset > * {
   border: none;
 }
-.quantity_prices_fieldset input {
-  width: 100%;
+.form_quantities_fieldset,
+.single_price_label {
+  display: flex;
+  flex-direction: column;
 }
-.quantity_price_pair label {
+.quantity_price_pair label,
+.single_price_label {
   display: flex;
   flex-direction: row;
 }
-.quantity_price_pair input {
+.quantity_price_pair input,
+.single_price_label input {
   margin-left: 10px;
 }
 .temperature_fieldset {

@@ -114,7 +114,7 @@ export default function Admin() {
           store.
         </div>
       ) : (
-        <AdminMenu categories={sessionStorage.getItem(key)} />
+        <AdminMenu categories={JSON.parse(sessionStorage.getItem(key))} />
       )}
     </main>
   )

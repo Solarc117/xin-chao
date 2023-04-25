@@ -2,11 +2,12 @@ import EditableProduct from './menu/editable-product'
 import '../../css/admin-home.css'
 
 export default function AdminMenu({ categories }) {
-  const firstProduct = categories[0]
+  const categoryNames = categories.map(category => category._id),
+    product = categories[0].products[0]
 
   return (
     <>
-      <EditableProduct product={firstProduct} />
+      <EditableProduct categories={categoryNames} product={product} />
 
       {/* <header class='menu_header'>
         <ul class='menu_categories'></ul>
