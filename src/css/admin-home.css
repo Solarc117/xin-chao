@@ -9,15 +9,14 @@
   );
 }
 
-.main {
+.admin_main {
   /* To override the height property in global.css. */
   height: calc(100vh - 100px);
   padding: 10px;
   display: block;
-  background-color: hsla(0, 0%, 0%, 0.3);
   overflow-y: scroll;
 }
-.main,
+.admin_main,
 .menu_section h2 {
   font-size: 20px;
   font-family: 'Univers Next', 'Times New Roman', Times, serif;
@@ -56,7 +55,7 @@
   flex-direction: column;
   align-items: center;
 }
-.category_items {
+.category_products {
   width: 100%;
   display: grid;
   gap: 10px;
@@ -90,7 +89,7 @@
   cursor: pointer;
 }
 .svg {
-  margin: auto 0;
+  margin: auto 5px;
   height: 16px;
 }
 .price {
@@ -332,17 +331,17 @@ label:has(> .price_option) {
 
 /* Tablets or bigger phones. */
 @media only screen and (min-width: 450px) {
-  .main {
+  .admin_main {
     padding: 20px;
   }
-  .main,
+  .admin_main,
   .menu_section h2 {
     font-size: 21px;
   }
   .category_title {
     margin-right: 15px;
   }
-  .item_body {
+  .product_body {
     font-size: 18px;
   }
 
@@ -357,7 +356,7 @@ label:has(> .price_option) {
     width: 300px;
   }
 
-  .category_items {
+  .category_products {
     justify-content: center;
     grid-template-columns: repeat(auto-fit, minmax(250px, 400px));
   }
@@ -373,17 +372,17 @@ label:has(> .price_option) {
 
 /* Desktop */
 @media only screen and (min-width: 900px) {
-  .main {
+  .admin_main {
     padding: 30px;
   }
-  .main,
+  .admin_main,
   .menu_section h2 {
     font-size: 22px;
   }
   .category_title {
     margin-right: 20px;
   }
-  .item_body {
+  .product_body {
     font-size: 19px;
   }
 

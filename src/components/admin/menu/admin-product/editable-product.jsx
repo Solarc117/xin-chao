@@ -1,8 +1,14 @@
 import { useState } from 'preact/hooks'
 
+/**
+ * Only renders when the stateful editable value is true in its parent - should only ever use setEditable to set editable to false.
+ * @param {{ categories: string[], product: object, setEditable: import('preact/hooks').StateUpdater<boolean>}} param0
+ * @returns {import('preact').Component}
+ */
 export default function EditableProduct({
   categories,
   product: { _id, name, description, category, temperature, price },
+  setEditable,
 }) {
   const [singlePrice, setSinglePrice] = useState(!(price instanceof Object)),
     [quantityPricePairs, setQuantityPricePairs] = useState(
@@ -46,25 +52,37 @@ export default function EditableProduct({
     try {
       response = await fetch('/.netlify/functions/item', {
         method: 'PATCH',
-        body: JSON.stringify({ id: _id, item }),
+        body: JSON.stringify({ _id, item }),
       })
     } catch (error) {
       console.error(error)
       // TODO: Notify user.
-      return console.log('error updating item...')
+      console.log('error updating item...')
+      return setEditable(false)
     }
 
     // TODO: Notify user.
-    if (response.status !== 200) return console.log('could not update item...')
+    if (response.status !== 200) {
+      console.log('could not update item...')
+      return setEditable(false)
+    }
 
     const { value: updatedProduct } = await response.json()
 
     // TODO: Notify user & update UI.
     console.log('✅ product updated!')
+    setEditable(false)
   }
 
   return (
     <form className='product product_form' onSubmit={saveChanges}>
+      <button
+        type='button'
+        className='button'
+        onClick={() => setEditable(false)}
+      >
+        Close
+      </button>
       <header className='product_header product_form_header'>
         <input
           name='name'

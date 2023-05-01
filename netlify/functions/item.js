@@ -182,8 +182,8 @@ export async function handler(event, context) {
       }
     }
     case 'PATCH': {
-      const { id, item } = data
-      if (typeof id !== 'string' || !(item instanceof Object))
+      const { _id, item } = data
+      if (typeof _id !== 'string' || !(item instanceof Object))
         return {
           statusCode: 400,
           body: JSON.stringify({
@@ -191,7 +191,7 @@ export async function handler(event, context) {
           }),
         }
 
-      const result = await dao.updateProductById(id, item)
+      const result = await dao.updateProductById(_id, item)
 
       return {
         statusCode:
@@ -200,8 +200,8 @@ export async function handler(event, context) {
       }
     }
     case 'DELETE': {
-      const { id } = data
-      if (typeof id !== 'string')
+      const { _id } = data
+      if (typeof _id !== 'string')
         return {
           statusCode: 400,
           body: JSON.stringify({

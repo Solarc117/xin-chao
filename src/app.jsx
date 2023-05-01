@@ -1,3 +1,4 @@
+import NotificationProvider from './context/notification-context'
 import Router from 'preact-router'
 import Header from './components/header'
 import Nav from './components/nav'
@@ -10,7 +11,7 @@ import './css/home.css'
 
 export default function App() {
   return (
-    <>
+    <NotificationProvider>
       <div class='gradient_container' />
       <Header />
       <Nav />
@@ -21,6 +22,6 @@ export default function App() {
         <Admin path='/admin' />
       </Router>
       <HoursSnippet />
-    </>
+    </NotificationProvider>
   )
 }

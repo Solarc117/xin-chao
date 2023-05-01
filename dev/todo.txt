@@ -1,18 +1,7 @@
-✅ objective for today: finish the editable product component
+🎯 Switch between editable & display product on edit click
 
+✅ create a product component, that simply renders the product
 
+✅ render this displayProduct from the parent AdminProduct, with an editable stateful value which defaults to false
 
-- render a quantitypricepair by default (set default values to the first quantity and price in the quantityprices array, if they exist, and undefined (none) if not) inside editable product
-
-- render out a QuantityPricePair for every key in price (set the array that we map through to generate quantitypricepairs to a length of 0 if price is a string)
-
-- create an editable product component:
-  - create initial html:
-    - if price is an Object instance, map through its elements, skipping the first element and rendering an fieldset.additional_pair in .quantity_prices_fieldset
-
-Admin component functionality:
-- create an authorized stateful variable, defaulting to false
-- on initial render:
-  - make a request to the verify endpoint
-  - if the request returns a status of 200, set the authorized stateful variable to true
-  - whenever the form is submitted, make a request to the auth endpoint, and set the authorized stateful variable to true
+- try defining the notify function 

@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'preact/hooks'
+import { useNotifications } from '../context/notification-context'
 import Login from './admin/login'
 import AdminMenu from './admin/admin-menu'
+import Loading from './loading'
 import { home1, about8 } from '../assets/images'
 import messages from '../data/messages.json'
 import '../css/login.css'
@@ -9,7 +11,7 @@ const key = 'categories'
 
 /**
  * @param {string} key The key under which the menu is stored.
- * @returns {boolean} An indicator of whether the menu is stored.
+ * @returns {Promise<boolean>} An indicator of whether the menu is stored.
  */
 async function storeMenuIfNotStored(key) {
   if (typeof sessionStorage.getItem(key) === 'string') return true
@@ -37,21 +39,27 @@ async function storeMenuIfNotStored(key) {
  */
 export default function Admin() {
   const [authenticated, setAuthenticated] = useState(false),
-    [menuStored, setMenuStored] = useState(false)
+    [menuStored, setMenuStored] = useState(false),
+    [loading, setLoading] = useState(true),
+    notify = useNotifications()
 
   useEffect(() => {
     ;(async () => {
       const { status } = await fetch('/.netlify/functions/verify')
 
-      if (status !== 200) return
+      if (status !== 200) return setLoading(false)
 
+      storeMenuIfNotStored(key).then(stored => {
+        setMenuStored(stored)
+        setLoading(false)
+      })
       setAuthenticated(true)
-      setMenuStored(await storeMenuIfNotStored(key))
     })()
   }, [])
 
   async function handleSubmit(event) {
     event.preventDefault()
+    setLoading(true)
 
     const formData = new FormData(event.target),
       username = formData.get('username'),
@@ -66,14 +74,22 @@ export default function Admin() {
 
       status = response.status
     } catch (error) {
+      setLoading(false)
       console.error(error)
-      return alert('something went wrong, please try again later')
+      return notify('❌ Something went wrong, please try again later', 'error')
     }
 
-    if (status !== 200) return alert('Incorrect credentials, please try again')
+    if (status !== 200) {
+      setLoading(false)
+      return notify('🔒 Incorrect credentials, please try again')
+    }
 
+    notify('🔓 Authenticated!')
+    storeMenuIfNotStored(key).then(stored => {
+      setMenuStored(stored)
+      setLoading(false)
+    })
     setAuthenticated(true)
-    setMenuStored(await storeMenuIfNotStored(key))
   }
 
   return (
@@ -82,6 +98,7 @@ export default function Admin() {
         className='background_image opaque'
         style={{ backgroundImage: `url(${authenticated ? about8 : home1})` }}
       />
+      {loading && <Loading />}
       {!authenticated ? (
         <form className='login_form' onSubmit={handleSubmit}>
           <label className='user_label'>
