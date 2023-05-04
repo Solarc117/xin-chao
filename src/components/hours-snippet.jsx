@@ -1,4 +1,69 @@
+import { useState, useEffect } from 'preact/hooks'
+import '../css/hours-snippet.css'
+
+const hoursKey = 'storeHours'
+
+/**
+ * @param {string} hoursKey
+ * @returns {Promise<boolean>} Whether the hours could be stored locally or not.
+ */
+async function fetchHours(hoursKey) {
+  /**
+   * @param {string | Date} datePassed The date (or string used to instantiate the date) to check.
+   * @returns {boolean | null} Null if an invalid date was passed.
+   */
+  function weekHasPassed(datePassed) {
+    const date2 = new Date(),
+      msInAWeek = 604_800_000,
+      date1 = datePassed instanceof Date ? datePassed : new Date(datePassed)
+
+    return isNaN(date1.valueOf())
+      ? null
+      : Math.abs(date2.getTime() - datePassed.getTime()) >= msInAWeek
+  }
+
+  const hours = localStorage.getItem(hoursKey)
+  if (hours !== null && !weekHasPassed(hours.dateFetched)) return true
+
+  let response, result
+  try {
+    response = await fetch(
+      '/.netlify/functions/hours'
+    )
+    result = await response.json()
+  } catch (error) {
+    console.error('Could not fetch hours:', error)
+    return false
+  }
+
+  if (response.status !== 200) {
+    console.error(result)
+    return false
+  }
+
+  const hoursToStore = {}
+  hoursToStore.weekday_text = result.opening_hours.weekday_text
+  hoursToStore.dateFetched = new Date().toLocaleDateString()
+  try {
+    localStorage.setItem(hoursKey, JSON.stringify(hoursToStore))
+  } catch (error) {
+    console.error('Could not set store hours:', error)
+    return false
+  }
+
+  return true
+}
+
 export default function HoursSnippet() {
+  const [hours, setHours] = useState(null)
+
+  useEffect(() => {
+    ;(async () => {
+      const hoursAreStored = await fetchHours(hoursKey)
+
+      console.log('hoursAreStored:', hoursAreStored)
+    })()
+  })
   // const query = document.querySelector.bind(document),
   //   storeHoursKey = 'storeHours',
   //   storeHours = query('.store_hours'),
@@ -205,11 +270,11 @@ export default function HoursSnippet() {
   //      * @param {Date} date2 Defaults to the current date.
   //      * @returns {boolean}
   //      */
-  //     function weekHasPassed(date1, date2 = new Date()) {
-  //       const msInAWeek = 604_800_000
+  // function weekHasPassed(date1, date2 = new Date()) {
+  //   const msInAWeek = 604_800_000
 
-  //       return Math.abs(date2.getTime() - date1.getTime()) >= msInAWeek
-  //     }
+  //   return Math.abs(date2.getTime() - date1.getTime()) >= msInAWeek
+  // }
   //     const storeHoursDataString = localStorage.getItem(storeHoursKey)
   //     let storeHoursData, lastFetchDate
   //     try {
@@ -269,10 +334,9 @@ export default function HoursSnippet() {
   return (
     <>
       <section id='store_hours' class='store_hours'>
-        <p id='hours_text'>
+        <p>
           For up to date hours, please search our
           <a
-            id='google_hours_link'
             class='link'
             href='https://www.google.com/search?q=xin+chao+coffee+calgary+hours'
             target='_blank'
@@ -284,8 +348,8 @@ export default function HoursSnippet() {
           , or call the store.
         </p>
       </section>
-      <div id='snippet' class='hours_snippet' title='Store hours'>
-        <p id='snippet_text'>
+      <div class='hours_snippet' title='Store hours'>
+        <p>
           <a class='open_text link' tabindex='1'>
             Business Hours
           </a>

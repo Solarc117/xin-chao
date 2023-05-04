@@ -45,7 +45,12 @@ export default function Admin() {
 
   useEffect(() => {
     ;(async () => {
-      const { status } = await fetch('/.netlify/functions/verify')
+      let status
+      try {
+        status = (await fetch('/.netlify/functions/verify')).status
+      } catch (error) {
+        console.error(error)
+      }
 
       if (status !== 200) return setLoading(false)
 

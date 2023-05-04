@@ -1,7 +1,21 @@
-🎯 Switch between editable & display product on edit click
+✅ Switch between editable & display product on edit click
 
 ✅ create a product component, that simply renders the product
 
 ✅ render this displayProduct from the parent AdminProduct, with an editable stateful value which defaults to false
 
-- try defining the notify function 
+✅ try defining the notify function 
+
+🎯 
+
+- outline the steps the HoursSnippet component must take, in order, for it to be responsive:
+  ✅ in effect hook, check if the store hours are stored in localStorage:
+    - if so, check if the date stored is older than a week:
+      - if so:
+        - make store hours request
+        - render store hours (set useHours state to true)
+      - if not, render store hours
+    - if not:
+      - make store hours request
+      - render store hours (set useHours state to true)
+

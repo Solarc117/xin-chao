@@ -1,0 +1,63 @@
+:root {
+  --store_hours_width: 250px;
+}
+
+.hours_snippet {
+  cursor: pointer;
+  position: fixed;
+  bottom: 5px;
+  left: 5px;
+  z-index: 3;
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background: hsla(0, 0%, 0%, 0.6);
+  border-radius: 10px;
+  font-size: 17px;
+}
+.store_hours {
+  z-index: 6;
+  position: fixed;
+  top: 0;
+  left: 0;
+  transform: translateX(100vw);
+  width: var(--store_hours_width);
+  height: 100%;
+  background: hsla(0, 0%, 0%, 0.8);
+  padding: 30px;
+}
+.store_hours.show {
+  animation: store_hours_in 0.5s forwards;
+}
+.store_hours.hide {
+  animation: store_hours_out 0.5s forwards;
+}
+
+/** Larger phones, or tablets **/
+@media only screen and (min-width: 460px) {
+  .hours_snippet {
+    bottom: 10px;
+    left: 10px;
+    padding: 12px;
+    font-size: 20px;
+  }
+}
+
+@keyframes store_hours_in {
+  from {
+    transform: translateX(100vw);
+  }
+  to {
+    transform: translateX(calc(100vw - var(--store_hours_width)));
+  }
+}
+@keyframes store_hours_out {
+  from {
+    transform: translateX(calc(100vw - var(--store_hours_width)));
+  }
+  to {
+    transform: translateX(100vw);
+  }
+}

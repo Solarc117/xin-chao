@@ -11,7 +11,7 @@ const { URI, DATABASE, USER_COLLECTION, SESSION_SECRET } = process.env,
     socketTimeoutMS: 20_000,
   })
 
-export const handler = async function (event, context) {
+export async function handler(event, context) {
   const { httpMethod } = event,
     { username, password } = JSON.parse(event.body)
 

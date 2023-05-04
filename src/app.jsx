@@ -1,3 +1,4 @@
+import { useEffect } from 'preact/hooks'
 import NotificationProvider from './context/notification-context'
 import Router from 'preact-router'
 import Header from './components/header'
@@ -10,6 +11,10 @@ import HoursSnippet from './components/hours-snippet'
 import './css/home.css'
 
 export default function App() {
+  useEffect(() => {
+    
+  }, [])
+
   return (
     <NotificationProvider>
       <div class='gradient_container' />
