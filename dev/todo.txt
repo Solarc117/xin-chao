@@ -6,7 +6,10 @@
 
 ✅ try defining the notify function 
 
-🎯 
+🎯 conditions for fetching hours (ANY):
+  - hours not stored locally
+  - hours cannot be parsed
+  - date fetched is a week old or older
 
 - outline the steps the HoursSnippet component must take, in order, for it to be responsive:
   ✅ in effect hook, check if the store hours are stored in localStorage:

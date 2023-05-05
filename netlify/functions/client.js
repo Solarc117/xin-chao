@@ -3,7 +3,7 @@ import fetch from 'node-fetch'
 // Menu imports.
 import { MongoClient } from 'mongodb'
 
-const { GOOGKE_KEY, PLACE_ID, URI, DATABASE, PRODUCT_COLLECTION } = process.env,
+const { GOOGLE_KEY, PLACE_ID, URI, DATABASE, PRODUCT_COLLECTION } = process.env,
   CLIENT = new MongoClient(URI, {
     appName: 'Xin Chào Coffee',
     maxPoolSize: 1,
@@ -62,12 +62,15 @@ export async function handler(event, context) {
     }
 
     return {
-      openingHours: data.result.opening_hours.weekday_text,
+      hours: data.result.opening_hours.weekday_text,
       dateFetched: new Date().toLocaleDateString(),
     }
   }
 
-  const { httpMethod } = event
+  const {
+    httpMethod,
+    queryStringParameters: { data },
+  } = event
 
   if (httpMethod !== 'GET')
     return {
@@ -75,11 +78,25 @@ export async function handler(event, context) {
       body: JSON.stringify({ error: 'not found' }),
     }
 
-  const [menu, hours] = await Promise.all([getMenu(), getHours()])
+  const result = await (data === 'hours'
+      ? getHours()
+      : data === 'menu'
+      ? getMenu()
+      : Promise.all([getMenu(), getHours()])),
+    response = result => ({
+      statusCode: typeof result === 'string' ? 500 : 200,
+      body: JSON.stringify({
+        [typeof result === 'string' ? `${data}Error` : data]: result,
+      }),
+    })
 
-  return {
-    statusCode:
-      typeof menu === 'string' || typeof hours === 'string' ? 207 : 200,
-    body: JSON.stringify({ menu, hours }),
-  }
+  return Array.isArray(result)
+    ? {
+        statusCode: result.some(r => typeof r === 'string') ? 207 : 200,
+        body: JSON.stringify({
+          menu: result[0],
+          hours: result[1],
+        }),
+      }
+    : response(result)
 }

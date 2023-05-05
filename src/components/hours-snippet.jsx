@@ -57,13 +57,6 @@ async function fetchHours(hoursKey) {
 export default function HoursSnippet() {
   const [hours, setHours] = useState(null)
 
-  useEffect(() => {
-    ;(async () => {
-      const hoursAreStored = await fetchHours(hoursKey)
-
-      console.log('hoursAreStored:', hoursAreStored)
-    })()
-  })
   // const query = document.querySelector.bind(document),
   //   storeHoursKey = 'storeHours',
   //   storeHours = query('.store_hours'),
