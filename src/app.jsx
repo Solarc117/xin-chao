@@ -153,19 +153,21 @@ export default function App() {
    * @param {'nav' | 'hours'} [component] The component to toggle. None if components are to be hidden.
    */
   function toggleSnippets(component) {
+    const off = prior => (prior === null ? null : false)
+
     if (component === 'nav') {
       setShowNav(true)
-      setShowHours(false)
+      setShowHours(off)
       return setGradient(true)
     }
     if (component === 'hours') {
       setShowHours(true)
-      setShowNav(false)
+      setShowNav(off)
       return setGradient(true)
     }
 
-    setShowNav(false)
-    setShowHours(false)
+    setShowNav(off)
+    setShowHours(off)
     setGradient(false)
   }
 
