@@ -3,10 +3,8 @@ import AdminProduct from './menu/admin-product'
 import '../../css/admin-home.css'
 
 export default function AdminMenu({ categories }) {
-  const categoryNames = categories.map(({ category }) => category)
-  function categoryId(categoryName) {
-    return categoryName.toLowerCase().replace(/\s/g, '_')
-  }
+  const categoryNames = categories.map(({ category }) => category),
+    categoryId = name => name.toLowerCase().replace(/\s/g, '_')
 
   return (
     <>

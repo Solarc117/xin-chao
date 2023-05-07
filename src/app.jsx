@@ -6,6 +6,7 @@ import Nav from './components/nav'
 import Home from './components/home'
 import About from './components/about'
 import Contact from './components/contact'
+import Menu from './components/menu'
 import Admin from './components/admin'
 import HoursSnippet from './components/hours-snippet'
 import './css/home.css'
@@ -36,8 +37,12 @@ const STORAGES = whichStoragesAvailable(),
   MENU_KEY = 'menu'
 
 export default function App() {
-  const [menu, setMenu] = useState(null),
-    [hours, setHours] = useState(null)
+  const [categories, setCategories] = useState(null),
+    [hours, setHours] = useState(null),
+    // For mobile & smaller screen sizes.
+    [showHours, setShowHours] = useState(null),
+    [showNav, setShowNav] = useState(null),
+    [gradient, setGradient] = useState(false)
 
   useEffect(() => {
     async function fetchHoursAndMenu() {
@@ -105,7 +110,7 @@ export default function App() {
 
         if (!Array.isArray(parsedMenu)) return true
 
-        setMenu(parsedMenu)
+        setCategories(parsedMenu)
         return false
       }
 
@@ -131,33 +136,63 @@ export default function App() {
 
       const { hours, menu } = result
       if (hours) {
-        console.log('hours:', hours)
         if (STORAGES[0])
           window[STORAGES[0]].setItem(HOURS_KEY, JSON.stringify(hours))
         setHours(hours)
       }
       if (menu) {
-        console.log('menu:', menu)
         if (STORAGES.includes('sessionStorage'))
           sessionStorage.setItem(MENU_KEY, JSON.stringify(menu))
-        setMenu(menu)
+        setCategories(menu)
       }
     }
     fetchHoursAndMenu()
   }, [])
 
+  /**
+   * @param {'nav' | 'hours'} [component] The component to toggle. None if components are to be hidden.
+   */
+  function toggleSnippets(component) {
+    if (component === 'nav') {
+      setShowNav(true)
+      setShowHours(false)
+      return setGradient(true)
+    }
+    if (component === 'hours') {
+      setShowHours(true)
+      setShowNav(false)
+      return setGradient(true)
+    }
+
+    setShowNav(false)
+    setShowHours(false)
+    setGradient(false)
+  }
+
   return (
     <NotificationProvider>
-      <div class='gradient_container' />
+      <div class={`gradient_container ${gradient && 'dark'}`} />
       <Header />
-      <Nav />
+      <Nav
+        {...{
+          showNav,
+          toggleSnippets,
+        }}
+      />
       <Router>
         <Home path='/' />
         <About path='/about' />
         <Contact path='/contact' />
-        <Admin path='/admin' menu={menu} />
+        <Menu path='/menu' categories={categories} />
+        <Admin path='/admin' categories={categories} />
       </Router>
-      <HoursSnippet hours={hours} />
+      <HoursSnippet
+        {...{
+          hours,
+          showHours,
+          toggleSnippets,
+        }}
+      />
     </NotificationProvider>
   )
 }

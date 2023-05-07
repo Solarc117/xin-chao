@@ -242,25 +242,6 @@ a {
 .logo_list a {
   height: 25px;
 }
-.open_text {
-  text-decoration: none;
-  color: white;
-  font-display: flex;
-}
-.snippet_svg {
-  margin: 5px;
-  width: 24px;
-  height: 24px;
-}
-.snippet_circle {
-  fill: white;
-}
-.snippet_circle.open {
-  animation: open_pulse 4s ease-in-out infinite;
-}
-.snippet_circle.closed {
-  animation: closed_pulse 4s ease-in-out infinite;
-}
 .notification {
   position: absolute;
   top: 10px;
@@ -428,35 +409,6 @@ a {
   }
   to {
     opacity: 0;
-  }
-}
-
-@keyframes open_pulse {
-  0% {
-    fill: hsl(150, 100%, 34%);
-    r: 10;
-  }
-  50% {
-    fill: hsl(150, 99%, 42%);
-    r: 12;
-  }
-  100% {
-    fill: hsl(150, 100%, 34%);
-    r: 10;
-  }
-}
-@keyframes closed_pulse {
-  0% {
-    fill: hsl(348, 83%, 47%);
-    r: 10;
-  }
-  50% {
-    fill: hsl(348, 100%, 65%);
-    r: 12;
-  }
-  100% {
-    fill: hsl(348, 83%, 47%);
-    r: 10;
   }
 }
 

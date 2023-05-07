@@ -61,8 +61,12 @@ export async function handler(event, context) {
       return error.toString()
     }
 
+    const { opening_hours } = data.result,
+      { weekday_text: weekdayText, periods } = opening_hours
+
     return {
-      hours: data.result.opening_hours.weekday_text,
+      weekdayText,
+      periods,
       dateFetched: new Date().toLocaleDateString(),
     }
   }
