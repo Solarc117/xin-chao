@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'preact/hooks'
 import NotificationProvider from './context/notification-context'
 import Router from 'preact-router'
-import Header from './components/header'
-import Nav from './components/nav'
+import HeaderNav from './components/header-nav'
 import Home from './components/home'
 import About from './components/about'
 import Contact from './components/contact'
@@ -174,11 +173,10 @@ export default function App() {
   return (
     <NotificationProvider>
       <div class={`gradient_container ${gradient && 'dark'}`} />
-      <Header />
-      <Nav
+      <HeaderNav
         {...{
-          showNav,
           toggleSnippets,
+          showNav,
         }}
       />
       <Router>

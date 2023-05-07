@@ -10,4 +10,4 @@
 
 ✅ outline the steps the HoursSnippet component must take, in order, for it to be responsive:
  
-
+✅ take the same steps with mobile nav as with hours
