@@ -1,0 +1,3 @@
+[functions]
+  external_node_modules = ["jsonwebtoken", "mongodb", "bcrypt"]
+  node_bundler = "esbuild"

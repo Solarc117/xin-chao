@@ -1,0 +1,52 @@
+/* Page globals */
+.contact_background {
+  background: linear-gradient(
+      to right,
+      hsla(0, 0%, 0%, 0.6),
+      hsla(38, 89%, 49%, 0.2)
+    ),
+    url('../assets/images/store.jpg');
+}
+
+/* Sections */
+.contact_main {
+  display: block;
+  font-size: 18px;
+}
+.content {
+  margin-top: 10px;
+  padding: 0 10px;
+}
+
+/* Components */
+.contact_main > p {
+  margin: 10px 0;
+  padding: 0.25cm;
+  font-family: 'Univers Next', 'Times New Roman', Times, serif;
+}
+.map {
+  margin: 50px 0;
+  height: 400px;
+  width: 100%;
+  border-radius: 10px;
+}
+
+/* Tablets */
+@media only screen and (min-width: 450px) {
+  .contact_main {
+    font-size: 20px;
+  }
+  .content {
+    padding: 0 30px;
+  }
+}
+
+/* Desktop */
+@media only screen and (min-width: 900px) {
+  .contact_main {
+    font-size: 24px;
+  }
+  .content {
+    padding: 0 100px;
+  }
+}

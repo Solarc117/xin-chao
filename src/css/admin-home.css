@@ -1,0 +1,302 @@
+/* Sections */
+.header,
+.nav_links {
+  background: linear-gradient(
+    to bottom,
+    hsla(0, 0%, 0%, 0.8),
+    hsla(0, 0%, 0%, 0.7),
+    hsla(0, 0%, 0%, 0.3)
+  );
+}
+
+.admin_main {
+  /* To override the height property in global.css. */
+  height: calc(100vh - 100px);
+  padding: 10px;
+  display: block;
+  overflow-y: scroll;
+  font-size: 20px;
+  font-family: 'Univers Next', 'Times New Roman', Times, serif;
+}
+.admin_button {
+  cursor: pointer;
+}
+.admin_buttons {
+  text-align: right;
+  margin-left: auto;
+}
+.admin_svg {
+  cursor: pointer;
+}
+
+.add_product_button {
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 20px;
+
+  width: 200px;
+  height: 50px;
+  color: black;
+  background: hsl(0, 0%, 100%);
+  cursor: pointer;
+  border-radius: 5px;
+
+  padding: 20px;
+  text-align: center;
+}
+.add_product_button:hover {
+  color: white;
+  background: black;
+}
+
+/* Edit Item Form */
+.product_form {
+  margin: 10px 0;
+  font-size: 24px;
+}
+.product_form_header {
+  display: flex;
+  flex-direction: column;
+}
+.product_form_name {
+  width: 100%;
+  padding: 5px;
+}
+.temperature_checkbox_labels {
+  margin: 5px 0;
+
+  display: flex;
+  align-items: center;
+}
+.temperature_checkbox_label {
+  margin: 0 10px;
+  user-select: none;
+  cursor: pointer;
+}
+.product_form hr {
+  margin: 3px 0;
+  height: 1px;
+
+  background-color: black;
+}
+.product_form_description {
+  padding: 5px;
+  max-width: 100%;
+}
+.category_selection {
+  margin: 5px 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.category_selection select {
+  margin-left: 10px;
+}
+.product_form_price_fieldset {
+  border: none;
+}
+.product_form_price_option {
+  margin: 0 10px;
+}
+.form_quantities_fieldset {
+  padding: 0;
+}
+.button {
+  margin: 3px 0;
+  padding: 5px;
+  border-radius: 3px;
+  border: none;
+  cursor: pointer;
+}
+.button:hover {
+  background-color: hsl(0, 0%, 20%);
+  color: hsl(0, 0%, 100%);
+}
+
+.admin_form {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80vw;
+  height: 80vh;
+  overflow-y: scroll;
+  background: hsla(0, 0%, 0%, 0.8);
+  border-radius: 5px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 7;
+}
+
+.price_fieldset,
+.quantity_prices_fieldset {
+  border: 1px solid white;
+}
+
+.admin_form button {
+  padding: 5px;
+  margin: 5px 0;
+  border-radius: 3px;
+  border: none;
+  cursor: pointer;
+}
+
+.form_input {
+  margin-top: 5px;
+  width: 100%;
+}
+.price_fieldset > * {
+  margin: 10px 0;
+}
+label:has(> .price_option) {
+  margin-right: 20px;
+  user-select: none;
+  cursor: pointer;
+}
+.price_option {
+  cursor: pointer;
+}
+.quantity_prices_fieldset > * {
+  border: none;
+}
+.quantity_price_pair label,
+.single_price_label {
+  display: flex;
+  flex-direction: row;
+  padding: 3px;
+}
+.quantity_price_pair input,
+.single_price_label input {
+  margin-left: 10px;
+}
+.temperature_fieldset {
+  user-select: none;
+  margin: 0 auto;
+  border: 1px solid white;
+  width: fit-content;
+}
+.temperature_fieldset .svg {
+  margin: 0 10px;
+}
+.temperature_fieldset label {
+  display: flex;
+  justify-content: flex-start;
+  cursor: pointer;
+}
+.temperature_fieldset input {
+  margin-left: auto;
+  width: fit-content;
+  cursor: pointer;
+}
+
+/* Pop Up */
+.delete_product_pop_up {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+
+  width: 80%;
+  background: hsla(0, 0%, 0%, 0.9);
+  border-radius: 5px;
+  padding: 10px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 20px;
+}
+.pop_up_buttons {
+  margin-top: 15px;
+
+  width: 100%;
+
+  display: flex;
+  justify-content: space-around;
+}
+.cancel_button,
+.delete_button {
+  font-family: 'Univers Next', sans-serif;
+  background-color: hsl(0, 0%, 100%);
+  color: hsl(0, 0%, 20%);
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 18px;
+  cursor: pointer;
+}
+.cancel_button:hover {
+  background-color: hsl(0, 0%, 20%);
+  color: hsl(0, 0%, 100%);
+}
+
+.delete_button:hover {
+  background-color: hsl(0, 100%, 50%);
+  color: hsl(0, 0%, 100%);
+}
+
+/* Tablets or bigger phones. */
+@media only screen and (min-width: 450px) {
+  .admin_main {
+    padding: 20px;
+  }
+  .admin_main,
+  .menu_section h2 {
+    font-size: 21px;
+  }
+  .category_title {
+    margin-right: 15px;
+  }
+  .product_body {
+    font-size: 18px;
+  }
+
+  .delete_product_pop_up {
+    width: 60%;
+  }
+}
+
+/* 1fr category items seem too wide after 600px. */
+@media only screen and (min-width: 600px) {
+  .add_product_button {
+    width: 300px;
+  }
+
+  .category_products {
+    justify-content: center;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 400px));
+  }
+
+  .admin_form {
+    font-size: 22px;
+  }
+
+  .delete_product_pop_up {
+    width: 45%;
+  }
+}
+
+/* Desktop */
+@media only screen and (min-width: 900px) {
+  .admin_main {
+    padding: 30px;
+  }
+  .admin_main,
+  .menu_section h2 {
+    font-size: 22px;
+  }
+  .category_title {
+    margin-right: 20px;
+  }
+  .product_body {
+    font-size: 19px;
+  }
+
+  .admin_form {
+    font-size: 24px;
+  }
+}
