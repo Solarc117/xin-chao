@@ -1,13 +1,19 @@
 ✅ Switch between editable & display product on edit click
-
 ✅ create a product component, that simply renders the product
-
 ✅ render this displayProduct from the parent AdminProduct, with an editable stateful value which defaults to false
-
 ✅ try defining the notify function 
-
 ✅ conditions for fetching hours (ANY):
-
 ✅ outline the steps the HoursSnippet component must take, in order, for it to be responsive:
- 
 ✅ take the same steps with mobile nav as with hours
+
+✅ add add item button w/form similar to editable product
+- in server responses, notify the user of the message if error is of type 400; otherwise, assume server error
+
+replace local cache with new data upon item addition/update/deletion:
+  ✅ write updateMenu func
+  call after:
+    ✅ add
+    ✅ update
+    - delete
+
+- add schema rule checking in add/update product forms

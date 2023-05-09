@@ -1,13 +1,25 @@
 import { useState } from 'preact/hooks'
-import Product from './admin-product/product'
-import EditableProduct from './admin-product/editable-product'
+import Product from '../../menu/product'
+import EditableProduct from './editable-product'
 
-export default function AdminProduct({ product, categories }) {
+export default function AdminProduct({ product, categoryNames }) {
   const [editable, setEditable] = useState(false)
 
   return editable ? (
-    <EditableProduct product={product} categories={categories} setEditable={setEditable} />
+    <EditableProduct
+      {...{
+        product,
+        categoryNames,
+        setEditable,
+      }}
+    />
   ) : (
-    <Product product={product} admin={true} setEditable={setEditable} />
+    <Product
+      {...{
+        product,
+        admin: true,
+        setEditable,
+      }}
+    />
   )
 }

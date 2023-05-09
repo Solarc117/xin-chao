@@ -1,45 +1,18 @@
 import { useState, useEffect } from 'preact/hooks'
+import { useMenu } from '../context/client-context'
 import { useNotifications } from '../context/notification-context'
 import Login from './admin/login'
 import AdminMenu from './admin/admin-menu'
 import Loading from './loading'
 import { home1, about8 } from '../assets/images'
-import messages from '../data/messages.json'
 import '../css/login.css'
 
-const key = 'categories'
-
 /**
- * @param {string} key The key under which the menu is stored.
- * @returns {Promise<boolean>} An indicator of whether the menu is stored.
- */
-async function storeMenuIfNotStored(key) {
-  if (typeof sessionStorage.getItem(key) === 'string') return true
-
-  try {
-    const response = await fetch('/.netlify/functions/menu'),
-      result = await response.json()
-
-    if (response.status !== 200) {
-      console.error(result?.error || result)
-      return false
-    }
-
-    sessionStorage.setItem(key, JSON.stringify(result))
-    return true
-  } catch (error) {
-    console.error(error)
-    return false
-  }
-}
-
-/**
- * @param {object} props
  * @returns {import('preact').Component}
  */
 export default function Admin() {
-  const [authenticated, setAuthenticated] = useState(false),
-    [menuStored, setMenuStored] = useState(false),
+  const [categories] = useMenu(),
+    [authenticated, setAuthenticated] = useState(false),
     [loading, setLoading] = useState(true),
     notify = useNotifications()
 
@@ -49,15 +22,13 @@ export default function Admin() {
       try {
         status = (await fetch('/.netlify/functions/verify')).status
       } catch (error) {
-        console.error(error)
+        setLoading(false)
+        return console.error(error)
       }
 
       if (status !== 200) return setLoading(false)
 
-      storeMenuIfNotStored(key).then(stored => {
-        setMenuStored(stored)
-        setLoading(false)
-      })
+      setLoading(false)
       setAuthenticated(true)
     })()
   }, [])
@@ -90,10 +61,7 @@ export default function Admin() {
     }
 
     notify('🔓 Authenticated!')
-    storeMenuIfNotStored(key).then(stored => {
-      setMenuStored(stored)
-      setLoading(false)
-    })
+    setLoading(false)
     setAuthenticated(true)
   }
 
@@ -130,13 +98,13 @@ export default function Admin() {
             Login
           </button>
         </form>
-      ) : !menuStored ? (
+      ) : Array.isArray(categories) ? (
+        <AdminMenu categories={categories} />
+      ) : (
         <div className='admin_menu_error'>
           Could not fetch menu, please refer to our Google images or call the
           store.
         </div>
-      ) : (
-        <AdminMenu categories={JSON.parse(sessionStorage.getItem(key))} />
       )}
     </main>
   )

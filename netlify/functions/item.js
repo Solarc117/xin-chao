@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken'
 import { MongoClient, ObjectId } from 'mongodb'
 
 const { URI, DATABASE, PRODUCT_COLLECTION, SESSION_SECRET, ADMIN_USERNAME } =
-  process.env,
+    process.env,
   client = new MongoClient(URI, {
     appName: 'Xin Chào Coffee',
     maxPoolSize: 1,
@@ -47,15 +47,13 @@ class MenuDAO {
     return typeof token !== 'string'
       ? false
       : await jwt.verify(token, SESSION_SECRET, (error, user) => {
-        if (error) {
-          console.error(error)
-          return false
-        }
+          if (error) {
+            console.error(error)
+            return false
+          }
 
-        return user === undefined || user.username !== ADMIN_USERNAME
-          ? false
-          : true
-      })
+          return user !== void 0 && user.username === ADMIN_USERNAME
+        })
   }
 
   /**
@@ -64,11 +62,11 @@ class MenuDAO {
    * @returns {Promise< Error | import('mongodb').InsertOneResult<Document> >}
    */
   async createProduct(product) {
-    if (!(await this.#authenticate()))
-      return {
-        statusCode: 401,
-        body: JSON.stringify({ error: 'Unauthorized' }),
-      }
+    if (!(await this.#authenticate())) {
+      const error = new Error('Unauthorized')
+      error.code = 401
+      return error
+    }
 
     try {
       await this.client.connect()
@@ -82,6 +80,7 @@ class MenuDAO {
       return result
     } catch (error) {
       console.error(error)
+      if (this.client) await this.client.close()
       return error
     }
   }
@@ -93,11 +92,11 @@ class MenuDAO {
    * @returns {Promise< Error | Product >} The result of the update operation.
    */
   async updateProductById(_id, newProduct) {
-    if (!(await this.#authenticate()))
-      return {
-        statusCode: 401,
-        body: JSON.stringify({ error: 'Unauthorized' }),
-      }
+    if (!(await this.#authenticate())) {
+      const error = new Error('Unauthorized')
+      error.code = 401
+      return error
+    }
 
     try {
       await this.client.connect()
@@ -117,6 +116,7 @@ class MenuDAO {
       return result
     } catch (error) {
       console.error(error)
+      if (this.client) await this.client.close()
       return error
     }
   }
@@ -127,11 +127,11 @@ class MenuDAO {
    * @returns {Promise< Error | import('mongodb').DeleteResult >} The result of the delete operation.
    */
   async deleteProductById(_id) {
-    if (!(await this.#authenticate()))
-      return {
-        statusCode: 401,
-        body: JSON.stringify({ error: 'Unauthorized' }),
-      }
+    if (!(await this.#authenticate())) {
+      const error = new Error('Unauthorized')
+      error.code = 401
+      return error
+    }
 
     try {
       await this.client.connect()
@@ -145,6 +145,7 @@ class MenuDAO {
       return result
     } catch (error) {
       console.error(error)
+      if (this.client) await this.client.close()
       return error
     }
   }
@@ -157,23 +158,31 @@ export async function handler(event, context) {
 
   switch (httpMethod) {
     case 'POST': {
-      console.log('data:', data)
-      if (!data.name instanceof Object)
+      const { item } = data
+      if (!(item instanceof Object))
         return {
           statusCode: 400,
           body: JSON.stringify({
-            error: 'body of invalid data type',
+            error: 'body item of invalid data type',
           }),
         }
 
-      const result = await dao.createProduct(data)
-      if (result instanceof Error)
+      const result = await dao.createProduct(item)
+      if (result instanceof Error) {
+        const { code } = result
+        if (code === 121)
+          console.error(
+            'Document failed validation - rules not satisfied:',
+            result.errInfo.details.schemaRulesNotSatisfied
+          )
+
         return {
-          statusCode: error.code === 121 ? 409 : 500,
+          statusCode: code === 121 ? 409 : code === 401 ? 401 : 500,
           body: JSON.stringify({
-            error: error.toString(),
+            error: result.toString(),
           }),
         }
+      }
 
       const { acknowledged, insertedId } = result
       return {
@@ -193,11 +202,15 @@ export async function handler(event, context) {
 
       const result = await dao.updateProductById(_id, item)
 
-      return {
-        statusCode:
-          result.ok === 1 && result.value instanceof Object ? 200 : 500,
-        body: JSON.stringify(result),
-      }
+      return result instanceof Error
+        ? {
+            statusCode: result.code === 121 ? 409 : 500,
+            body: JSON.stringify({ error: result.toString() }),
+          }
+        : {
+            statusCode: 200,
+            body: JSON.stringify(result),
+          }
     }
     case 'DELETE': {
       const { _id } = data
@@ -208,6 +221,18 @@ export async function handler(event, context) {
             error: 'missing id or item properties',
           }),
         }
+
+      const result = await dao.deleteProductById(_id)
+
+      return result instanceof Error
+        ? {
+            statusCode: result.code || 500,
+            body: JSON.stringify({ error: result.toString() }),
+          }
+        : {
+            statusCode: 200,
+            body: JSON.stringify(result),
+          }
     }
     default:
       return {

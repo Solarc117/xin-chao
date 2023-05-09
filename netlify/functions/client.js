@@ -94,7 +94,7 @@ export async function handler(event, context) {
       }),
     })
 
-  return Array.isArray(result)
+  return data !== 'hours' && data !== 'menu' && Array.isArray(result)
     ? {
         statusCode: result.some(r => typeof r === 'string') ? 207 : 200,
         body: JSON.stringify({

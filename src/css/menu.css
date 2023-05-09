@@ -1,0 +1,155 @@
+.menu_main {
+  position: relative;
+  /* To override the height property in global.css. */
+  height: calc(100vh - 100px);
+  padding: 10px;
+  display: block;
+  overflow-y: scroll;
+  font-size: 20px;
+  font-family: 'Univers Next', 'Times New Roman', Times, serif;
+}
+
+.menu_section h2 {
+  font-size: 20px;
+  font-family: 'Univers Next', 'Times New Roman', Times, serif;
+}
+.category_nav_hr {
+  margin-top: 5px;
+}
+
+.menu_header {
+  width: 100%;
+  user-select: none;
+}
+.menu_categories {
+  display: flex;
+  justify-content: space-between;
+  user-select: none;
+  flex-wrap: wrap;
+  gap: 10px 20px;
+}
+.menu_section {
+  width: 100%;
+  padding: 10px;
+  flex-grow: 1;
+}
+
+/* Components */
+.menu_section h2 {
+  width: fit-content;
+  margin: 10px auto;
+  user-select: none;
+  border-bottom: 1px solid white;
+}
+.category {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.category_products {
+  width: 100%;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+.product {
+  padding: 5px;
+  min-height: 65px;
+  background: white;
+  color: black;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+}
+.product_header {
+  height: fit-content;
+  display: flex;
+  flex-direction: row;
+}
+.product_name {
+  width: fit-content;
+}
+.svg {
+  margin: auto 5px;
+  height: 16px;
+}
+.price {
+  text-align: end;
+}
+.product_body {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-size: 20px;
+}
+.quantity_prices {
+  align-self: flex-end;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  column-gap: 5px;
+}
+.quantity_price {
+  text-align: end;
+}
+.emoji {
+  font-size: 0.8em;
+}
+.emoji:nth-of-type(1) {
+  margin-left: 6px;
+}
+.emoji:nth-of-type(1) {
+  margin-left: 3px;
+}
+
+.menu_main footer {
+  position: absolute;
+  left: 0;
+}
+
+/* Tablets or bigger phones. */
+@media only screen and (min-width: 450px) {
+  .menu_main {
+    padding: 20px;
+    font-size: 21px;
+  }
+  .menu_section h2 {
+    font-size: 21px;
+  }
+  .category_title {
+    margin-right: 15px;
+  }
+  .product_body {
+    font-size: 18px;
+  }
+
+  .delete_product_pop_up {
+    width: 60%;
+  }
+}
+
+/* 1fr category items seem too wide after 600px. */
+@media only screen and (min-width: 600px) {
+  .category_products {
+    justify-content: center;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 400px));
+  }
+}
+
+/* Desktop */
+@media only screen and (min-width: 900px) {
+  .menu_main {
+    padding: 30px;
+    font-size: 22px;
+  }
+  .menu_section h2 {
+    font-size: 22px;
+  }
+  .category_title {
+    margin-right: 20px;
+  }
+  .product_body {
+    font-size: 19px;
+  }
+}

@@ -1,5 +1,7 @@
-import { edit, deleteIcon } from '../../../../assets/svgs'
-import '../../../../types'
+import { useMenu } from '../../context/client-context'
+import { useNotifications } from '../../context/notification-context'
+import { edit, deleteIcon } from '../../assets/svgs'
+import '../../types'
 
 /**
  * @param {{
@@ -14,10 +16,12 @@ export default function Product({
   admin,
   setEditable,
 }) {
-  const symbols = {
-    hot: '🔴',
-    cold: '🔵',
-  }
+  const [, updateMenu] = useMenu(),
+    notify = useNotifications(),
+    symbols = {
+      hot: '🔴',
+      cold: '🔵',
+    }
 
   async function confirmDeletion(event) {
     if (!confirm(`Are you sure you wish to delete ${name}?`)) return
@@ -31,19 +35,19 @@ export default function Product({
     } catch (error) {
       console.error(error)
 
-      // TODO: notify user.
-      return alert(`Could not delete ${name}`)
+      // TODO: check for schema errors.
+      return notify(`❌ Could not delete ${name}`)
     }
 
     const result = await response.json()
 
     if (response.status !== 200) {
       console.error(result)
-      return alert(`Could not delete ${name}`)
+      return notify(`❌ Could not delete ${name} - please try again later`)
     }
 
-    console.log(result)
-    alert(`✅ ${name} deleted!`)
+    notify(`✅ ${name} deleted!`)
+    updateMenu({ category, _id }, 'delete')
   }
 
   return (
@@ -88,7 +92,7 @@ export default function Product({
             ))}
           </ul>
         ) : (
-          <span className='price'>{price}</span>
+          <span className='price'>${price}</span>
         )}
       </div>
     </li>
