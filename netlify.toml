@@ -1,3 +1,10 @@
 [functions]
   external_node_modules = ["jsonwebtoken", "mongodb", "bcrypt"]
   node_bundler = "esbuild"
+[build]
+  command = "npm run build"
+  publish = "dist"
+[dev]
+  command = "vite"
+  targetPort = 5173
+  publish = "dist"
