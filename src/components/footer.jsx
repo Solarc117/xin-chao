@@ -33,6 +33,7 @@ export default function Footer() {
         2255 32 St NE Unit 3110,
         <br /> Calgary, AB T1Y 6E8
       </a>
+      <a href='/admin'>Admin Login</a>
       <img
         className='footer_main_logo footer_logo'
         src={lightLogo}
