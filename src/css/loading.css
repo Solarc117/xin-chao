@@ -1,0 +1,32 @@
+.loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%);
+
+  display: flex;
+  justify-content: center;
+  background: black;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.loading-dot {
+  width: 20px;
+  height: 20px;
+  margin: 0 4px;
+  border-radius: 50%;
+  animation: loading 1s infinite ease-in-out;
+  background: white;
+}
+
+@keyframes loading {
+  0%,
+  80%,
+  100% {
+    transform: scale(0.25);
+  }
+  40% {
+    transform: scale(1);
+  }
+}
