@@ -206,13 +206,23 @@ export default function ClientDataProvider({ children }) {
             }
     }
 
-    for (const category of newMenu)
-      if (category._id === productChanged.category) {
-        if (action === 'add') {
+    if (action === 'add') {
+      for (const category of newMenu)
+        if (category._id === productChanged.category) {
           category.products.push(productChanged)
           return update()
         }
 
+      newMenu.push({
+        _id: productChanged.category,
+        category: productChanged.category,
+        products: [productChanged],
+      })
+      return update()
+    }
+
+    for (const category of newMenu)
+      if (category._id === productChanged.category)
         for (const [i, { _id }] of category.products.entries())
           if (_id === productChanged._id) {
             category.products = [
@@ -221,7 +231,6 @@ export default function ClientDataProvider({ children }) {
             ]
             return update()
           }
-      }
   }
 
   return (
