@@ -1,7 +1,6 @@
 import { useMenu } from '../../context/client-context'
 import Product from './product'
 import Footer from '../footer'
-import { about8 } from '../../assets/images'
 import '../../css/menu.css'
 
 export default function Menu() {
@@ -15,7 +14,7 @@ export default function Menu() {
     <>
       <div
         className='background_image opaque'
-        style={{ backgroundImage: `url(${about8})` }}
+        style={{ background: 'black' }}
       />
       {Array.isArray(categories) ? (
         <main className='main menu_main'>

@@ -1,23 +1,13 @@
-import {
-  about1,
-  about2,
-  about3,
-  about4,
-  about5,
-  about6,
-  about7,
-  about8,
-} from '../assets/images/'
-import DynamicBackground from './dynamic-background'
 import Footer from './footer'
 import '../css/about.css'
-
-const images = [about1, about2, about3, about4, about5, about6, about7, about8]
 
 export default function About() {
   return (
     <>
-      <DynamicBackground images={images} />
+      <div
+        className='background_image opaque'
+        style={{ background: 'black' }}
+      />
       <main className='about_main main'>
         <div className='about_container'>
           <p class='about_intro_text'>

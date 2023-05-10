@@ -4,7 +4,7 @@ import { useNotifications } from '../context/notification-context'
 import Login from './admin/login'
 import AdminMenu from './admin/admin-menu'
 import Loading from './loading'
-import { home1, about8 } from '../assets/images'
+import { home1 } from '../assets/images'
 import '../css/login.css'
 
 /**
@@ -69,7 +69,7 @@ export default function Admin() {
     <main className={`${authenticated ? 'admin_main' : 'login_main'} main`}>
       <div
         className='background_image opaque'
-        style={{ backgroundImage: `url(${authenticated ? about8 : home1})` }}
+        style={authenticated ? { background: 'black' } : { backgroundImage: `url(${home1})` }}
       />
       {loading && <Loading />}
       {!authenticated ? (
