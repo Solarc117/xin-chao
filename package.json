@@ -13,7 +13,8 @@
     "jsonwebtoken": "^9.0.0",
     "mongodb": "^5.3.0",
     "preact": "^10.13.0",
-    "preact-router": "^4.1.0"
+    "preact-router": "^4.1.0",
+    "xin-chao-react": "file:"
   },
   "devDependencies": {
     "@preact/preset-vite": "^2.5.0",
