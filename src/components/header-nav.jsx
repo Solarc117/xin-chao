@@ -26,7 +26,7 @@ export default function HeaderNav({ showNav, toggleSnippets }) {
           </a>
         </div>
         <div class='title_section'>
-          <h1 class='title'>Xin ChÃo</h1>
+          <h1 class='title'>Xin Chao</h1>
           &nbsp;
           <p class='title_coffee'>COFFEE</p>
         </div>

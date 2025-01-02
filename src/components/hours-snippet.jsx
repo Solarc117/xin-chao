@@ -83,7 +83,7 @@ export default function HoursSnippet({ showHours, toggleSnippets }) {
     }
   }, [])
 
-  setTimeout(() => setOpen(storeIsOpen(hours?.periods)), 1_000)
+  setTimeout(() => setOpen(storeIsOpen(hours?.periods)), 60_000)
 
   return (
     <>
